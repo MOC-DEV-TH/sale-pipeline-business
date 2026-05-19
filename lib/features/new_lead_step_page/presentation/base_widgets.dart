@@ -29,10 +29,10 @@ class StepIndicator extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: isCompleted
-                      ? const Color(0xFF00C853)
+                      ? kPrimaryColor
                       : Colors.transparent,
                   border: Border.all(
-                    color: const Color(0xFF00C853),
+                    color: kPrimaryColor,
                     width: 1.5,
                   ),
                 ),
@@ -90,16 +90,16 @@ class SelectionStep extends StatelessWidget {
             decoration: BoxDecoration(
               color: selected
                   ? kPrimaryColor
-                  : kSecondaryColor,
+                  : kCardColor,
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: const Color(0xFF16894D)),
+              border: Border.all(color: kSecondaryColor),
             ),
             child: Text(
               item,
               style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w800,
-                fontSize: 13,
+                fontSize: 16,
               ),
             ),
           ),
@@ -138,6 +138,24 @@ class FormStep extends StatelessWidget {
           );
         }
 
+        if (field.type == FieldType.textarea) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                field.label,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 8),
+              _buildField(context, field),
+            ],
+          );
+        }
+
         return Row(
           children: [
             SizedBox(
@@ -147,7 +165,7 @@ class FormStep extends StatelessWidget {
                   text: field.label,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 13,
+                    fontSize: 16,
                     fontWeight: FontWeight.w700,
                   ),
                   children: [
@@ -241,7 +259,7 @@ class DynamicTextField extends StatelessWidget {
         hintText: hint,
         hintStyle: const TextStyle(color: Colors.white38, fontSize: 12),
         filled: true,
-        fillColor: const Color(0xFF0B3A22),
+        fillColor: kCardColor,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 15,
@@ -249,16 +267,17 @@ class DynamicTextField extends StatelessWidget {
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: Color(0xFF16894D)),
+          borderSide: const BorderSide(color: kSecondaryColor),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: Color(0xFF00C853)),
+          borderSide: const BorderSide(color: kPrimaryColor),
         ),
       ),
     );
   }
 }
+
 
 ///dynamic dropdown
 class DynamicDropdown extends StatelessWidget {
@@ -280,12 +299,12 @@ class DynamicDropdown extends StatelessWidget {
 
     return DropdownButtonFormField<String>(
       value: selectedValue,
-      dropdownColor: const Color(0xFF0B3A22),
+      dropdownColor: kCardColor,
       iconEnabledColor: Colors.white,
       style: const TextStyle(color: Colors.white, fontSize: 12),
       decoration: InputDecoration(
         filled: true,
-        fillColor: const Color(0xFF0B3A22),
+        fillColor: kCardColor,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 15,
@@ -293,11 +312,11 @@ class DynamicDropdown extends StatelessWidget {
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: Color(0xFF16894D)),
+          borderSide: const BorderSide(color: kSecondaryColor),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: Color(0xFF00C853)),
+          borderSide: const BorderSide(color:kPrimaryColor),
         ),
       ),
       items: items
@@ -374,13 +393,17 @@ class DynamicTextArea extends StatelessWidget {
         hintText: hint,
         hintStyle: const TextStyle(color: Colors.white38, fontSize: 12),
         filled: true,
-        fillColor: const Color(0xFF0B3A22),
+        fillColor: kCardColor,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: Color(0xFF16894D)),
+          borderSide: const BorderSide(color: kSecondaryColor),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: kPrimaryColor),
         ),
       ),
     );
@@ -406,9 +429,9 @@ class DateField extends StatelessWidget {
         alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(horizontal: 14),
         decoration: BoxDecoration(
-          color: const Color(0xFF0B3A22),
+          color: kCardColor,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: const Color(0xFF16894D)),
+          border: Border.all(color: kSecondaryColor),
         ),
         child: Text(
           value == null ? '......Select Date......' : value!,

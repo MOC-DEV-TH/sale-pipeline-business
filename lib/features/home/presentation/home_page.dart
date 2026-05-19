@@ -50,28 +50,50 @@ class _HomeHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        IconButton(
-          padding: EdgeInsets.zero,
-          onPressed: () {
+        GestureDetector(
+          onTap: () {
             context.go(RoutePath.chooseTask.path);
           },
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-            size: 24,
+          child: Container(
+            width: 45,
+            height: 45,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: kCardColor,
+              border: Border.all(
+                color: Colors.white.withOpacity(0.12),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.18),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: const Center(
+              child: Icon(
+                Icons.arrow_back_rounded,
+                color: Colors.white,
+                size: 30,
+              ),
+            ),
           ),
         ),
 
-        const SizedBox(width: 10),
+        const SizedBox(width: 18),
 
-        const Text(
-          'Your Activity This Week',
-          style: TextStyle(
-            color: kPrimaryColor,
-            fontSize: 24,
-            fontWeight: FontWeight.w900,
+        const Expanded(
+          child: Text(
+            'Your Activity This Week',
+            style: TextStyle(
+              color: kPrimaryColor,
+              fontSize: 24,
+              fontWeight: FontWeight.w900,
+              height: 1,
+            ),
           ),
         ),
       ],
@@ -116,7 +138,7 @@ class _ActivityTable extends StatelessWidget {
     return Container(
       height: 52,
       decoration: BoxDecoration(
-        color: const Color(0xFF0D3A23).withOpacity(0.92),
+        color: kCardColor,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: const Color(0xFF1E8E55).withOpacity(0.65),
