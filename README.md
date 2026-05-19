@@ -1,6 +1,4 @@
-# hr_app
-
-MOC HR-App project.
+# Sale Pipeline Mobile App For Business
 
 ## Getting Started
 📝 Notes for Developers
