@@ -2,7 +2,7 @@
 // const String kBaseUrl = "https://hrapp.mocinteractive.com/api/v1";
 // const String kV2BaseUrl = "https://hrapp.mocinteractive.com/api/v2";
 
-const String kBaseUrl = "https://pnptapi.asiadigitalplus.com/api";
+const String kBaseUrl = "https://pipeline.pnpmyanmar.com/api";
 
 const String kImageBaseUrlHttp = "";
 
@@ -15,7 +15,7 @@ const String kErrorImageUrl =
 const String kTestImageUrl = "https://plus.unsplash.com/premium_photo-1725408127758-fb45b0f11ad9?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c2Nob29sJTIwZXZlbnR8ZW58MHx8MHx8fDA%3D";
 
 ///End points
-const String kEndPointLogin = "/login";
+const String kEndPointLogin = "/sale_admin_login";
 const String kEndPointStudentAttendance = "/student/attendance";
 const String kEndPointGetParentInfo = "/get-info";
 const String kEndPointGetExamDetails = "/exam";
