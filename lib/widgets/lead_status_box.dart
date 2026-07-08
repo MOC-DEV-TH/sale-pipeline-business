@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class StatusBox extends StatefulWidget {
   final String hint;
   final List<String> items;
-  final Function(String value)? onChanged;
+  final ValueChanged<String?>? onChanged;
 
   const StatusBox({
     super.key,
@@ -18,6 +18,14 @@ class StatusBox extends StatefulWidget {
 
 class _StatusBoxState extends State<StatusBox> {
   String? selectedValue;
+
+  void _clear() {
+    setState(() {
+      selectedValue = null;
+    });
+
+    widget.onChanged?.call(null);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +45,22 @@ class _StatusBoxState extends State<StatusBox> {
           value: selectedValue,
           isExpanded: true,
           dropdownColor: const Color(0xFF0B3A22),
-          icon: const Icon(
+
+          icon: selectedValue == null
+              ? const Icon(
             Icons.keyboard_arrow_down,
             color: Colors.white,
             size: 28,
+          )
+              : GestureDetector(
+            onTap: _clear,
+            child: const Icon(
+              Icons.close_rounded,
+              color: Colors.white,
+              size: 22,
+            ),
           ),
+
           hint: Text(
             widget.hint,
             style: const TextStyle(
@@ -50,11 +69,13 @@ class _StatusBoxState extends State<StatusBox> {
               fontWeight: FontWeight.w700,
             ),
           ),
+
           style: const TextStyle(
             color: Colors.white,
             fontSize: 13,
             fontWeight: FontWeight.w700,
           ),
+
           items: widget.items.map((item) {
             return DropdownMenuItem<String>(
               value: item,
@@ -64,9 +85,8 @@ class _StatusBoxState extends State<StatusBox> {
               ),
             );
           }).toList(),
-          onChanged: (value) {
-            if (value == null) return;
 
+          onChanged: (value) {
             setState(() {
               selectedValue = value;
             });

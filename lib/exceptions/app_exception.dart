@@ -12,7 +12,7 @@ String fn(AppException exception) {
   return switch (exception) {
     WeakPasswordException() => 'Password is too weak',
     EmptyPhoneNumberOrPasswordException() => "Empty phone number or password",
-    EmptyUserIdOrPasswordException() => "Empty user Id or password",
+    EmptyEmailOrPasswordException() => "Empty user Id or password",
     EmailAlreadyInUseException() => 'Email already in use',
     WrongPasswordException() => 'Wrong password',
     UserNotFoundException() => 'User not found',
@@ -27,9 +27,9 @@ class EmptyPhoneNumberOrPasswordException extends AppException {
       : super('empty-email-or-password', 'Empty mobile number or password');
 }
 
-class EmptyUserIdOrPasswordException extends AppException {
-  EmptyUserIdOrPasswordException()
-      : super('empty-userId-or-password', 'Empty user id or password');
+class EmptyEmailOrPasswordException extends AppException {
+  EmptyEmailOrPasswordException()
+      : super('empty-userId-or-password', 'Empty email or password');
 }
 
 class EmailAlreadyInUseException extends AppException {

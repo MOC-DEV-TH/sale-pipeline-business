@@ -1,16 +1,18 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../utils/secure_storage.dart';
 import 'api_constants.dart';
 import 'deadline_retry_interceptor.dart';
+import 'session_interceptor.dart';
 
 part 'dio_provider.g.dart';
 
 @riverpod
 Dio dio(DioRef ref, {String? baseUrl}) {
-  final token = GetStorage().read(SecureDataList.authToken.name) as String?;
+  final token = ref.watch(getAuthTokenProvider);
 
   final dio = Dio(
     BaseOptions(
@@ -21,6 +23,7 @@ Dio dio(DioRef ref, {String? baseUrl}) {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
+        'token' : token,
         if (token != null && token.isNotEmpty)
           'Authorization': 'Bearer $token',
       },
@@ -40,6 +43,8 @@ Dio dio(DioRef ref, {String? baseUrl}) {
   );
 
   dio.interceptors.add(DeadlineRetryInterceptor(dio));
+
+  dio.interceptors.add(SessionInterceptor());
 
   return dio;
 }

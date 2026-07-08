@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 class SearchBox extends StatefulWidget {
   final String hint;
   final Function(String value)? onSearch;
+  final VoidCallback? onClear;
+  final TextEditingController? controller;
 
-  /// for date picker / custom tap
   final bool readOnly;
   final bool isDatePicker;
   final DateTime? firstDate;
@@ -16,6 +17,8 @@ class SearchBox extends StatefulWidget {
     super.key,
     required this.hint,
     this.onSearch,
+    this.onClear,
+    this.controller,
     this.readOnly = false,
     this.isDatePicker = false,
     this.firstDate,
@@ -27,28 +30,52 @@ class SearchBox extends StatefulWidget {
 }
 
 class _SearchBoxState extends State<SearchBox> {
-  final controller = TextEditingController();
-
+  late final TextEditingController _controller;
   Timer? _debounce;
+
+  bool get _hasValue => _controller.text.trim().isNotEmpty;
+  bool get _useExternalController => widget.controller != null;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = widget.controller ?? TextEditingController();
+    _controller.addListener(_refresh);
+  }
+
+  void _refresh() {
+    if (mounted) setState(() {});
+  }
 
   @override
   void dispose() {
-    controller.dispose();
+    _controller.removeListener(_refresh);
+
+    if (!_useExternalController) {
+      _controller.dispose();
+    }
+
     _debounce?.cancel();
     super.dispose();
   }
 
   void _onChanged(String value) {
-    if (_debounce?.isActive ?? false) {
-      _debounce?.cancel();
-    }
+    _debounce?.cancel();
 
     _debounce = Timer(
       const Duration(milliseconds: 500),
-          () {
-        widget.onSearch?.call(value);
-      },
+          () => widget.onSearch?.call(value),
     );
+  }
+
+  void _clear() {
+    _debounce?.cancel();
+    _controller.clear();
+
+    widget.onSearch?.call('');
+    widget.onClear?.call();
+
+    FocusScope.of(context).unfocus();
   }
 
   Future<void> _openDatePicker() async {
@@ -70,8 +97,7 @@ class _SearchBoxState extends State<SearchBox> {
     final formatted =
         '${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}';
 
-    controller.text = formatted;
-
+    _controller.text = formatted;
     widget.onSearch?.call(formatted);
   }
 
@@ -81,7 +107,7 @@ class _SearchBoxState extends State<SearchBox> {
       width: 168,
       height: 48,
       child: TextField(
-        controller: controller,
+        controller: _controller,
         readOnly: widget.readOnly || widget.isDatePicker,
         onTap: widget.isDatePicker ? _openDatePicker : null,
         onChanged: widget.isDatePicker ? null : _onChanged,
@@ -92,10 +118,21 @@ class _SearchBoxState extends State<SearchBox> {
             color: Colors.white54,
             fontSize: 13,
           ),
-          suffixIcon: Icon(
-            widget.isDatePicker ? Icons.calendar_month_rounded : Icons.search,
-            color: Colors.white,
-            size: 26,
+          suffixIcon: IconButton(
+            onPressed: _hasValue
+                ? _clear
+                : widget.isDatePicker
+                ? _openDatePicker
+                : null,
+            icon: Icon(
+              _hasValue
+                  ? Icons.close_rounded
+                  : widget.isDatePicker
+                  ? Icons.calendar_month_rounded
+                  : Icons.search,
+              color: Colors.white,
+              size: _hasValue ? 22 : 26,
+            ),
           ),
           filled: true,
           fillColor: const Color(0xFF0B3A22),

@@ -19,21 +19,27 @@ class AuthRepository {
 
   /// login
   Future<void> login({
-    required String userId,
+    required String email,
     required String password,
   }) async {
-    if (userId.trim().isEmpty ||
+    if (email.trim().isEmpty ||
         password.trim().isEmpty) {
-      throw EmptyUserIdOrPasswordException();
+      throw EmptyEmailOrPasswordException();
     }
-
     try {
       final response = await dio.post(
         kEndPointLogin,
         data: {
-          "user_id": userId,
+          "user_id": email,
           "password": password,
+          "app_version": "1.0",
         },
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+            "security_key": 'moJoENEt2021sECuriTYkEy',
+          },
+        ),
       );
 
       /// null response check
@@ -44,8 +50,14 @@ class AuthRepository {
       final data = response.data;
 
       /// safe token parse
+      // final token =
+      // data["data"]?["token"];
+      // final uid =
+      // data["data"]?["uid"];
       final token =
-      data["data"]?["access_token"];
+      data["token"];
+      final uid =
+      data["uid"];
 
       if (token == null ||
           token.toString().isEmpty) {
@@ -54,10 +66,11 @@ class AuthRepository {
       }
 
       /// save token
-      await GetStorage().write(
-        SecureDataList.authToken.name,
-        token,
-      );
+      await ref.read(secureStorageProvider).saveAuthToken(token);
+
+      ///save uid
+      await ref.read(secureStorageProvider).saveUid(uid);
+
 
     } on DioException catch (e) {
       debugPrint(

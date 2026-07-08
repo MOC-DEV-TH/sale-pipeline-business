@@ -13,7 +13,8 @@ enum SecureDataList {
   userName,
   leaveTypes,
   categories,
-  appLanguage
+  appLanguage,
+  uid
 }
 
 class SecureStorage {
@@ -58,12 +59,21 @@ class SecureStorage {
   }
 
   ///auth token
-  saveAuthToken(String authToken) async {
+  Future<void> saveAuthToken(String authToken) async {
     await _box.write(SecureDataList.authToken.name, authToken);
   }
 
-  getAuthToken() {
+  String? getAuthToken() {
     return _box.read(SecureDataList.authToken.name);
+  }
+
+  /// uid
+  Future<void> saveUid(String uid) async {
+    await _box.write(SecureDataList.uid.name, uid);
+  }
+
+  String? getUid() {
+    return _box.read(SecureDataList.uid.name);
   }
 
 }
@@ -89,4 +99,16 @@ String? getUserName(GetUserNameRef ref) {
 String? getFcmToken(GetFcmTokenRef ref) {
   final store = ref.watch(secureStorageProvider);
   return store.getFCMToken();
+}
+
+@riverpod
+String? getUid(GetUidRef ref) {
+  final store = ref.watch(secureStorageProvider);
+  return store.getUid();
+}
+
+@riverpod
+String? getAuthToken(GetAuthTokenRef ref) {
+  final store = ref.watch(secureStorageProvider);
+  return store.getAuthToken();
 }

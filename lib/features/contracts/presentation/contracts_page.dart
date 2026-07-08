@@ -1,59 +1,79 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sale_pipeline_business/features/contracts/presentation/contract_detail_page.dart';
+import 'package:sale_pipeline_business/features/contracts/presentation/signed_contracted_lead_webview_page.dart';
 
+import '../../../utils/secure_storage.dart';
 import '../../../widgets/contract_action_table_cell.dart';
 import '../../../widgets/lead_list_page_template.dart';
 import '../../../widgets/lead_search_box.dart';
 import '../../../widgets/lead_table_cell.dart';
+import '../data/contracts_repository.dart';
+import '../model/contracts_response.dart';
 
-class ContractsPage extends StatelessWidget {
+class ContractsPage extends ConsumerStatefulWidget {
   const ContractsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ListPageTemplate(
-      title: 'Leads',
-      filters: [SearchBox(hint: 'Business name',onSearch: (value){},)],
-      table: ContractsTable(),
-    );
-  }
+  ConsumerState<ContractsPage> createState() => _ContractsPageState();
 }
 
-class ContractItemVO {
-  final String sn;
-  final String businessName;
-  final String status;
-
-  const ContractItemVO({
-    required this.sn,
-    required this.businessName,
-    required this.status,
-  });
-}
-
-class ContractsTable extends StatelessWidget {
-  const ContractsTable({super.key});
+class _ContractsPageState extends ConsumerState<ContractsPage> {
+  String businessName = '';
 
   @override
   Widget build(BuildContext context) {
-    final contracts = [
-      const ContractItemVO(
-        sn: '1',
-        businessName: 'Mojoenet',
-        status: 'Customer\nSigned\nPending',
-      ),
+    final uid = ref.watch(getUidProvider);
 
-      const ContractItemVO(
-        sn: '2',
-        businessName: 'MOCI',
-        status: 'Customer\nSigned\nPending',
+    final contractsState = ref.watch(
+      fetchContractListProvider(
+        uid: uid ?? '',
+        filterParamName: _filterParam(),
       ),
+    );
 
-      const ContractItemVO(
-        sn: '3',
-        businessName: 'Brndwrx',
-        status: 'Customer\nSigned\nPending',
+    return ListPageTemplate(
+      title: 'Contracts',
+      filters: [
+        SearchBox(
+          hint: 'Business name',
+          onSearch: (value) {
+            setState(() => businessName = value);
+          },
+        ),
+      ],
+      table: contractsState.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, _) =>
+            Text(e.toString(), style: const TextStyle(color: Colors.white)),
+        data: (data) => ContractsTable(contracts: data.details ?? [],uid: uid,),
       ),
-    ];
+    );
+  }
+
+  String _filterParam() {
+    if (businessName.trim().isEmpty) return '';
+
+    return '&business_name=${Uri.encodeComponent(businessName.trim())}';
+  }
+}
+
+class ContractsTable extends ConsumerWidget {
+  ContractsTable({super.key, required this.contracts,required this.uid});
+
+  final List<ContractDetailVo> contracts;
+  dynamic uid;
+
+  @override
+  Widget build(BuildContext context,WidgetRef ref) {
+    if (contracts.isEmpty) {
+      return const Center(
+        child: Text(
+          'No contracts found',
+          style: TextStyle(color: Colors.white),
+        ),
+      );
+    }
 
     return Container(
       width: double.infinity,
@@ -65,9 +85,9 @@ class ContractsTable extends StatelessWidget {
       ),
       child: Column(
         children: [
-          IntrinsicHeight(
+          const IntrinsicHeight(
             child: Row(
-              children: const [
+              children: [
                 LeadTableCell(text: 'SN', isHeader: true, flex: 1),
                 LeadTableCell(text: 'Business Name', isHeader: true, flex: 2),
                 LeadTableCell(text: 'Status', isHeader: true, flex: 2),
@@ -94,17 +114,42 @@ class ContractsTable extends StatelessWidget {
                   IntrinsicHeight(
                     child: Row(
                       children: [
-                        LeadTableCell(text: item.sn, flex: 1),
-                        LeadTableCell(text: item.businessName, flex: 2),
-                        LeadTableCell(text: item.status, flex: 2),
+                        LeadTableCell(text: '${index + 1}', flex: 1),
+                        LeadTableCell(text: item.businessName ?? '-', flex: 2),
+                        LeadTableCell(text: item.status ?? '-', flex: 2),
                         ContractActionTableCell(
                           flex: 2,
                           isLast: true,
-                          onEdit: () {
+                          onEdit: () async{
                             debugPrint('Edit ${item.businessName}');
+                            final updated = await Navigator.of(context)
+                                .push<bool>(
+                                  MaterialPageRoute(
+                                    builder: (_) => ContractedDetailPage(
+                                      uid: uid,
+                                      profileId: item.profileId.toString(),
+                                    ),
+                                  ),
+                                );
+
+                            if (updated == true) {
+                              ref.invalidate(fetchContractListProvider);
+                            }
                           },
-                          onSigned: () {
+                          onSigned: () async{
                             debugPrint('Signed ${item.businessName}');
+                            final signed = await Navigator.push<bool>(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => SignedContractedLeadWebViewPage(
+                                  url: item.sign ?? '',
+                                ),
+                              ),
+                            );
+
+                            if (signed == true) {
+                              ref.invalidate(fetchContractListProvider);
+                            }
                           },
                         ),
                       ],

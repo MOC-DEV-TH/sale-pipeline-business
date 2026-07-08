@@ -6,10 +6,12 @@ import 'package:sale_pipeline_business/features/auth/presentations/login_page.da
 import 'package:sale_pipeline_business/features/contracts/presentation/contracts_page.dart';
 import 'package:sale_pipeline_business/features/leads/presentation/leads_page.dart';
 import 'package:sale_pipeline_business/features/logout/presentation/logout_page.dart';
+import 'package:sale_pipeline_business/features/new_lead_step_page/presentation/create_new_lead_page.dart';
 import 'package:sale_pipeline_business/features/new_lead_step_page/presentation/new_lead_step_page.dart';
 import 'package:sale_pipeline_business/features/traget/presentation/target_page.dart';
 import '../../features/dashboard/presentation/dashboard_page.dart';
 import '../../features/home/presentation/home_page.dart';
+import '../../main.dart';
 import '../../utils/secure_storage.dart';
 import '../../utils/strings.dart';
 import '../route_error_screen/route_error_screen.dart';
@@ -36,7 +38,7 @@ enum RoutePath {
 
 @riverpod
 GoRouter goRouterDelegate(GoRouterDelegateRef ref) {
-  final GlobalKey<NavigatorState> rootNavigator = GlobalKey(debugLabel: 'root');
+  final rootNavigator = navigatorKey;
   final GlobalKey<NavigatorState> shellNavigator = GlobalKey(
     debugLabel: 'shell',
   );
@@ -175,7 +177,7 @@ GoRouter goRouterDelegate(GoRouterDelegateRef ref) {
           return buildPageWithDefaultTransition(
             context: context,
             state: state,
-            child: NewLeadStepPage(key: state.pageKey),
+            child: CreateNewLeadPage(key: state.pageKey),
           );
         },
       ),

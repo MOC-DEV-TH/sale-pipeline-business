@@ -10,6 +10,8 @@ import 'utils/fonts.dart';
 
 
 final ProviderContainer container = ProviderContainer();
+final GlobalKey<NavigatorState> navigatorKey =
+GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

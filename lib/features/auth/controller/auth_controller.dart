@@ -14,11 +14,11 @@ class AuthController extends _$AuthController {
     ref.onDispose(() => mounted = false);
   }
 
-  Future<bool> login({required String userId, required String password}) async {
+  Future<bool> login({required String email, required String password}) async {
     final authRepository = ref.read(authRepositoryNoTokenProvider);
     state = const AsyncValue.loading();
     final result = await AsyncValue.guard(
-          () => authRepository.login(userId: userId, password: password),
+          () => authRepository.login(email: email, password: password),
     );
     if (mounted) {
       state = result;

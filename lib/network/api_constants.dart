@@ -2,7 +2,8 @@
 // const String kBaseUrl = "https://hrapp.mocinteractive.com/api/v1";
 // const String kV2BaseUrl = "https://hrapp.mocinteractive.com/api/v2";
 
-const String kBaseUrl = "https://pipeline.pnpmyanmar.com/api";
+const String kBaseUrl = "https://mojoenet.com/api";
+const String kWebBaseUrl = "https://mojoenet.com";
 
 const String kImageBaseUrlHttp = "";
 
@@ -17,22 +18,27 @@ const String kTestImageUrl = "https://plus.unsplash.com/premium_photo-1725408127
 ///End points
 const String kEndPointLogin = "/sale_admin_login";
 const String kEndPointStudentAttendance = "/student/attendance";
-const String kEndPointGetParentInfo = "/get-info";
-const String kEndPointGetExamDetails = "/exam";
-const String kEndPointGetExamList = "/exam";
-const String kEndPointStudentReportCardDetail = "/student/report-card";
-const String kEndPointGetEventList = "/event";
-const String kEndPointGetEventDetail = "/event/";
-const String kEndPointSetFcmToken = "/set-fcm-token";
-const String kEndPointGetAnnouncements = "/announcement";
-const String kEndPointGetSchoolFees = "/fees";
-const String kEndPointGetLessonPlans= "/lesson-plan";
+const String kEndPointGetSaleDdlData = "/get_sale_ddl_data";
+const String kEndPointSubmitLead = "/post_lead_form_data";
+const String kEndPointUpdateLead = "/post_lead_form_data";
+const String kEndPointLeadListByUid ="/get_lead_list_by_uid?";
+const String kEndPointLeadDetailByLeadId = "/get_activity_detail?";
+const String kEndPointContractedLeadListByUid = "/get_contracted_lead_lists_by_uid?";
+const String kEndPointContractedLeadByProfileId = "/get_contracted_detail?";
+const String kEndPointUpdateContractedLead ="/post_contracted_data";
+const String kEndPointGetActivityOverview ="/get_activity_overview_by_uid?";
+
 
 
 ///Parameters
 const String kParamApiKey = "api_key";
-const String kParamLanguage = "language";
-const String kParamPage = "page";
+const kParamUid = '&uid=';
+const kParamAppVersion = '&app_version=';
+const kParamLeadId = '&leadId=';
+const kParamBusinessName = '&business_name=';
+const kParamEstContractDate = '&est_contract_date=';
+const kParamContactNumber = '&contact_number=';
+const kParamStatus = '&status=';
 
 ///Constant Values
 const String kApiKey = "3495fbca2612a77c31afe40405a6a4c4";

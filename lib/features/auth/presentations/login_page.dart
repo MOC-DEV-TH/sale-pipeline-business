@@ -8,6 +8,7 @@ import 'package:sale_pipeline_business/utils/images.dart';
 
 import '../../../common_widgets/common_button.dart';
 import '../../../common_widgets/loading_view.dart';
+import '../../../network/session_interceptor.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/secure_storage.dart';
 import '../../../utils/strings.dart';
@@ -22,12 +23,12 @@ class LoginPage extends ConsumerStatefulWidget {
 
 class _LoginPageState extends ConsumerState<LoginPage> {
 
-  final _userNameController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
   void dispose() {
-    _userNameController.dispose();
+    _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -57,89 +58,95 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
 
                 SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 28,
-                      vertical: 24,
-                    ),
-                    child: Column(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Welcome to',
-                              style: TextStyle(color: Colors.white70, fontSize: 24),
+                  child: SingleChildScrollView(
+                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 28,
+                        vertical: 24,
+                      ),
+                      child: Column(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'Welcome to',
+                                style: TextStyle(color: Colors.white70, fontSize: 24),
+                              ),
+                              Image.asset(kLogoImage, width: 270, height: 66),
+                            ],
+                          ),
+
+                          const SizedBox(height: 24),
+
+                          const Text(
+                            'Manage your customers\nand stay on top of your workflow',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 15,
+                              height: 1.4,
                             ),
-                            Image.asset(kLogoImage, width: 270, height: 66),
-                          ],
-                        ),
-
-                        const SizedBox(height: 24),
-
-                        const Text(
-                          'Manage your customers\nand stay on top of your workflow',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 15,
-                            height: 1.4,
                           ),
-                        ),
 
-                        const SizedBox(height: 30),
+                          const SizedBox(height: 30),
 
-                        /// center image
-                        SizedBox(
-                          width: 240,
-                          height: 220,
-                          child: Image.asset(
-                            kLoginIllustrationImage,
-                            fit: BoxFit.contain,
+                          SizedBox(
+                            width: 240,
+                            height: 180,
+                            child: Image.asset(
+                              kLoginIllustrationImage,
+                              fit: BoxFit.contain,
+                            ),
                           ),
-                        ),
 
-                        const SizedBox(height: 20),
+                          const SizedBox(height: 20),
 
-                        /// username
-                        const Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Username',
-                            style: TextStyle(color: Colors.white70, fontSize: 14),
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Username',
+                              style: TextStyle(color: Colors.white70, fontSize: 14),
+                            ),
                           ),
-                        ),
 
-                        const SizedBox(height: 8),
+                          const SizedBox(height: 8),
 
-                        _InputField(hint: 'Enter Full Name',controller: _userNameController,),
-
-                        const SizedBox(height: 20),
-
-                        /// password
-                        const Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Password',
-                            style: TextStyle(color: Colors.white70, fontSize: 14),
+                          _InputField(
+                            hint: 'Enter Full Name',
+                            controller: _emailController,
                           ),
-                        ),
 
-                        const SizedBox(height: 8),
+                          const SizedBox(height: 20),
 
-                        _InputField(hint: 'Enter Password', obscureText: true,controller: _passwordController,),
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Password',
+                              style: TextStyle(color: Colors.white70, fontSize: 14),
+                            ),
+                          ),
 
-                        const Spacer(),
+                          const SizedBox(height: 8),
 
-                        /// login button
-                        CommonButton(
-                          text: 'Login',
-                          color: kPrimaryColor,
-                          onTap: _onLogin,
-                        ),
+                          _InputField(
+                            hint: 'Enter Password',
+                            obscureText: true,
+                            controller: _passwordController,
+                          ),
 
-                        const SizedBox(height: 10),
-                      ],
+                          const SizedBox(height: 30),
+
+                          CommonButton(
+                            text: 'Login',
+                            color: kPrimaryColor,
+                            onTap: _onLogin,
+                          ),
+
+                          const SizedBox(height: 20),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -165,22 +172,21 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   ///on press login
   void _onLogin() async {
-    await ref.read(secureStorageProvider).saveAuthStatus(kAuthLoggedIn);
-    ref.invalidate(secureStorageProvider);
-    // final userId = _userNameController.text.trim();
-    // final password = _passwordController.text;
-    //
-    // final state = ref.read(authControllerProvider);
-    // if (state.isLoading) return;
-    //
-    // final ok = await ref
-    //     .read(authControllerProvider.notifier)
-    //     .login(userId: userId, password: password);
-    //
-    // if (ok && mounted) {
-    //   await ref.read(secureStorageProvider).saveAuthStatus(kAuthLoggedIn);
-    //   ref.invalidate(secureStorageProvider);
-    // }
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+
+    final state = ref.read(authControllerProvider);
+    if (state.isLoading) return;
+
+    final ok = await ref
+        .read(authControllerProvider.notifier)
+        .login(email: email, password: password);
+
+    if (ok && mounted) {
+      await ref.read(secureStorageProvider).saveAuthStatus(kAuthLoggedIn);
+      ref.invalidate(secureStorageProvider);
+      SessionInterceptor.resetSessionExpired();
+    }
   }
 }
 

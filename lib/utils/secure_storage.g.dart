@@ -74,5 +74,39 @@ final getFcmTokenProvider = AutoDisposeProvider<String?>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef GetFcmTokenRef = AutoDisposeProviderRef<String?>;
+String _$getUidHash() => r'426e7a4efe6bc93e0e76eef1622e2c48855227cc';
+
+/// See also [getUid].
+@ProviderFor(getUid)
+final getUidProvider = AutoDisposeProvider<String?>.internal(
+  getUid,
+  name: r'getUidProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$getUidHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef GetUidRef = AutoDisposeProviderRef<String?>;
+String _$getAuthTokenHash() => r'4f90120964e4b1a73d96a1b0e983a6d69e421fb5';
+
+/// See also [getAuthToken].
+@ProviderFor(getAuthToken)
+final getAuthTokenProvider = AutoDisposeProvider<String?>.internal(
+  getAuthToken,
+  name: r'getAuthTokenProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$getAuthTokenHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef GetAuthTokenRef = AutoDisposeProviderRef<String?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
