@@ -36,6 +36,14 @@ class _NewLeadStepPageState extends ConsumerState<CreateNewLeadPage> {
 
   bool isReferral = false;
 
+  final reasonCtrl = TextEditingController();
+  final followUpDateCtrl = TextEditingController();
+  final contractDateCtrl = TextEditingController();
+  final appointmentDateCtrl = TextEditingController();
+  final customerNoteCtrl = TextEditingController();
+
+  bool isNotified = false;
+
   DdlItem? selectedSource;
   DdlItem? selectedBusinessType;
   DdlItem? selectedDesignation;
@@ -73,6 +81,14 @@ class _NewLeadStepPageState extends ConsumerState<CreateNewLeadPage> {
     longCtrl.dispose();
     meetingNoteCtrl.dispose();
     nextStepCtrl.dispose();
+    reasonCtrl.dispose();
+    followUpDateCtrl.dispose();
+    contractDateCtrl.dispose();
+    appointmentDateCtrl.dispose();
+    customerNoteCtrl.dispose();
+    estContractDateCtrl.dispose();
+    estStartDateCtrl.dispose();
+    estFollowUpDateCtrl.dispose();
     super.dispose();
   }
 
@@ -84,49 +100,50 @@ class _NewLeadStepPageState extends ConsumerState<CreateNewLeadPage> {
       'source': selectedSource?.value,
       'business_type': selectedBusinessType?.value,
       'sme': null,
-
-      'business_name': businessNameCtrl.text,
+      'business_name': businessNameCtrl.text.trim(),
       'division': selectedDivision?.value,
       'township': selectedTownship?.value,
-      'address': addressCtrl.text,
+      'address': addressCtrl.text.trim(),
 
-      'contact_number': primaryPhoneCtrl.text,
-      'secondary_contact_number': secondaryPhoneCtrl.text,
-      'contact_person': nameCtrl.text,
-      'email': emailCtrl.text,
+      'contact_number': primaryPhoneCtrl.text.trim(),
+      'secondary_contact_number': secondaryPhoneCtrl.text.trim(),
+      'contact_person': nameCtrl.text.trim(),
+      'email': emailCtrl.text.trim(),
 
       'designation': selectedDesignation?.value,
       'designation_other': null,
       'business_type_other': null,
-      'status': selectedStatus?.key,
-
-      'est_contract_date': estContractDateCtrl.text,
-      'est_start_date': estStartDateCtrl.text,
-      'follow_up_date': estFollowUpDateCtrl.text,
-      'isReferral': isReferral ? '1' : '0',
-
-      // 'followup_date': followUpDateCtrl.text,
-      //'isNotified': isNotified ? '1' : '0',
-      //'reason': reasonCtrl.text,
-      // 'contracted_date':
-      // contractDateCtrl.text.isEmpty ? null : contractDateCtrl.text,
-      // 'installation_appointment_date':
-      // appointmentDateCtrl.text.isEmpty ? null : appointmentDateCtrl.text,
-      //'customer_note': customerNoteCtrl.text,
-
-      'lat': latCtrl.text,
-      'long': longCtrl.text,
 
       'potential': selectedPotential,
-      'amount': selectedPotential == '0' ? "" : amountCtrl.text,
-      'plan': selectedPotential == '0' ? "" : selectedPlan?.value,
-      'package': selectedPotential == '0' ? "" : selectedPackage?.key,
-      'discount': selectedPotential == '0' ? "" : selectedDiscount?.value,
+      'status': selectedStatus?.key,
+
+      'followup_date': followUpDateCtrl.text.trim(),
+      'est_contract_date': estContractDateCtrl.text.trim(),
+      'est_start_date': estStartDateCtrl.text.trim(),
+      'follow_up_date': estFollowUpDateCtrl.text.trim(),
+
+      'isNotified': isNotified ? '1' : '0',
+      'isReferral': isReferral ? '1' : '0',
+      'reason': reasonCtrl.text.trim(),
+
+      'contracted_date':
+      contractDateCtrl.text.trim().isEmpty ? null : contractDateCtrl.text.trim(),
+      'installation_appointment_date':
+      appointmentDateCtrl.text.trim().isEmpty ? null : appointmentDateCtrl.text.trim(),
+      'customer_note': customerNoteCtrl.text.trim(),
+
+      'lat': latCtrl.text.trim(),
+      'long': longCtrl.text.trim(),
+
+      'amount': selectedPotential == '0' ? '' : amountCtrl.text.trim(),
+      'plan': selectedPotential == '0' ? '' : selectedPlan?.value,
+      'package': selectedPotential == '0' ? '' : selectedPackage?.key,
+      'discount': selectedPotential == '0' ? '' : selectedDiscount?.value,
 
       'customer_type': selectedCustomerType?.key,
 
-      'meeting_notes': meetingNoteCtrl.text,
-      'next_step': nextStepCtrl.text,
+      'meeting_notes': meetingNoteCtrl.text.trim(),
+      'next_step': nextStepCtrl.text.trim(),
     };
 
     return removeEmptyOrNullFields(map);
@@ -202,9 +219,97 @@ class _NewLeadStepPageState extends ConsumerState<CreateNewLeadPage> {
       //   }
       //   return true;
 
+      case 'potential':
+        return _validatePotentialStep();
+
+      case 'notes':
+        if (meetingNoteCtrl.text.trim().isEmpty) {
+          _showError('Please enter meeting notes');
+          return false;
+        }
+
+        if (nextStepCtrl.text.trim().isEmpty) {
+          _showError('Please enter next step');
+          return false;
+        }
+
+        return true;
+
       default:
         return true;
     }
+  }
+
+  bool _validatePotentialStep() {
+    final isPotential = selectedPotential == '1';
+
+    if (selectedStatus == null) {
+      _showError('Please select status');
+      return false;
+    }
+
+    if (!isPotential) {
+      return true;
+    }
+
+    if (selectedCustomerType == null) {
+      _showError('Please select customer type');
+      return false;
+    }
+
+    if (selectedPlan == null) {
+      _showError('Please select plan');
+      return false;
+    }
+
+    if (selectedPackage == null) {
+      _showError('Please select package');
+      return false;
+    }
+
+    if (amountCtrl.text.trim().isEmpty) {
+      _showError('Please enter amount');
+      return false;
+    }
+
+    if (estContractDateCtrl.text.trim().isEmpty) {
+      _showError('Please select estimated contract date');
+      return false;
+    }
+
+    if (estStartDateCtrl.text.trim().isEmpty) {
+      _showError('Please select estimated start date');
+      return false;
+    }
+
+    if (estFollowUpDateCtrl.text.trim().isEmpty) {
+      _showError('Please select estimated follow up date');
+      return false;
+    }
+
+    if (selectedStatus?.value == 'Contracted') {
+      if (!checkLatLongLength(latCtrl.text.trim())) {
+        _showError('Latitude field must be filled with format(00.000000)');
+        return false;
+      }
+
+      if (!checkLatLongLength(longCtrl.text.trim())) {
+        _showError('Longitude field must be filled with format(00.000000)');
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  bool checkLatLongLength(String str) {
+    final lat = str.split('.');
+
+    if (lat.length < 2) return false;
+    if (lat[0].length != 2) return false;
+    if (lat[1].length != 6) return false;
+
+    return true;
   }
 
   bool _requiredSelected(dynamic value, String message) {
@@ -434,7 +539,7 @@ class _NewLeadStepPageState extends ConsumerState<CreateNewLeadPage> {
         const _StepTitle('Enter the business information.'),
         const SizedBox(height: 20),
         _TextInput(label: 'Business Name', controller: businessNameCtrl),
-        _TextInput(label: 'Address *', controller: addressCtrl,requiredMark: true,),
+        _TextInput(label: 'Address', controller: addressCtrl,requiredMark: true,),
         _DropdownInput(
           label: 'Division',
           value: selectedDivision,
@@ -488,6 +593,10 @@ class _NewLeadStepPageState extends ConsumerState<CreateNewLeadPage> {
         .where((e) => e.plan?.trim() == selectedPlan?.value?.trim())
         .toList();
 
+    final deadLeadStatus = (ddl.saleStatus ?? [])
+        .where((e) => e.value == 'Dead Lead')
+        .toList();
+
     return ListView(
       padding: const EdgeInsets.all(10),
       children: [
@@ -500,103 +609,201 @@ class _NewLeadStepPageState extends ConsumerState<CreateNewLeadPage> {
           onChanged: (v) {
             setState(() {
               selectedPotential = v ?? '1';
-            });
-          },
-        ),
 
-        _DropdownInput(
-          label: 'Customer\nType',
-          value: selectedCustomerType,
-          items: ddl.customerType ?? [],
-          requiredMark: true,
-          hint: 'Select Customer Type',
-          onChanged: (v) => setState(() => selectedCustomerType = v),
-        ),
+              if (selectedPotential == '0') {
+                selectedStatus = deadLeadStatus.isNotEmpty ? deadLeadStatus.first : null;
+              } else {
+                selectedStatus = null;
+              }
 
-        _SaleStatusDropInput(
-          label: 'Status',
-          value: selectedStatus,
-          items: ddl.saleStatus ?? [],
-          hint: 'Select Status',
-          onChanged: (v) => setState(() => selectedStatus = v),
-        ),
-
-        _DropdownInput(
-          label: 'Plan',
-          value: selectedPlan,
-          items: ddl.plan ?? [],
-          requiredMark: true,
-          hint: 'Select Plan',
-          onChanged: (v) {
-            setState(() {
-              selectedPlan = v;
+              selectedPlan = null;
               selectedPackage = null;
+              selectedDiscount = null;
+              selectedCustomerType = null;
+
               amountCtrl.clear();
+              reasonCtrl.clear();
+              followUpDateCtrl.clear();
+              contractDateCtrl.clear();
+              appointmentDateCtrl.clear();
+              customerNoteCtrl.clear();
+              latCtrl.clear();
+              longCtrl.clear();
+
+              isNotified = false;
+              isReferral = false;
             });
           },
         ),
 
-        _PackageDropInput(
-          label: 'Package',
-          value: selectedPackage,
-          items: packages,
-          requiredMark: true,
-          hint: 'Select Package',
-          onChanged: (v) {
-            setState(() {
-              selectedPackage = v;
-              amountCtrl.text = v?.value ?? '';
-            });
-          },
-        ),
-
-        _TextInput(
-          label: 'Amount',
-          controller: amountCtrl,
-          keyboardType: TextInputType.number,
-          hint: 'xxxxxxxx',
-          requiredMark: true,
-        ),
-
-        _DropdownInput(
-          label: 'Discount',
-          value: selectedDiscount,
-          items: ddl.discount ?? [],
-          requiredMark: true,
-          hint: '0%',
-          onChanged: (v) => setState(() => selectedDiscount = v),
-        ),
-
-        _DateInput(
-          label: 'Est. Contract\nDate',
-          controller: estContractDateCtrl,
-          requiredMark: true,
-        ),
-
-        _DateInput(
-          label: 'Est. Start\nDate',
-          controller: estStartDateCtrl,
-          requiredMark: true,
-        ),
-
-        _DateInput(
-          label: 'Est. Follow\nUp Date',
-          controller: estFollowUpDateCtrl,
-          requiredMark: true,
-        ),
-
-        CheckboxListTile(
-          value: isReferral,
-          onChanged: (v) => setState(() => isReferral = v ?? false),
-          controlAffinity: ListTileControlAffinity.leading,
-          contentPadding: EdgeInsets.zero,
-          title: const Text(
-            'Is Referral',
-            style: TextStyle(color: Colors.white),
+        if (selectedPotential == '0') ...[
+          _SaleStatusDropInput(
+            label: 'Status',
+            value: selectedStatus,
+            items: selectedPotential == '0'
+                ? deadLeadStatus
+                : (ddl.saleStatus ?? [])
+                .where((e) => e.value != 'Dead Lead')
+                .toList(),
+            hint: 'Select Status',
+            onChanged: (v) => setState(() => selectedStatus = v),
           ),
-          checkColor: Colors.white,
-          activeColor: const Color(0xFF00C853),
-        ),
+
+          _TextInput(
+            label: 'Reason',
+            controller: reasonCtrl,
+            hint: 'Enter Reason',
+          ),
+
+          _DateInput(
+            label: 'Follow Up',
+            controller: followUpDateCtrl,
+          ),
+
+          CheckboxListTile(
+            value: isNotified,
+            onChanged: (v) => setState(() => isNotified = v ?? false),
+            controlAffinity: ListTileControlAffinity.leading,
+            contentPadding: EdgeInsets.zero,
+            title: const Text(
+              'Notify me after 6 months',
+              style: TextStyle(color: Colors.white),
+            ),
+            checkColor: Colors.white,
+            activeColor: const Color(0xFF00C853),
+          ),
+        ],
+
+        if (selectedPotential == '1') ...[
+          _DropdownInput(
+            label: 'Customer\nType',
+            value: selectedCustomerType,
+            items: ddl.customerType ?? [],
+            requiredMark: true,
+            hint: 'Select Customer Type',
+            onChanged: (v) => setState(() => selectedCustomerType = v),
+          ),
+
+          _SaleStatusDropInput(
+            label: 'Status',
+            value: selectedStatus,
+            items: (ddl.saleStatus ?? [])
+                .where((e) => e.value != 'Dead Lead')
+                .toList(),
+            requiredMark: true,
+            hint: 'Select Status',
+            onChanged: (v) => setState(() => selectedStatus = v),
+          ),
+
+          if (selectedStatus?.value == 'Contracted') ...[
+            _TextInput(
+              label: 'Lat',
+              controller: latCtrl,
+              hint: 'Enter latitude',
+              requiredMark: true,
+            ),
+
+            _TextInput(
+              label: 'Long',
+              controller: longCtrl,
+              hint: 'Enter longitude',
+              requiredMark: true,
+            ),
+
+            _DateInput(
+              label: 'Contract Date',
+              controller: contractDateCtrl,
+            ),
+
+            _DateInput(
+              label: 'Installation Appointment Date',
+              controller: appointmentDateCtrl,
+            ),
+
+            _TextInput(
+              label: 'Customer Note',
+              controller: customerNoteCtrl,
+              hint: 'Enter Note',
+            ),
+          ],
+
+          _DropdownInput(
+            label: 'Plan',
+            value: selectedPlan,
+            items: ddl.plan ?? [],
+            requiredMark: true,
+            hint: 'Select Plan',
+            onChanged: (v) {
+              setState(() {
+                selectedPlan = v;
+                selectedPackage = null;
+                amountCtrl.clear();
+              });
+            },
+          ),
+
+          _PackageDropInput(
+            label: 'Package',
+            value: selectedPackage,
+            items: packages,
+            requiredMark: true,
+            hint: 'Select Package',
+            onChanged: (v) {
+              setState(() {
+                selectedPackage = v;
+                amountCtrl.text = v?.value ?? '';
+              });
+            },
+          ),
+
+          _TextInput(
+            label: 'Amount',
+            controller: amountCtrl,
+            keyboardType: TextInputType.number,
+            hint: 'xxxxxxxx',
+            requiredMark: true,
+          ),
+
+          _DropdownInput(
+            label: 'Discount',
+            value: selectedDiscount,
+            items: ddl.discount ?? [],
+            requiredMark: true,
+            hint: '0%',
+            onChanged: (v) => setState(() => selectedDiscount = v),
+          ),
+
+          _DateInput(
+            label: 'Est. Contract\nDate',
+            controller: estContractDateCtrl,
+            requiredMark: true,
+          ),
+
+          _DateInput(
+            label: 'Est. Start\nDate',
+            controller: estStartDateCtrl,
+            requiredMark: true,
+          ),
+
+          _DateInput(
+            label: 'Est. Follow\nUp Date',
+            controller: estFollowUpDateCtrl,
+            requiredMark: true,
+          ),
+
+          CheckboxListTile(
+            value: isReferral,
+            onChanged: (v) => setState(() => isReferral = v ?? false),
+            controlAffinity: ListTileControlAffinity.leading,
+            contentPadding: EdgeInsets.zero,
+            title: const Text(
+              'Is Referral',
+              style: TextStyle(color: Colors.white),
+            ),
+            checkColor: Colors.white,
+            activeColor: const Color(0xFF00C853),
+          ),
+        ],
       ],
     );
   }
@@ -611,11 +818,13 @@ class _NewLeadStepPageState extends ConsumerState<CreateNewLeadPage> {
           label: 'Meeting Notes',
           controller: meetingNoteCtrl,
           maxLines: 5,
+          requiredMark: true,
         ),
         _TextInput(
           label: 'Next Step',
           controller: nextStepCtrl,
           maxLines: 5,
+          requiredMark: true,
         ),
       ],
     );
@@ -974,6 +1183,12 @@ class _SaleStatusDropInput extends StatelessWidget {
   Widget build(BuildContext context) {
     if (items.isEmpty) return const SizedBox.shrink();
 
+    final validValue = value == null
+        ? null
+        : items.where((e) => e.key.toString() == value!.key.toString()).isNotEmpty
+        ? items.firstWhere((e) => e.key.toString() == value!.key.toString())
+        : null;
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 34),
       child: Row(
@@ -984,7 +1199,7 @@ class _SaleStatusDropInput extends StatelessWidget {
             child: SizedBox(
               height: 60,
               child: DropdownButtonFormField<SaleStatus>(
-                value: value,
+                value: validValue,
                 isExpanded: true,
                 icon: const Icon(
                   Icons.keyboard_arrow_down_rounded,
@@ -993,20 +1208,9 @@ class _SaleStatusDropInput extends StatelessWidget {
                 ),
                 dropdownColor: Colors.white,
                 decoration: InputDecoration(
-                  hintText: hint ?? 'Select Package',
-                  hintStyle: const TextStyle(
-                    color: Color(0xFFA9A9A9),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  hintText: hint ?? 'Select Status',
                   filled: true,
                   fillColor: Colors.white,
-                  contentPadding: const EdgeInsets.only(
-                    left: 28,
-                    right: 18,
-                    top: 16,
-                    bottom: 16,
-                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide.none,
@@ -1019,11 +1223,6 @@ class _SaleStatusDropInput extends StatelessWidget {
                       child: Text(
                         item.value ?? '',
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: Color(0xFFA0A0A0),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
                       ),
                     ),
                   );
