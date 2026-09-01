@@ -28,6 +28,9 @@ const String kEndPointContractedLeadByProfileId = "/get_contracted_detail?";
 const String kEndPointUpdateContractedLead ="/post_contracted_data";
 const String kEndPointGetActivityOverview ="/get_activity_overview_by_uid?";
 
+const String kEndPointGetOrganizations = "/organizations";
+
+
 
 
 ///Parameters

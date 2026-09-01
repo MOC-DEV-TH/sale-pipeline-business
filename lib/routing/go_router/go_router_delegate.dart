@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:sale_pipeline_business/features/auth/presentations/choose_task_page.dart';
 import 'package:sale_pipeline_business/features/auth/presentations/login_page.dart';
 import 'package:sale_pipeline_business/features/contracts/presentation/contracts_page.dart';
 import 'package:sale_pipeline_business/features/leads/presentation/leads_page.dart';
 import 'package:sale_pipeline_business/features/logout/presentation/logout_page.dart';
 import 'package:sale_pipeline_business/features/new_lead_step_page/presentation/create_new_lead_page.dart';
-import 'package:sale_pipeline_business/features/new_lead_step_page/presentation/new_lead_step_page.dart';
 import 'package:sale_pipeline_business/features/traget/presentation/target_page.dart';
+import '../../features/choose_task_page/presentations/choose_task_page.dart';
 import '../../features/dashboard/presentation/dashboard_page.dart';
 import '../../features/home/presentation/home_page.dart';
 import '../../main.dart';

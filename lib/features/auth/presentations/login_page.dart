@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:sale_pipeline_business/features/auth/presentations/choose_task_page.dart';
 import 'package:sale_pipeline_business/utils/async_value_ui.dart';
-import 'package:sale_pipeline_business/utils/extensions.dart';
 import 'package:sale_pipeline_business/utils/images.dart';
 
 import '../../../common_widgets/common_button.dart';
