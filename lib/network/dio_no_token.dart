@@ -9,7 +9,7 @@ part 'dio_no_token.g.dart';
 Dio dioNoToken(DioNoTokenRef ref) {
   return Dio(
     BaseOptions(
-      baseUrl: kBaseUrl,
+      baseUrl: kLoginBaseUrl,
       connectTimeout: const Duration(milliseconds: 10000),
       receiveTimeout: const Duration(milliseconds: 10000),
       responseType: ResponseType.json,

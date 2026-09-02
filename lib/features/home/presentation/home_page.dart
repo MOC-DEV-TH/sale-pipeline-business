@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sale_pipeline_business/features/home/data/home_repository.dart';
-import 'package:sale_pipeline_business/features/home/model/activity_overview_response.dart';
+import 'package:sale_pipeline_business/features/home/model/report_summary_response.dart';
 import 'package:sale_pipeline_business/routing/go_router/go_router_delegate.dart';
 import 'package:sale_pipeline_business/utils/app_colors.dart';
 
-import '../../../utils/secure_storage.dart';
+import '../../choose_task_page/provider/selected_organization_provider.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -20,15 +20,33 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    ///get uid
-    final uid = ref.watch(getUidProvider);
 
-    final overviewState = ref.watch(
-      fetchActivityOverviewProvider(uid: uid ?? ''),
+    final organizationId = ref.watch(
+      selectedOrganizationProvider.select(
+            (organization) => organization?.id,
+      ),
+    );
+
+    debugPrint(
+      'Home Organization ID >>> $organizationId',
+    );
+
+    if (organizationId == null) {
+      return const SafeArea(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    final reportSummaryState = ref.watch(
+      fetchReportSummaryByOrganizationIDProvider(
+        organizationID: organizationId,
+      ),
     );
 
     return SafeArea(
-      child: overviewState.when(
+      child: reportSummaryState.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, _) => Center(
           child: Text(
@@ -41,7 +59,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
           return RefreshIndicator(
             onRefresh: () async {
-              ref.invalidate(fetchActivityOverviewProvider);
+              ref.invalidate(fetchReportSummaryByOrganizationIDProvider);
             },
             child: Padding(
               padding: const EdgeInsets.fromLTRB(12, 12, 12, 90),

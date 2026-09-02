@@ -85,11 +85,11 @@ class LogoutPage extends ConsumerWidget {
                           ref
                               .read(dashboardControllerProvider.notifier)
                               .setPosition(0);
-                          DashboardPage.pageController.animateToPage(
-                            0,
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeInOut,
-                          );
+                          // DashboardPage.pageController.animateToPage(
+                          //   0,
+                          //   duration: const Duration(milliseconds: 500),
+                          //   curve: Curves.easeInOut,
+                          // );
                         },
                       ),
                     ),
@@ -101,12 +101,35 @@ class LogoutPage extends ConsumerWidget {
                         text: 'Yes, Log me Out',
                         color: const Color(0xFF09B957),
                         onTap: () async {
-                          await ref
-                              .read(secureStorageProvider)
-                              .saveAuthStatus(kAuthNotLoggedIn);
+                          final storage = ref.read(
+                            secureStorageProvider,
+                          );
 
-                          ref.invalidate(dashboardControllerProvider);
-                          ref.invalidate(secureStorageProvider);
+                          await storage.clearSession();
+
+                          ref.invalidate(
+                            getAuthTokenProvider,
+                          );
+
+                          ref.invalidate(
+                            getBaseApiUrlProvider,
+                          );
+
+                          ref.invalidate(
+                            getUidProvider,
+                          );
+
+                          ref.invalidate(
+                            getUserNameProvider,
+                          );
+
+                          ref.invalidate(
+                            getAuthStatusProvider,
+                          );
+
+                          ref.invalidate(
+                            dashboardControllerProvider,
+                          );
                         },
                       ),
                     ),

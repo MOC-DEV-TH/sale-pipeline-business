@@ -5,7 +5,7 @@ import 'package:sale_pipeline_business/features/auth/presentations/login_page.da
 import 'package:sale_pipeline_business/features/contracts/presentation/contracts_page.dart';
 import 'package:sale_pipeline_business/features/leads/presentation/leads_page.dart';
 import 'package:sale_pipeline_business/features/logout/presentation/logout_page.dart';
-import 'package:sale_pipeline_business/features/new_lead_step_page/presentation/create_new_lead_page.dart';
+import 'package:sale_pipeline_business/features/new_lead_step_page/presentation/new_lead_step_page.dart';
 import 'package:sale_pipeline_business/features/traget/presentation/target_page.dart';
 import '../../features/choose_task_page/presentations/choose_task_page.dart';
 import '../../features/dashboard/presentation/dashboard_page.dart';
@@ -176,7 +176,7 @@ GoRouter goRouterDelegate(GoRouterDelegateRef ref) {
           return buildPageWithDefaultTransition(
             context: context,
             state: state,
-            child: CreateNewLeadPage(key: state.pageKey),
+            child: NewLeadStepPage(key: state.pageKey),
           );
         },
       ),

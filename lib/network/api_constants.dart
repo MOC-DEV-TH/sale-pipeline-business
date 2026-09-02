@@ -1,9 +1,5 @@
 ///Base Url
-// const String kBaseUrl = "https://hrapp.mocinteractive.com/api/v1";
-// const String kV2BaseUrl = "https://hrapp.mocinteractive.com/api/v2";
-
-const String kBaseUrl = "https://mojoenet.com/api";
-const String kWebBaseUrl = "https://mojoenet.com";
+const String kLoginBaseUrl = "https://staging.pipeline.mocinteractive.com/api";
 
 const String kImageBaseUrlHttp = "";
 
@@ -16,10 +12,10 @@ const String kErrorImageUrl =
 const String kTestImageUrl = "https://plus.unsplash.com/premium_photo-1725408127758-fb45b0f11ad9?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c2Nob29sJTIwZXZlbnR8ZW58MHx8MHx8fDA%3D";
 
 ///End points
-const String kEndPointLogin = "/sale_admin_login";
+const String kEndPointLogin = "/login";
 const String kEndPointStudentAttendance = "/student/attendance";
 const String kEndPointGetSaleDdlData = "/get_sale_ddl_data";
-const String kEndPointSubmitLead = "/post_lead_form_data";
+const String kEndPointSubmitLead = "/leads";
 const String kEndPointUpdateLead = "/post_lead_form_data";
 const String kEndPointLeadListByUid ="/get_lead_list_by_uid?";
 const String kEndPointLeadDetailByLeadId = "/get_activity_detail?";
@@ -29,6 +25,9 @@ const String kEndPointUpdateContractedLead ="/post_contracted_data";
 const String kEndPointGetActivityOverview ="/get_activity_overview_by_uid?";
 
 const String kEndPointGetOrganizations = "/organizations";
+const String kEndPointGetReportSummaryByOrganizationID = "/reports/summary";
+const String kEndPointGetLeadFormConfigByOrganizationID = "/leads/form-config";
+const String kEndPointGetLeadsByOrganizationID = "/leads";
 
 
 
@@ -42,6 +41,8 @@ const kParamBusinessName = '&business_name=';
 const kParamEstContractDate = '&est_contract_date=';
 const kParamContactNumber = '&contact_number=';
 const kParamStatus = '&status=';
+const kParamOrganizationID = "organization_id";
+const kParamPage = "page";
 
 ///Constant Values
 const String kApiKey = "3495fbca2612a77c31afe40405a6a4c4";

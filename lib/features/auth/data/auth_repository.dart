@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../exceptions/app_exception.dart';
 import '../../../network/api_constants.dart';
 import '../../../network/dio_no_token.dart';
 import '../../../network/error_handler.dart';
 import '../../../utils/secure_storage.dart';
+import '../model/login_response.dart';
 
 part 'auth_repository.g.dart';
 
@@ -18,7 +18,7 @@ class AuthRepository {
   final Ref ref;
 
   /// login
-  Future<void> login({
+  Future<LoginResponseVO> login({
     required String email,
     required String password,
   }) async {
@@ -26,79 +26,112 @@ class AuthRepository {
         password.trim().isEmpty) {
       throw EmptyEmailOrPasswordException();
     }
+
     try {
       final response = await dio.post(
         kEndPointLogin,
         data: {
-          "user_id": email,
+          "email": email.trim(),
           "password": password,
-          "app_version": "1.0",
         },
         options: Options(
           headers: {
             "Content-Type": "application/json",
-            "security_key": 'moJoENEt2021sECuriTYkEy',
           },
         ),
       );
 
-      /// null response check
       if (response.data == null) {
         throw 'Invalid server response';
       }
 
-      final data = response.data;
-
-      /// safe token parse
-      // final token =
-      // data["data"]?["token"];
-      // final uid =
-      // data["data"]?["uid"];
-      final token =
-      data["token"];
-      final uid =
-      data["uid"];
-
-      if (token == null ||
-          token.toString().isEmpty) {
-        throw data["message"] ??
-            'Login failed';
+      if (response.data is! Map<String, dynamic>) {
+        throw 'Invalid server response';
       }
 
-      /// save token
-      await ref.read(secureStorageProvider).saveAuthToken(token);
+      final loginResponse = LoginResponse.fromJson(
+        response.data as Map<String, dynamic>,
+      );
 
-      ///save uid
-      await ref.read(secureStorageProvider).saveUid(uid);
+      final loginData = loginResponse.data;
 
+      if (loginData == null) {
+        throw loginResponse.message ?? 'Login failed';
+      }
 
+      final token = loginData.token;
+
+      if (token == null || token.trim().isEmpty) {
+        throw loginResponse.message ?? 'Login failed';
+      }
+
+      final user = loginData.user;
+
+      if (user == null || user.id == null) {
+        throw 'Invalid user information';
+      }
+
+      final workspaceUrl =
+      loginData.workspaceUrl?.trim();
+
+      if (workspaceUrl == null ||
+          workspaceUrl.isEmpty) {
+        throw 'Workspace URL not found';
+      }
+
+      await ref
+          .read(secureStorageProvider)
+          .saveAuthToken(token);
+
+      await ref
+          .read(secureStorageProvider)
+          .saveBaseApiUrl(workspaceUrl);
+
+      ref.invalidate(getAuthTokenProvider);
+      ref.invalidate(getBaseApiUrlProvider);
+
+      return loginData;
     } on DioException catch (e) {
       debugPrint(
-        "Login Error >>> ${e.response?.data}",
+        'Login Error >>> ${e.response?.data}',
       );
 
       String message =
-          ErrorHandler.handle(e)
-              .failure
-              .message;
+          ErrorHandler.handle(e).failure.message;
 
-      /// safe error parse
-      if (e.response?.data != null &&
-          e.response?.data
-          is Map<String, dynamic>) {
-        message =
-            e.response?.data["message"] ??
-                e.response?.data["error"] ??
-                message;
+      final errorData = e.response?.data;
+
+      if (errorData is Map<String, dynamic>) {
+        final errors = errorData['errors'];
+        if (errors is Map<String, dynamic>) {
+          for (final entry in errors.entries) {
+            final value = entry.value;
+
+            if (value is List && value.isNotEmpty) {
+              message = value.first.toString();
+              break;
+            }
+
+            if (value != null) {
+              message = value.toString();
+              break;
+            }
+          }
+        } else {
+          message =
+              errorData['message']?.toString() ??
+                  errorData['error']?.toString() ??
+                  message;
+        }
       }
 
       throw message;
     } catch (e) {
       debugPrint(
-        "Login Catch Error >>> $e",
+        'Login Catch Error >>> $e',
       );
 
-      throw e.toString();
+      rethrow;
     }
   }
 }

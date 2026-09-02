@@ -9,6 +9,7 @@ import 'package:sale_pipeline_business/network/model/default_network_response.da
 import '../../../network/api_constants.dart';
 import '../../../network/dio_provider.dart';
 import '../../../network/error_handler.dart';
+import '../model/lead_form_config_response.dart';
 import '../model/sale_dropdown_response.dart';
 
 part 'new_lead_repository.g.dart';
@@ -78,11 +79,12 @@ class NewLeadRepository {
           ErrorHandler.handle(e).failure.message;
     }
   }
+
 }
 
 @riverpod
 NewLeadRepository newLeadRepository(NewLeadRepositoryRef ref) {
-  return NewLeadRepository(dio: ref.watch(dioProvider()), ref: ref);
+  return NewLeadRepository(dio: ref.watch(dioProvider), ref: ref);
 }
 
 @riverpod
@@ -91,4 +93,27 @@ Future<SaleDropdownDataResponse> fetchSaleDropdownData(
 ) async {
   final repository = ref.watch(newLeadRepositoryProvider);
   return repository.fetchSaleDropdownData();
+}
+
+@riverpod
+Future<LeadFormConfigResponse>
+fetchLeadFormConfig(
+    FetchLeadFormConfigRef ref, {
+      required int organizationID,
+    }) async {
+  final dio = ref.watch(
+    dioProvider,
+  );
+
+  final response = await dio.get(
+    kEndPointGetLeadFormConfigByOrganizationID,
+    queryParameters: {
+      kParamOrganizationID:
+      organizationID,
+    },
+  );
+
+  return LeadFormConfigResponse.fromJson(
+    response.data,
+  );
 }

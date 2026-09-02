@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-ActivityOverviewResponse activityOverviewResponseFromJson(String str) =>
-    ActivityOverviewResponse.fromJson(json.decode(str));
+ReportSummaryResponse activityOverviewResponseFromJson(String str) =>
+    ReportSummaryResponse.fromJson(json.decode(str));
 
-String activityOverviewResponseToJson(ActivityOverviewResponse data) =>
+String activityOverviewResponseToJson(ReportSummaryResponse data) =>
     json.encode(data.toJson());
 
-class ActivityOverviewResponse {
-  ActivityOverviewResponse({
+class ReportSummaryResponse {
+  ReportSummaryResponse({
     this.status,
     this.responseCode,
     this.description,
@@ -21,10 +21,10 @@ class ActivityOverviewResponse {
   String? description;
   bool? isRequieredUpdate;
   bool? isforceUpdate;
-  ActivityOverviewDetail? details;
+  ReportSummaryDetail? details;
 
-  factory ActivityOverviewResponse.fromJson(Map<String, dynamic> json) {
-    return ActivityOverviewResponse(
+  factory ReportSummaryResponse.fromJson(Map<String, dynamic> json) {
+    return ReportSummaryResponse(
       status: json["status"]?.toString(),
       responseCode: json["response_code"]?.toString(),
       description: json["description"]?.toString(),
@@ -32,7 +32,7 @@ class ActivityOverviewResponse {
       isforceUpdate: json["isforce_update"],
       details: json["details"] == null
           ? null
-          : ActivityOverviewDetail.fromJson(json["details"]),
+          : ReportSummaryDetail.fromJson(json["details"]),
     );
   }
 
@@ -46,8 +46,8 @@ class ActivityOverviewResponse {
   };
 }
 
-class ActivityOverviewDetail {
-  ActivityOverviewDetail({
+class ReportSummaryDetail {
+  ReportSummaryDetail({
     this.dailyFollowUpData,
     this.weeklyFollowUpData,
     this.dailyAppointmentData,
@@ -61,8 +61,8 @@ class ActivityOverviewDetail {
   List<ActivityVO>? weeklyAppointmentData;
   List<LeadAssignedVO>? leadAssignedData;
 
-  factory ActivityOverviewDetail.fromJson(Map<String, dynamic> json) {
-    return ActivityOverviewDetail(
+  factory ReportSummaryDetail.fromJson(Map<String, dynamic> json) {
+    return ReportSummaryDetail(
       dailyFollowUpData: _activityList(json["daily_follow_up_data"]),
       weeklyFollowUpData: _activityList(json["weekly_follow_up_data"]),
       dailyAppointmentData: _activityList(json["daily_appointment_data"]),

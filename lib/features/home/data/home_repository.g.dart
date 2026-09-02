@@ -6,7 +6,7 @@ part of 'home_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$homeRepositoryHash() => r'29e398f1f8843bc28c6e5def3e007fe733f2ba23';
+String _$homeRepositoryHash() => r'82228ecbf145da75f6eb34887a374f5f760b4355';
 
 /// See also [homeRepository].
 @ProviderFor(homeRepository)
@@ -23,8 +23,8 @@ final homeRepositoryProvider = AutoDisposeProvider<HomeRepository>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef HomeRepositoryRef = AutoDisposeProviderRef<HomeRepository>;
-String _$fetchActivityOverviewHash() =>
-    r'f97586a176a2d49df816f0aab143b5f1b758517b';
+String _$fetchReportSummaryByOrganizationIDHash() =>
+    r'8233419a3cd5195254ce912b68261e9e31afced4';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -47,26 +47,31 @@ class _SystemHash {
   }
 }
 
-/// See also [fetchActivityOverview].
-@ProviderFor(fetchActivityOverview)
-const fetchActivityOverviewProvider = FetchActivityOverviewFamily();
+/// See also [fetchReportSummaryByOrganizationID].
+@ProviderFor(fetchReportSummaryByOrganizationID)
+const fetchReportSummaryByOrganizationIDProvider =
+    FetchReportSummaryByOrganizationIDFamily();
 
-/// See also [fetchActivityOverview].
-class FetchActivityOverviewFamily
-    extends Family<AsyncValue<ActivityOverviewResponse>> {
-  /// See also [fetchActivityOverview].
-  const FetchActivityOverviewFamily();
+/// See also [fetchReportSummaryByOrganizationID].
+class FetchReportSummaryByOrganizationIDFamily
+    extends Family<AsyncValue<ReportSummaryResponse>> {
+  /// See also [fetchReportSummaryByOrganizationID].
+  const FetchReportSummaryByOrganizationIDFamily();
 
-  /// See also [fetchActivityOverview].
-  FetchActivityOverviewProvider call({required String uid}) {
-    return FetchActivityOverviewProvider(uid: uid);
+  /// See also [fetchReportSummaryByOrganizationID].
+  FetchReportSummaryByOrganizationIDProvider call({
+    required int organizationID,
+  }) {
+    return FetchReportSummaryByOrganizationIDProvider(
+      organizationID: organizationID,
+    );
   }
 
   @override
-  FetchActivityOverviewProvider getProviderOverride(
-    covariant FetchActivityOverviewProvider provider,
+  FetchReportSummaryByOrganizationIDProvider getProviderOverride(
+    covariant FetchReportSummaryByOrganizationIDProvider provider,
   ) {
-    return call(uid: provider.uid);
+    return call(organizationID: provider.organizationID);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -81,75 +86,78 @@ class FetchActivityOverviewFamily
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'fetchActivityOverviewProvider';
+  String? get name => r'fetchReportSummaryByOrganizationIDProvider';
 }
 
-/// See also [fetchActivityOverview].
-class FetchActivityOverviewProvider
-    extends AutoDisposeFutureProvider<ActivityOverviewResponse> {
-  /// See also [fetchActivityOverview].
-  FetchActivityOverviewProvider({required String uid})
+/// See also [fetchReportSummaryByOrganizationID].
+class FetchReportSummaryByOrganizationIDProvider
+    extends AutoDisposeFutureProvider<ReportSummaryResponse> {
+  /// See also [fetchReportSummaryByOrganizationID].
+  FetchReportSummaryByOrganizationIDProvider({required int organizationID})
     : this._internal(
-        (ref) =>
-            fetchActivityOverview(ref as FetchActivityOverviewRef, uid: uid),
-        from: fetchActivityOverviewProvider,
-        name: r'fetchActivityOverviewProvider',
+        (ref) => fetchReportSummaryByOrganizationID(
+          ref as FetchReportSummaryByOrganizationIDRef,
+          organizationID: organizationID,
+        ),
+        from: fetchReportSummaryByOrganizationIDProvider,
+        name: r'fetchReportSummaryByOrganizationIDProvider',
         debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
             ? null
-            : _$fetchActivityOverviewHash,
-        dependencies: FetchActivityOverviewFamily._dependencies,
+            : _$fetchReportSummaryByOrganizationIDHash,
+        dependencies: FetchReportSummaryByOrganizationIDFamily._dependencies,
         allTransitiveDependencies:
-            FetchActivityOverviewFamily._allTransitiveDependencies,
-        uid: uid,
+            FetchReportSummaryByOrganizationIDFamily._allTransitiveDependencies,
+        organizationID: organizationID,
       );
 
-  FetchActivityOverviewProvider._internal(
+  FetchReportSummaryByOrganizationIDProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.uid,
+    required this.organizationID,
   }) : super.internal();
 
-  final String uid;
+  final int organizationID;
 
   @override
   Override overrideWith(
-    FutureOr<ActivityOverviewResponse> Function(
-      FetchActivityOverviewRef provider,
+    FutureOr<ReportSummaryResponse> Function(
+      FetchReportSummaryByOrganizationIDRef provider,
     )
     create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: FetchActivityOverviewProvider._internal(
-        (ref) => create(ref as FetchActivityOverviewRef),
+      override: FetchReportSummaryByOrganizationIDProvider._internal(
+        (ref) => create(ref as FetchReportSummaryByOrganizationIDRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        uid: uid,
+        organizationID: organizationID,
       ),
     );
   }
 
   @override
-  AutoDisposeFutureProviderElement<ActivityOverviewResponse> createElement() {
-    return _FetchActivityOverviewProviderElement(this);
+  AutoDisposeFutureProviderElement<ReportSummaryResponse> createElement() {
+    return _FetchReportSummaryByOrganizationIDProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is FetchActivityOverviewProvider && other.uid == uid;
+    return other is FetchReportSummaryByOrganizationIDProvider &&
+        other.organizationID == organizationID;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, uid.hashCode);
+    hash = _SystemHash.combine(hash, organizationID.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -157,19 +165,20 @@ class FetchActivityOverviewProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin FetchActivityOverviewRef
-    on AutoDisposeFutureProviderRef<ActivityOverviewResponse> {
-  /// The parameter `uid` of this provider.
-  String get uid;
+mixin FetchReportSummaryByOrganizationIDRef
+    on AutoDisposeFutureProviderRef<ReportSummaryResponse> {
+  /// The parameter `organizationID` of this provider.
+  int get organizationID;
 }
 
-class _FetchActivityOverviewProviderElement
-    extends AutoDisposeFutureProviderElement<ActivityOverviewResponse>
-    with FetchActivityOverviewRef {
-  _FetchActivityOverviewProviderElement(super.provider);
+class _FetchReportSummaryByOrganizationIDProviderElement
+    extends AutoDisposeFutureProviderElement<ReportSummaryResponse>
+    with FetchReportSummaryByOrganizationIDRef {
+  _FetchReportSummaryByOrganizationIDProviderElement(super.provider);
 
   @override
-  String get uid => (origin as FetchActivityOverviewProvider).uid;
+  int get organizationID =>
+      (origin as FetchReportSummaryByOrganizationIDProvider).organizationID;
 }
 
 // ignore_for_file: type=lint

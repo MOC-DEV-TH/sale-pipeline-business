@@ -11,15 +11,19 @@ import '../controller/dashboard_controller.dart';
 import '../widget/bottom_navigation_widget.dart';
 
 class DashboardPage extends ConsumerStatefulWidget {
-  const DashboardPage({super.key});
-
-  static final PageController pageController = PageController(initialPage: 0);
+  const DashboardPage({
+    super.key,
+  });
 
   @override
-  ConsumerState<DashboardPage> createState() => _DashboardPageState();
+  ConsumerState<DashboardPage> createState() =>
+      _DashboardPageState();
 }
 
-class _DashboardPageState extends ConsumerState<DashboardPage> {
+class _DashboardPageState
+    extends ConsumerState<DashboardPage> {
+  late final PageController _pageController;
+
   final pages = const [
     HomePage(),
     LeadsPage(),
@@ -29,14 +33,41 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+
+    _pageController = PageController(
+      initialPage: 0,
+    );
+  }
+
+  @override
   void dispose() {
-    DashboardPage.pageController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final position = ref.watch(dashboardControllerProvider);
+    final position = ref.watch(
+      dashboardControllerProvider,
+    );
+
+    /// Listen for bottom navigation changes
+    ref.listen(
+      dashboardControllerProvider,
+          (previous, next) {
+        if (!_pageController.hasClients) {
+          return;
+        }
+
+        if (_pageController.page?.round() == next) {
+          return;
+        }
+
+        _pageController.jumpToPage(next);
+      },
+    );
 
     return Scaffold(
       backgroundColor: const Color(0xFF061B10),
@@ -56,10 +87,22 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
           ),
 
           PageView(
-            controller: DashboardPage.pageController,
-            physics: const NeverScrollableScrollPhysics(),
+            controller: _pageController,
+            physics:
+            const NeverScrollableScrollPhysics(),
             onPageChanged: (index) {
-              ref.read(dashboardControllerProvider.notifier).setPosition(index);
+              final currentPosition = ref.read(
+                dashboardControllerProvider,
+              );
+
+              if (currentPosition != index) {
+                ref
+                    .read(
+                  dashboardControllerProvider
+                      .notifier,
+                )
+                    .setPosition(index);
+              }
             },
             children: pages,
           ),
@@ -88,4 +131,3 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     );
   }
 }
-

@@ -73,28 +73,32 @@ class BottomNavigationWidget extends ConsumerWidget {
     );
   }
 
-  void _onTap(BuildContext context, WidgetRef ref, int index) {
-    ref.read(dashboardControllerProvider.notifier).setPosition(index);
-
-    DashboardPage.pageController.animateToPage(
-      index,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
-    );
+  void _onTap(
+      BuildContext context,
+      WidgetRef ref,
+      int index,
+      ) {
+    ref
+        .read(dashboardControllerProvider.notifier)
+        .setPosition(index);
 
     switch (index) {
       case 0:
         context.go('/');
         break;
+
       case 1:
         context.go(RoutePath.leads.path);
         break;
+
       case 2:
         context.go(RoutePath.contracts.path);
         break;
+
       case 3:
         context.go(RoutePath.target.path);
         break;
+
       case 4:
         context.go(RoutePath.logout.path);
         break;

@@ -1,5 +1,6 @@
 import 'package:get_storage/get_storage.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:sale_pipeline_business/utils/strings.dart';
 
 part 'secure_storage.g.dart';
 
@@ -14,7 +15,7 @@ enum SecureDataList {
   leaveTypes,
   categories,
   appLanguage,
-  uid
+  uid,
 }
 
 class SecureStorage {
@@ -76,6 +77,42 @@ class SecureStorage {
     return _box.read(SecureDataList.uid.name);
   }
 
+  /// Base API URL / Workspace URL
+  Future<void> saveBaseApiUrl(
+      String url,
+      ) async {
+    await _box.write(
+      SecureDataList.baseApiUrl.name,
+      url,
+    );
+  }
+
+  String? getBaseApiUrl() {
+    return _box.read(
+      SecureDataList.baseApiUrl.name,
+    );
+  }
+
+  Future<void> removeBaseApiUrl() async {
+    await _box.remove(
+      SecureDataList.baseApiUrl.name,
+    );
+  }
+
+  Future<void> clearSession() async {
+    await Future.wait([
+      _box.remove(SecureDataList.authToken.name),
+      _box.remove(SecureDataList.baseApiUrl.name),
+      _box.remove(SecureDataList.uid.name),
+      _box.remove(SecureDataList.userName.name),
+    ]);
+
+    await _box.write(
+      SecureDataList.isSignedIn.name,
+      kAuthNotLoggedIn,
+    );
+  }
+
 }
 
 @Riverpod(keepAlive: true)
@@ -112,3 +149,14 @@ String? getAuthToken(GetAuthTokenRef ref) {
   final store = ref.watch(secureStorageProvider);
   return store.getAuthToken();
 }
+
+@riverpod
+String? getBaseApiUrl(
+    GetBaseApiUrlRef ref,
+    ) {
+  final store =
+  ref.watch(secureStorageProvider);
+
+  return store.getBaseApiUrl();
+}
+

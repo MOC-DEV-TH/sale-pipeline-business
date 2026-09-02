@@ -7,7 +7,7 @@ part of 'contracts_repository.dart';
 // **************************************************************************
 
 String _$contractsRepositoryHash() =>
-    r'365debb79f6d2b0506d0d60ca09ce284395e39b8';
+    r'6db68a37761b8dff0a78b289f3e64a1f50c7188c';
 
 /// See also [contractsRepository].
 @ProviderFor(contractsRepository)

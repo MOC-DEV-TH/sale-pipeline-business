@@ -104,7 +104,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           const Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              'Username',
+                              'Email',
                               style: TextStyle(color: Colors.white70, fontSize: 14),
                             ),
                           ),
@@ -112,7 +112,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           const SizedBox(height: 8),
 
                           _InputField(
-                            hint: 'Enter Full Name',
+                            hint: 'Enter Email',
                             controller: _emailController,
                           ),
 

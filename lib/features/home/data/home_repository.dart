@@ -6,7 +6,7 @@ import 'package:sale_pipeline_business/network/api_constants.dart';
 
 import '../../../network/dio_provider.dart';
 import '../../../network/error_handler.dart';
-import '../model/activity_overview_response.dart';
+import '../model/report_summary_response.dart';
 
 part 'home_repository.g.dart';
 
@@ -19,15 +19,14 @@ class HomeRepository {
   final Dio dio;
   final Ref ref;
 
-  Future<ActivityOverviewResponse> fetchActivityOverview({
-    required String uid,
+  Future<ReportSummaryResponse> fetchReportSummaryByOrganizationID({
+    required int organizationID,
   }) async {
     try {
       final response = await dio.get(
-        kEndPointGetActivityOverview,
+        kEndPointGetReportSummaryByOrganizationID,
         queryParameters: {
-          'uid': uid,
-          'app_version': '1.0',
+          kParamOrganizationID : organizationID
         },
       );
 
@@ -35,7 +34,7 @@ class HomeRepository {
         throw 'Invalid server response';
       }
 
-      return ActivityOverviewResponse.fromJson(response.data);
+      return ReportSummaryResponse.fromJson(response.data);
     } on DioException catch (e) {
       debugPrint('Activity Overview Error >>> ${e.response?.data}');
 
@@ -60,19 +59,19 @@ class HomeRepository {
 @riverpod
 HomeRepository homeRepository(HomeRepositoryRef ref) {
   return HomeRepository(
-    dio: ref.watch(dioProvider()),
+    dio: ref.watch(dioProvider),
     ref: ref,
   );
 }
 
 @riverpod
-Future<ActivityOverviewResponse> fetchActivityOverview(
-    FetchActivityOverviewRef ref, {
-      required String uid,
+Future<ReportSummaryResponse> fetchReportSummaryByOrganizationID(
+    FetchReportSummaryByOrganizationIDRef ref, {
+      required int organizationID,
     }) async {
   final repository = ref.watch(homeRepositoryProvider);
 
-  return repository.fetchActivityOverview(
-    uid: uid,
+  return repository.fetchReportSummaryByOrganizationID(
+    organizationID: organizationID,
   );
 }

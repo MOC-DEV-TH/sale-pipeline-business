@@ -1,20 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sale_pipeline_business/utils/app_colors.dart';
 
 import '../../../routing/go_router/go_router_delegate.dart';
+
+import '../../choose_task_page/provider/selected_organization_provider.dart';
+
+import '../data/new_lead_repository.dart';
+import '../model/lead_form_config_response.dart';
 import 'base_widgets.dart';
-import 'success_step_page.dart' show SuccessStepPage;
+import 'success_step_page.dart';
 
 enum StepType { selection, form, success }
 
-enum FieldType { text, dropdown, textarea, date, checkbox }
+enum FieldType { text, number, dropdown, textarea, date, checkbox }
+
+class FormOptionConfig {
+  final dynamic value;
+  final String label;
+
+  const FormOptionConfig({required this.value, required this.label});
+}
 
 class StepConfig {
   final String key;
   final String title;
   final StepType type;
-  final List<String> options;
+  final List<FormOptionConfig> options;
   final List<FormFieldConfig> fields;
   final bool showSkip;
 
@@ -33,314 +46,317 @@ class FormFieldConfig {
   final String label;
   final FieldType type;
   final bool required;
-  final List<String> options;
+  final bool multiple;
+  final List<FormOptionConfig> options;
 
   const FormFieldConfig({
     required this.key,
     required this.label,
     required this.type,
     this.required = false,
+    this.multiple = false,
     this.options = const [],
   });
 }
 
-class NewLeadStepPage extends StatefulWidget {
+class NewLeadStepPage extends ConsumerStatefulWidget {
   const NewLeadStepPage({super.key});
 
   @override
-  State<NewLeadStepPage> createState() => _NewLeadStepPageState();
+  ConsumerState<NewLeadStepPage> createState() => _NewLeadStepPageState();
 }
 
-class _NewLeadStepPageState extends State<NewLeadStepPage> {
+class _NewLeadStepPageState extends ConsumerState<NewLeadStepPage> {
   int currentStep = 0;
 
   final Map<String, dynamic> answers = {};
 
-  ///dummy data for steps data
-  final steps = const [
-    StepConfig(
-      key: 'lead_source',
-      title: 'Choose the leads source.',
-      type: StepType.selection,
-      options: [
-        'Door to Door',
-        'Cold Call',
-        'Own Lead',
-        'Partner Agent',
-        'Consumer',
-      ],
-    ),
-    StepConfig(
-      key: 'business_type',
-      title: 'Choose the type of business.',
-      type: StepType.selection,
-      options: [
-        'Condo',
-        'Hotel',
-        'Bar / Restaurant / KTV',
-        'Home',
-        'Agriculture',
-        'Bank & Financial Services',
-        'Conglomerate',
-        'Construction & Engineering',
-        'Distribution',
-        'Education',
-      ],
-    ),
-    StepConfig(
-      key: '',
-      title: 'Enter the business information.',
-      type: StepType.form,
-      fields: [
-        FormFieldConfig(
-          key: 'business_name',
-          label: 'Business Name',
-          type: FieldType.text,
-        ),
-        FormFieldConfig(
-          key: 'address',
-          label: 'Address',
-          type: FieldType.text,
-          required: true,
-        ),
-        FormFieldConfig(
-          key: 'division',
-          label: 'Division',
-          type: FieldType.dropdown,
-          required: true,
-          options: ['Yangon (Default)', 'Mandalay', 'Naypyidaw'],
-        ),
-        FormFieldConfig(
-          key: 'township',
-          label: 'Township',
-          type: FieldType.dropdown,
-          required: true,
-          options: ['Select Township', 'Hlaing', 'Kamayut', 'Tamwe'],
-        ),
-      ],
-    ),
-    StepConfig(
-      key: 'meeting_person',
-      title: 'Who did you meet with?',
-      type: StepType.selection,
-      showSkip: true,
-      options: [
-        'CEO',
-        'CTO',
-        'IT Team',
-        'Manager',
-        'Receptionist',
-        'Staff',
-        'Home Owner',
-      ],
-    ),
-    StepConfig(
-      key: '',
-      title: 'Enter the contact information.',
-      type: StepType.form,
-      showSkip: true,
-      fields: [
-        FormFieldConfig(
-          key: 'name',
-          label: 'Name',
-          type: FieldType.text,
-        ),
+  /// =========================================================
+  /// API STEP MAPPER
+  /// =========================================================
 
-        FormFieldConfig(
-          key: 'primary_contact',
-          label: 'Primary Contact No.',
-          type: FieldType.text,
-        ),
+  List<StepConfig> _mapApiSteps(List<LeadFormStepVO> apiSteps) {
+    return apiSteps.map((apiStep) {
+      return StepConfig(
+        key: apiStep.key ?? '',
+        title: apiStep.title ?? '',
+        type: _mapStepType(apiStep.type),
+        showSkip: apiStep.showSkip ?? false,
+        options: _mapOptions(apiStep.options),
+        fields: (apiStep.fields ?? []).map(_mapApiField).toList(),
+      );
+    }).toList();
+  }
 
-        FormFieldConfig(
-          key: 'secondary_contact',
-          label: 'Secondary Contact No.',
-          type: FieldType.text,
-        ),
-        FormFieldConfig(key: 'email', label: 'Email', type: FieldType.text),
-      ],
-    ),
-    StepConfig(
-      key: '',
-      title: 'Select Potential %.',
-      type: StepType.form,
-      showSkip: true,
-      fields: [
-        FormFieldConfig(
-          key: 'potential',
-          label: 'Potential',
-          type: FieldType.dropdown,
-          options: ['Yes (Default)', 'No'],
-        ),
-        FormFieldConfig(
-          key: 'customer_type',
-          label: 'Customer Type',
-          type: FieldType.dropdown,
-          required: true,
-          options: [
-            'Select Customer Type',
-            'New Customer',
-            'Existing Customer',
-          ],
-        ),
-        FormFieldConfig(
-          key: 'status',
-          label: 'Status',
-          type: FieldType.dropdown,
-          options: ['Select Status', 'Hot', 'Warm', 'Cold'],
-        ),
-        FormFieldConfig(
-          key: 'plan',
-          label: 'Plan',
-          type: FieldType.dropdown,
-          required: true,
-          options: ['Select Plan', 'Basic', 'Standard', 'Premium'],
-        ),
-        FormFieldConfig(
-          key: 'package',
-          label: 'Package',
-          type: FieldType.dropdown,
-          required: true,
-          options: ['Select Package', 'Monthly', 'Yearly'],
-        ),
-        FormFieldConfig(
-          key: 'amount',
-          label: 'Amount',
-          type: FieldType.text,
-          required: true,
-        ),
-        FormFieldConfig(
-          key: 'discount',
-          label: 'Discount',
-          type: FieldType.dropdown,
-          required: true,
-          options: ['0%', '5%', '10%', '15%'],
-        ),
-        FormFieldConfig(
-          key: 'contract_date',
-          label: 'Est. Contract Date',
-          type: FieldType.date,
-          required: true,
-        ),
-        FormFieldConfig(
-          key: 'start_date',
-          label: 'Est. Start Date',
-          type: FieldType.date,
-          required: true,
-        ),
-        FormFieldConfig(
-          key: 'follow_up_date',
-          label: 'Est. Follow Up Date',
-          type: FieldType.date,
-        ),
-        FormFieldConfig(
-          key: 'is_referral',
-          label: 'Is Referral',
-          type: FieldType.checkbox,
-        ),
-      ],
-    ),
-    StepConfig(
-      key: '',
-      title: '',
-      type: StepType.form,
-      fields: [
-        FormFieldConfig(
-          key: 'meeting_notes',
-          label: 'Meeting Notes',
-          type: FieldType.textarea,
-        ),
-        FormFieldConfig(
-          key: 'next_step',
-          label: 'Next Step',
-          type: FieldType.textarea,
-        ),
-      ],
-    ),
-    StepConfig(
-      key: 'success',
-      title: '',
-      type: StepType.success,
-    ),
-  ];
+  StepType _mapStepType(String? type) {
+    switch (type?.toLowerCase()) {
+      case 'selection':
+        return StepType.selection;
 
-  ///next step
-  void _next() {
+      case 'success':
+        return StepType.success;
+
+      case 'form':
+      default:
+        return StepType.form;
+    }
+  }
+
+  FormFieldConfig _mapApiField(LeadFormFieldVO field) {
+    return FormFieldConfig(
+      key: field.key ?? '',
+      label: field.label ?? '',
+      type: _mapFieldType(field.type),
+      required: field.required ?? false,
+      multiple: field.multiple ?? false,
+      options: _mapOptions(field.options),
+    );
+  }
+
+  FieldType _mapFieldType(String? type) {
+    switch (type?.toLowerCase()) {
+      case 'number':
+        return FieldType.number;
+
+      case 'dropdown':
+        return FieldType.dropdown;
+
+      case 'textarea':
+        return FieldType.textarea;
+
+      case 'date':
+        return FieldType.date;
+
+      case 'checkbox':
+        return FieldType.checkbox;
+
+      case 'text':
+      default:
+        return FieldType.text;
+    }
+  }
+
+  List<FormOptionConfig> _mapOptions(List<dynamic>? options) {
+    if (options == null) {
+      return [];
+    }
+
+    final result = <FormOptionConfig>[];
+
+    for (final option in options) {
+      /// String option
+      if (option is String) {
+        result.add(FormOptionConfig(value: option, label: option));
+
+        continue;
+      }
+
+      /// Object option
+      if (option is Map) {
+        final value = option['id'] ?? option['value'] ?? option['label'];
+
+        final label =
+            option['label']?.toString() ??
+            option['name']?.toString() ??
+            value?.toString() ??
+            '';
+
+        if (label.isNotEmpty) {
+          result.add(FormOptionConfig(value: value, label: label));
+        }
+
+        continue;
+      }
+
+      /// Other value
+      if (option != null) {
+        result.add(FormOptionConfig(value: option, label: option.toString()));
+      }
+    }
+
+    return result;
+  }
+
+  /// =========================================================
+  /// NEXT
+  /// =========================================================
+
+  void _next(List<StepConfig> steps) {
+    if (steps.isEmpty) {
+      return;
+    }
+
+    if (currentStep >= steps.length) {
+      return;
+    }
+
     final step = steps[currentStep];
 
-    /// selection validation
+    /// =====================================================
+    /// Selection validation
+    /// =====================================================
+
     if (step.type == StepType.selection) {
       final value = answers[step.key];
 
-      if (value == null || value.toString().trim().isEmpty) {
+      if (_isEmptyValue(value)) {
         _showError('Please select one option');
+
         return;
       }
     }
 
-    /// form validation
+    /// =====================================================
+    /// Form validation
+    /// =====================================================
+
     if (step.type == StepType.form) {
       for (final field in step.fields) {
-        if (!field.required) continue;
-
-        final value = answers[field.key];
-
-        /// checkbox
-        if (field.type == FieldType.checkbox) {
-          if (value != true) {
-            _showError('${field.label} is required');
-            return;
-          }
+        if (!field.required) {
           continue;
         }
 
-        /// text / dropdown / date / textarea
-        if (value == null || value.toString().trim().isEmpty) {
+        final value = answers[field.key];
+
+        if (field.type == FieldType.checkbox) {
+          if (value != true) {
+            _showError('${field.label} is required');
+
+            return;
+          }
+
+          continue;
+        }
+
+        if (_isEmptyValue(value)) {
           _showError('${field.label} is required');
+
           return;
         }
       }
     }
 
-    /// payload
-    final isLastFormStep =
-        steps.length >= 2 &&
-            currentStep == steps.length - 2;
+    /// =====================================================
+    /// Check if next step is success
+    /// =====================================================
 
-    if (isLastFormStep) {
-      final payload = Map<String, dynamic>.from(answers)
-        ..removeWhere(
-              (key, value) =>
-          value == null ||
-              value.toString().trim().isEmpty,
-        );
+    final nextIndex = currentStep + 1;
 
-      debugPrint('Payload => $payload');
+    final isBeforeSuccess =
+        nextIndex < steps.length && steps[nextIndex].type == StepType.success;
+
+    if (isBeforeSuccess) {
+      _preparePayload();
     }
 
-    /// next step
+    /// =====================================================
+    /// Next
+    /// =====================================================
+
     if (currentStep < steps.length - 1) {
-      setState(() => currentStep++);
+      setState(() {
+        currentStep++;
+      });
     }
   }
 
-  ///back step
+  bool _isEmptyValue(dynamic value) {
+    if (value == null) {
+      return true;
+    }
+
+    if (value is String) {
+      return value.trim().isEmpty;
+    }
+
+    if (value is List) {
+      return value.isEmpty;
+    }
+
+    return false;
+  }
+
+  /// =========================================================
+  /// PAYLOAD
+  /// =========================================================
+
+  Future<void> _preparePayload() async {
+    final organizationId = ref.watch(
+      selectedOrganizationProvider.select((organization) => organization?.id),
+    );
+
+    final payload = Map<String, dynamic>.from(answers);
+
+    payload.removeWhere((key, value) {
+      return _isEmptyValue(value);
+    });
+
+    /// Add selected organization
+    payload['organization_id'] = organizationId;
+
+    debugPrint('================ LEAD PAYLOAD ================');
+
+    debugPrint(payload.toString());
+
+    debugPrint('==============================================');
+
+    try {
+      final response = await ref
+          .read(newLeadRepositoryProvider)
+          .submitLead(payload: payload);
+
+      debugPrint('Submit Lead Response >>> ${response.status}');
+
+      if (!mounted) {
+        return;
+      }
+
+      /// move to success step after submit success
+    } catch (e) {
+      debugPrint('Submit Lead Error >>> $e');
+
+      if (!mounted) {
+        return;
+      }
+
+      _showError(e.toString());
+
+      rethrow;
+    }
+  }
+
+  /// =========================================================
+  /// BACK
+  /// =========================================================
+
   void _back() {
     if (currentStep > 0) {
-      setState(() => currentStep--);
-    } else {
-      context.go(RoutePath.chooseTask.path);
+      setState(() {
+        currentStep--;
+      });
+
+      return;
     }
+
+    context.go(RoutePath.chooseTask.path);
   }
 
-  ///skip step
-  void _skipStep() {
+  /// =========================================================
+  /// SKIP
+  /// =========================================================
+
+  void _skipStep(List<StepConfig> steps) {
     if (currentStep < steps.length - 1) {
-      setState(() => currentStep++);
+      setState(() {
+        currentStep++;
+      });
     }
   }
 
-  ///error validation for continue button
+  /// =========================================================
+  /// ERROR
+  /// =========================================================
+
   void _showError(String message) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
@@ -359,116 +375,308 @@ class _NewLeadStepPageState extends State<NewLeadStepPage> {
     );
   }
 
-  ///content
+  /// =========================================================
+  /// BUILD
+  /// =========================================================
+
   @override
   Widget build(BuildContext context) {
-    final step = steps[currentStep];
-    final showIndicator =
-        steps.where((e) => e.type != StepType.success).length > 1;
+    final organizationId = ref.watch(
+      selectedOrganizationProvider.select((organization) => organization?.id),
+    );
+
+    /// Organization is required
+    if (organizationId == null) {
+      return Scaffold(
+        backgroundColor: const Color(0xFF061B10),
+        body: SafeArea(
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'Please select an organization.',
+                  style: TextStyle(color: Colors.white, fontSize: 15),
+                ),
+
+                const SizedBox(height: 20),
+
+                StepButton(
+                  text: 'Back',
+                  color: kSecondaryColor,
+                  onTap: () {
+                    context.go(RoutePath.chooseTask.path);
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    /// =====================================================
+    /// Lead form config API
+    /// =====================================================
+
+    final leadFormConfigState = ref.watch(
+      fetchLeadFormConfigProvider(organizationID: organizationId),
+    );
 
     return Scaffold(
       backgroundColor: const Color(0xFF061B10),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(22, 28, 22, 22),
-          child: Column(
-            children: [
-              if (step.type != StepType.success && showIndicator) ...[
-                StepIndicator(
-                  total: steps.length - 2,
-                  current: currentStep,
-                ),
-              ],
+        child: leadFormConfigState.when(
+          loading: () {
+            return const Center(
+              child: CircularProgressIndicator(color: kPrimaryColor),
+            );
+          },
 
-              const SizedBox(height: 10),
+          error: (error, stackTrace) {
+            return _buildErrorView(error, organizationId);
+          },
 
-              Text(
-                step.title,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: kPrimaryColor,
-                  fontSize: 20,
-                  fontWeight: FontWeight.normal,
-                ),
+          data: (response) {
+            final apiSteps = response.data?.steps ?? [];
+
+            final steps = _mapApiSteps(apiSteps);
+
+            if (steps.isEmpty) {
+              return _buildEmptyView(organizationId);
+            }
+
+            return _buildStepContent(steps);
+          },
+        ),
+      ),
+    );
+  }
+
+  /// =========================================================
+  /// STEP CONTENT
+  /// =========================================================
+
+  Widget _buildStepContent(List<StepConfig> steps) {
+    /// Protect against API config changing
+    final safeCurrentStep = currentStep >= steps.length ? 0 : currentStep;
+
+    final step = steps[safeCurrentStep];
+
+    final visibleSteps = steps
+        .where((item) => item.type != StepType.success)
+        .toList();
+
+    final showIndicator = visibleSteps.length > 1;
+
+    /// Indicator index should not count
+    /// success step.
+    final indicatorCurrent = safeCurrentStep.clamp(0, visibleSteps.length - 1);
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(22, 28, 22, 22),
+      child: Column(
+        children: [
+          /// =================================================
+          /// Step indicator
+          /// =================================================
+          if (step.type != StepType.success && showIndicator) ...[
+            StepIndicator(
+              total: visibleSteps.length,
+              current: indicatorCurrent,
+            ),
+          ],
+
+          const SizedBox(height: 10),
+
+          /// =================================================
+          /// Title
+          /// =================================================
+          if (step.title.isNotEmpty)
+            Text(
+              step.title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: kPrimaryColor,
+                fontSize: 20,
+                fontWeight: FontWeight.normal,
               ),
+            ),
 
-              const SizedBox(height: 30),
+          if (step.title.isNotEmpty) const SizedBox(height: 30),
 
-              ///body view
-              Expanded(
-                child: step.type == StepType.selection
-                    ? SelectionStep(
-                        options: step.options,
-                        selectedValue: answers[step.key],
-                        onSelected: (value) {
-                          setState(() {
-                            answers[step.key] = value;
-                          });
-                        },
-                      )
-                    : step.type == StepType.success
-                    ? SuccessStepPage(
-                        onAddNewLead: () {
-                          setState(() {
-                            currentStep = 0;
-                            answers.clear();
-                          });
-                        },
-                        onGoDashboard: () {
-                          context.go('/');
-                        },
-                      )
-                    : FormStep(
-                        fields: step.fields,
-                        answers: answers,
-                        onChanged: (key, value) {
-                          setState(() {
-                            answers[key] = value;
-                          });
-                        },
-                      ),
-              ),
+          /// =================================================
+          /// Body
+          /// =================================================
+          Expanded(child: _buildStepBody(step)),
 
-              ///back and continue button
-              if (step.type != StepType.success) ...[
-                Row(
-                  children: [
-                    Expanded(
-                      child: StepButton(
-                        text: 'Back',
-                        color: kSecondaryColor,
-                        onTap: _back,
-                      ),
-                    ),
-                    const SizedBox(width: 14),
-                    Expanded(
-                      child: StepButton(
-                        text: 'Continue',
-                        color: kPrimaryColor,
-                        onTap: _next,
-                      ),
-                    ),
-                  ],
+          const SizedBox(height: 30),
+
+          /// =================================================
+          /// Buttons
+          /// =================================================
+          if (step.type != StepType.success) ...[
+            Row(
+              children: [
+                Expanded(
+                  child: StepButton(
+                    text: 'Back',
+                    color: kSecondaryColor,
+                    onTap: _back,
+                  ),
                 ),
-              ],
 
-              if (step.showSkip) ...[
-                const SizedBox(height: 18),
-                GestureDetector(
-                  onTap: _skipStep,
-                  child: const Text(
-                    'Skip For Now',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                      decoration: TextDecoration.underline,
-                    ),
+                const SizedBox(width: 14),
+
+                Expanded(
+                  child: StepButton(
+                    text: 'Continue',
+                    color: kPrimaryColor,
+                    onTap: () {
+                      _next(steps);
+                    },
                   ),
                 ),
               ],
-            ],
-          ),
+            ),
+          ],
+
+          /// =================================================
+          /// Skip
+          /// =================================================
+          if (step.showSkip && step.type != StepType.success) ...[
+            const SizedBox(height: 18),
+
+            GestureDetector(
+              onTap: () {
+                _skipStep(steps);
+              },
+              child: const Text(
+                'Skip For Now',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  /// =========================================================
+  /// STEP BODY
+  /// =========================================================
+
+  Widget _buildStepBody(StepConfig step) {
+    switch (step.type) {
+      case StepType.selection:
+        return SelectionStep(
+          options: step.options,
+          selectedValue: answers[step.key],
+          onSelected: (value) {
+            setState(() {
+              answers[step.key] = value;
+            });
+          },
+        );
+
+      case StepType.form:
+        return FormStep(
+          fields: step.fields,
+          answers: answers,
+          onChanged: (key, value) {
+            setState(() {
+              answers[key] = value;
+            });
+          },
+        );
+
+      case StepType.success:
+        return SuccessStepPage(
+          onAddNewLead: () {
+            setState(() {
+              currentStep = 0;
+              answers.clear();
+            });
+          },
+          onGoDashboard: () {
+            context.go('/');
+          },
+        );
+    }
+  }
+
+  /// =========================================================
+  /// ERROR
+  /// =========================================================
+
+  Widget _buildErrorView(Object error, int organizationId) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.error_outline, color: Colors.red, size: 45),
+
+            const SizedBox(height: 16),
+
+            Text(
+              error.toString(),
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white),
+            ),
+
+            const SizedBox(height: 24),
+
+            StepButton(
+              text: 'Retry',
+              color: kPrimaryColor,
+              onTap: () {
+                ref.invalidate(
+                  fetchLeadFormConfigProvider(organizationID: organizationId),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// =========================================================
+  /// EMPTY
+  /// =========================================================
+
+  Widget _buildEmptyView(int organizationId) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'No lead form configuration available.',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 15),
+            ),
+
+            const SizedBox(height: 24),
+
+            StepButton(
+              text: 'Refresh',
+              color: kPrimaryColor,
+              onTap: () {
+                ref.invalidate(
+                  fetchLeadFormConfigProvider(organizationID: organizationId),
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

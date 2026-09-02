@@ -19,29 +19,6 @@ class LeadsRepository {
   final Dio dio;
   final Ref ref;
 
-  Future<LeadsResponse> fetchLeadList({
-    required String uid,
-    String? filterParamName,
-  }) async {
-    try {
-      final response = await dio.get(
-        '$kEndPointLeadListByUid$filterParamName',
-        queryParameters: {
-          'uid': uid,
-          'app_version': '1.0',
-        },
-      );
-
-      return LeadsResponse.fromJson(response.data);
-    } on DioException catch (e) {
-      throw e.response?.data["message"] ??
-          ErrorHandler
-              .handle(e)
-              .failure
-              .message;
-    }
-  }
-
   Future<LeadDetailResponse> fetchLeadDetailByLeadId({
     required String uid,
     required String leadId,
@@ -83,28 +60,48 @@ class LeadsRepository {
     }
   }
 
+  Future<LeadsResponse> fetchLeadsByOrganizationID({
+    required int organizationID,
+    required int pageNo,
+  }) async {
+    try {
+      final response = await dio.get(
+        kEndPointGetLeadsByOrganizationID,
+        queryParameters: {
+          kParamOrganizationID : organizationID,
+          kParamPage : pageNo
+        },
+      );
+
+      if (response.data == null) {
+        throw 'Invalid server response';
+      }
+
+      return LeadsResponse.fromJson(response.data);
+    } on DioException catch (e) {
+      String message = ErrorHandler.handle(e).failure.message;
+
+      if (e.response?.data is Map<String, dynamic>) {
+        message =
+            e.response?.data['message'] ??
+                e.response?.data['description'] ??
+                e.response?.data['error'] ??
+                message;
+      }
+
+      throw message;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
 }
 
 @riverpod
 LeadsRepository leadsRepository(LeadsRepositoryRef ref) {
   return LeadsRepository(
-    dio: ref.watch(dioProvider()),
+    dio: ref.watch(dioProvider),
     ref: ref,
-  );
-}
-
-
-@riverpod
-Future<LeadsResponse> fetchLeadList(
-    FetchLeadListRef ref, {
-      required String uid,
-      String? filterParamName,
-    }) async {
-  final repository = ref.watch(leadsRepositoryProvider);
-
-  return repository.fetchLeadList(
-    uid: uid,
-    filterParamName: filterParamName,
   );
 }
 
@@ -119,5 +116,19 @@ Future<LeadDetailResponse> fetchLeadDetail(
   return repository.fetchLeadDetailByLeadId(
     uid: uid,
     leadId: leadId,
+  );
+}
+
+@riverpod
+Future<LeadsResponse> fetchLeadsByOrganizationID(
+    FetchLeadsByOrganizationIDRef ref, {
+      required int organizationID,
+      required int pageNo
+    }) async {
+  final repository = ref.watch(leadsRepositoryProvider);
+
+  return repository.fetchLeadsByOrganizationID(
+    organizationID: organizationID,
+    pageNo: pageNo
   );
 }

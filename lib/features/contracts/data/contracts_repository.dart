@@ -87,7 +87,7 @@ class ContractsRepository {
 @riverpod
 ContractsRepository contractsRepository(ContractsRepositoryRef ref) {
   return ContractsRepository(
-    dio: ref.watch(dioProvider()),
+    dio: ref.watch(dioProvider),
     ref: ref,
   );
 }
