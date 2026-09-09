@@ -44,24 +44,24 @@ class BottomNavigationWidget extends ConsumerWidget {
             label: 'Leads',
             onTap: () => _onTap(context, ref, 1),
           ),
+          // _NavItem(
+          //   index: 2,
+          //   currentIndex: position,
+          //   iconName: kContractsImage,
+          //   activeIconName: kActiveContractsImage,
+          //   label: 'Contracts',
+          //   onTap: () => _onTap(context, ref, 2),
+          // ),
+          // _NavItem(
+          //   index: 3,
+          //   currentIndex: position,
+          //   iconName: kTargetIconImage,
+          //   activeIconName: kActiveTargetIconImage,
+          //   label: 'Target',
+          //   onTap: () => _onTap(context, ref, 3),
+          // ),
           _NavItem(
             index: 2,
-            currentIndex: position,
-            iconName: kContractsImage,
-            activeIconName: kActiveContractsImage,
-            label: 'Contracts',
-            onTap: () => _onTap(context, ref, 2),
-          ),
-          _NavItem(
-            index: 3,
-            currentIndex: position,
-            iconName: kTargetIconImage,
-            activeIconName: kActiveTargetIconImage,
-            label: 'Target',
-            onTap: () => _onTap(context, ref, 3),
-          ),
-          _NavItem(
-            index: 4,
             currentIndex: position,
             iconName: kLogoutImage,
             activeIconName: kLogoutImage,
@@ -92,16 +92,16 @@ class BottomNavigationWidget extends ConsumerWidget {
         break;
 
       case 2:
-        context.go(RoutePath.contracts.path);
-        break;
-
-      case 3:
-        context.go(RoutePath.target.path);
-        break;
-
-      case 4:
         context.go(RoutePath.logout.path);
         break;
+
+      // case 3:
+      //   context.go(RoutePath.target.path);
+      //   break;
+      //
+      // case 4:
+      //   context.go(RoutePath.logout.path);
+      //   break;
     }
   }
 }

@@ -8,13 +8,10 @@ import '../data/leads_repository.dart';
 import 'lead_detail_page.dart';
 
 class LeadsPage extends ConsumerStatefulWidget {
-  const LeadsPage({
-    super.key,
-  });
+  const LeadsPage({super.key});
 
   @override
-  ConsumerState<LeadsPage> createState() =>
-      _LeadsPageState();
+  ConsumerState<LeadsPage> createState() => _LeadsPageState();
 }
 
 class _LeadsPageState extends ConsumerState<LeadsPage> {
@@ -23,17 +20,11 @@ class _LeadsPageState extends ConsumerState<LeadsPage> {
   @override
   Widget build(BuildContext context) {
     final organizationId = ref.watch(
-      selectedOrganizationProvider.select(
-            (organization) => organization?.id,
-      ),
+      selectedOrganizationProvider.select((organization) => organization?.id),
     );
 
     if (organizationId == null) {
-      return const SafeArea(
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
+      return const SafeArea(child: Center(child: CircularProgressIndicator()));
     }
 
     final leadsState = ref.watch(
@@ -49,9 +40,7 @@ class _LeadsPageState extends ConsumerState<LeadsPage> {
         child: leadsState.when(
           loading: () {
             return const Center(
-              child: CircularProgressIndicator(
-                color: Color(0xFF16B65B),
-              ),
+              child: CircularProgressIndicator(color: Color(0xFF16B65B)),
             );
           },
 
@@ -85,20 +74,12 @@ class _LeadsPageState extends ConsumerState<LeadsPage> {
               },
               child: ListView(
                 physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.fromLTRB(
-                  16,
-                  14,
-                  16,
-                  30,
-                ),
+                padding: const EdgeInsets.fromLTRB(16, 14, 16, 30),
                 children: [
                   /// ==========================================
                   /// TITLE
                   /// ==========================================
-
-                  const SizedBox(
-                    height: 30,
-                  ),
+                  const SizedBox(height: 30),
 
                   const Text(
                     'All Lead List',
@@ -109,26 +90,18 @@ class _LeadsPageState extends ConsumerState<LeadsPage> {
                     ),
                   ),
 
-                  const SizedBox(
-                    height: 28,
-                  ),
+                  const SizedBox(height: 28),
 
                   /// ==========================================
                   /// EMPTY
                   /// ==========================================
-
                   if (leads.isEmpty)
                     const Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 80,
-                      ),
+                      padding: EdgeInsets.symmetric(vertical: 80),
                       child: Center(
                         child: Text(
                           'No leads found',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 14,
-                          ),
+                          style: TextStyle(color: Colors.white70, fontSize: 14),
                         ),
                       ),
                     ),
@@ -136,62 +109,50 @@ class _LeadsPageState extends ConsumerState<LeadsPage> {
                   /// ==========================================
                   /// LEAD CARDS
                   /// ==========================================
+                  ...List.generate(leads.length, (index) {
+                    final lead = leads[index];
 
-                  ...List.generate(
-                    leads.length,
-                        (index) {
-                      final lead = leads[index];
-
-                      return Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: 28,
-                        ),
-                        child: LeadCard(
-                          lead: lead,
-                          onTap: () async {
-                            final updated =
-                            await Navigator.of(context).push<bool>(
-                              MaterialPageRoute(
-                                builder: (_) => LeadDetailPage(
-                                  uid: lead.lid.toString(),
-                                  leadId: lead.lid.toString(),
-                                ),
-                              ),
-                            );
-
-                            if (updated == true) {
-                              ref.invalidate(
-                                fetchLeadsByOrganizationIDProvider(
-                                  organizationID: organizationId,
-                                  pageNo: currentPage,
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 28),
+                      child: LeadCard(
+                        lead: lead,
+                        onTap: () async {
+                          final updated = await Navigator.of(context)
+                              .push<bool>(
+                                MaterialPageRoute(
+                                  builder: (_) => LeadDetailPage(
+                                    uid: lead.lid.toString(),
+                                    leadId: lead.lid.toString(),
+                                  ),
                                 ),
                               );
-                            }
-                          },
-                        ),
-                      );
-                    },
-                  ),
+
+                          if (updated == true) {
+                            ref.invalidate(
+                              fetchLeadsByOrganizationIDProvider(
+                                organizationID: organizationId,
+                                pageNo: currentPage,
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    );
+                  }),
+
+                  const SizedBox(height: 50),
 
                   /// ==========================================
                   /// PAGINATION
                   /// ==========================================
-
-                  if (pagination != null &&
-                      (pagination.lastPage ?? 1) > 1) ...[
-                    const SizedBox(
-                      height: 4,
-                    ),
+                  if (pagination != null && (pagination.lastPage ?? 1) > 1) ...[
+                    const SizedBox(height: 4),
 
                     LeadPagination(
-                      currentPage:
-                      pagination.currentPage ?? currentPage,
-                      lastPage:
-                      pagination.lastPage ?? 1,
-                      total:
-                      pagination.total ?? 0,
-                      perPage:
-                      pagination.perPage ?? 20,
+                      currentPage: pagination.currentPage ?? currentPage,
+                      lastPage: pagination.lastPage ?? 1,
+                      total: pagination.total ?? 0,
+                      perPage: pagination.perPage ?? 20,
                       onPageChanged: (page) {
                         setState(() {
                           currentPage = page;
@@ -199,9 +160,7 @@ class _LeadsPageState extends ConsumerState<LeadsPage> {
                       },
                     ),
 
-                    const SizedBox(
-                      height: 90,
-                    ),
+                    const SizedBox(height: 90),
                   ],
                 ],
               ),
@@ -218,11 +177,7 @@ class _LeadsPageState extends ConsumerState<LeadsPage> {
 /// ===========================================================
 
 class LeadCard extends StatelessWidget {
-  const LeadCard({
-    super.key,
-    required this.lead,
-    required this.onTap,
-  });
+  const LeadCard({super.key, required this.lead, required this.onTap});
 
   final LeadVO lead;
   final VoidCallback onTap;
@@ -233,47 +188,28 @@ class LeadCard extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(
-          26,
-        ),
+        borderRadius: BorderRadius.circular(26),
         child: Container(
           width: double.infinity,
-          padding: const EdgeInsets.fromLTRB(
-            20,
-            20,
-            20,
-            22,
-          ),
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 22),
           decoration: BoxDecoration(
             color: const Color(0xFF0B341F),
-            borderRadius: BorderRadius.circular(
-              26,
-            ),
-            border: Border.all(
-              color: const Color(0xFF397457),
-              width: 1,
-            ),
+            borderRadius: BorderRadius.circular(26),
+            border: Border.all(color: const Color(0xFF397457), width: 1),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(
-                  0.12,
-                ),
+                color: Colors.black.withOpacity(0.12),
                 blurRadius: 14,
-                offset: const Offset(
-                  0,
-                  5,
-                ),
+                offset: const Offset(0, 5),
               ),
             ],
           ),
           child: Column(
-            crossAxisAlignment:
-            CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               /// =============================================
-              /// CLIENT / BUSINESS
+              /// lid , business name
               /// =============================================
-
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10,
@@ -281,12 +217,10 @@ class LeadCard extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   color: const Color(0xFF116436),
-                  borderRadius: BorderRadius.circular(
-                    8,
-                  ),
+                  borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  _businessLabel(),
+                  _lidAndBusinessNameLabel(),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
@@ -297,14 +231,11 @@ class LeadCard extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
 
               /// =============================================
-              /// PROJECT / LEAD NAME
+              /// lead title
               /// =============================================
-
               Text(
                 _leadTitle(),
                 maxLines: 2,
@@ -317,28 +248,21 @@ class LeadCard extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
 
               /// =============================================
               /// STATUS CHIP
               /// =============================================
-
               if (_hasValue(lead.status))
                 Container(
-                  constraints: const BoxConstraints(
-                    maxWidth: 270,
-                  ),
+                  constraints: const BoxConstraints(maxWidth: 270),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10,
                     vertical: 8,
                   ),
                   decoration: BoxDecoration(
                     color: const Color(0xFF8AC4A5),
-                    borderRadius: BorderRadius.circular(
-                      8,
-                    ),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
                     lead.status!,
@@ -352,134 +276,92 @@ class LeadCard extends StatelessWidget {
                   ),
                 ),
 
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
 
               /// =============================================
               /// TYPE / FUNNEL
               /// =============================================
-
               Row(
-                crossAxisAlignment:
-                CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     child: _InfoRow(
                       label: 'Type:',
-                      value: _display(
-                        lead.bizType,
-                      ),
+                      value: _display(lead.bizType),
                     ),
                   ),
 
-                  const SizedBox(
-                    width: 20,
-                  ),
+                  const SizedBox(width: 20),
 
                   Expanded(
                     child: _InfoRow(
                       label: 'Funnel Stage:',
-                      value: _display(
-                        lead.source,
-                      ),
+                      value: _display(lead.source ?? ''),
                       rightAligned: true,
                     ),
                   ),
                 ],
               ),
 
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
 
               /// =============================================
               /// DATES
               /// =============================================
-
               Row(
-                crossAxisAlignment:
-                CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     child: _InfoRow(
                       label: 'Proposal Due:',
-                      value: _dateOnly(
-                        lead.estContractDate,
-                      ),
+                      value: _dateOnly(lead.estContractDate),
                     ),
                   ),
 
-                  const SizedBox(
-                    width: 20,
-                  ),
+                  const SizedBox(width: 20),
 
                   Expanded(
                     child: _InfoRow(
                       label: 'Closed Date:',
-                      value: _dateOnly(
-                        lead.followUpDate ??
-                            lead.followupDate,
-                      ),
+                      value: _dateOnly(lead.closedDate ?? lead.followupDate),
                       rightAligned: true,
                     ),
                   ),
                 ],
               ),
 
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
 
               /// =============================================
               /// DIVIDER
               /// =============================================
-
               Container(
                 height: 1,
                 width: double.infinity,
-                color: const Color(
-                  0xFF16894D,
-                ),
+                color: const Color(0xFF16894D),
               ),
 
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
 
               /// =============================================
               /// FOOTER
               /// =============================================
-
               Row(
                 children: [
                   Expanded(
                     child: Text(
-                      lead.createdByName ??
-                          lead.uploadedBy ??
-                          '-',
+                      lead.createdByName ?? '-',
                       maxLines: 1,
-                      overflow:
-                      TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                      ),
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(color: Colors.white, fontSize: 12),
                     ),
                   ),
 
-                  const SizedBox(
-                    width: 12,
-                  ),
+                  const SizedBox(width: 12),
 
                   Text(
-                    _formatDateTime(
-                      lead.createdAt,
-                    ),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                    ),
+                    _formatDateTime(lead.updatedAt ?? '-'),
+                    style: const TextStyle(color: Colors.white, fontSize: 12),
                   ),
                 ],
               ),
@@ -490,16 +372,12 @@ class LeadCard extends StatelessWidget {
     );
   }
 
-  String _businessLabel() {
-    final id = lead.lid != null
-        ? '#${lead.lid}'
-        : '#-';
+  String _lidAndBusinessNameLabel() {
+    final id = lead.lid != null ? '#${lead.lid}' : '#-';
 
-    final businessName =
-    lead.businessName?.trim();
+    final businessName = lead.businessName?.trim();
 
-    if (businessName == null ||
-        businessName.isEmpty) {
+    if (businessName == null || businessName.isEmpty) {
       return id;
     }
 
@@ -510,19 +388,14 @@ class LeadCard extends StatelessWidget {
     /// Based on your API structure,
     /// secondaryContactNumber appears to contain
     /// the project / lead description in many records.
-    if (_hasValue(
-      lead.title,
-    )) {
-      return lead.title!;
+    if (_hasValue(lead.firstname)) {
+      return lead.firstname!;
     }
 
-
-    return 'Untitled Lead';
+    return '-';
   }
 
-  String _display(
-      String? value,
-      ) {
+  String _display(String? value) {
     if (!_hasValue(value)) {
       return '-';
     }
@@ -530,69 +403,44 @@ class LeadCard extends StatelessWidget {
     return value!;
   }
 
-  bool _hasValue(
-      String? value,
-      ) {
-    return value != null &&
-        value.trim().isNotEmpty;
+  bool _hasValue(String? value) {
+    return value != null && value.trim().isNotEmpty;
   }
 
-  String _dateOnly(
-      String? value,
-      ) {
+  String _dateOnly(String? value) {
     if (!_hasValue(value)) {
       return '--------';
     }
 
-    final parsed = DateTime.tryParse(
-      value!,
-    );
+    final parsed = DateTime.tryParse(value!);
 
     if (parsed == null) {
       if (value.length >= 10) {
-        return value.substring(
-          0,
-          10,
-        );
+        return value.substring(0, 10);
       }
 
       return value;
     }
 
-    final month = parsed.month
-        .toString()
-        .padLeft(
-      2,
-      '0',
-    );
+    final month = parsed.month.toString().padLeft(2, '0');
 
-    final day = parsed.day
-        .toString()
-        .padLeft(
-      2,
-      '0',
-    );
+    final day = parsed.day.toString().padLeft(2, '0');
 
     return '${parsed.year}-$month-$day';
   }
 
-  String _formatDateTime(
-      String? value,
-      ) {
+  String _formatDateTime(String? value) {
     if (!_hasValue(value)) {
       return '-';
     }
 
-    final date = DateTime.tryParse(
-      value!,
-    );
+    final date = DateTime.tryParse(value!);
 
     if (date == null) {
       return value;
     }
 
-    final localDate =
-    date.toLocal();
+    final localDate = date.toLocal();
 
     const months = [
       'Jan',
@@ -609,24 +457,15 @@ class LeadCard extends StatelessWidget {
       'Dec',
     ];
 
-    final hour12 =
-    localDate.hour == 0
+    final hour12 = localDate.hour == 0
         ? 12
         : localDate.hour > 12
         ? localDate.hour - 12
         : localDate.hour;
 
-    final minute = localDate.minute
-        .toString()
-        .padLeft(
-      2,
-      '0',
-    );
+    final minute = localDate.minute.toString().padLeft(2, '0');
 
-    final amPm =
-    localDate.hour >= 12
-        ? 'PM'
-        : 'AM';
+    final amPm = localDate.hour >= 12 ? 'PM' : 'AM';
 
     return '${localDate.day} '
         '${months[localDate.month - 1]} '
@@ -661,8 +500,7 @@ class _InfoRow extends StatelessWidget {
           child: Text(
             label,
             maxLines: 1,
-            overflow:
-            TextOverflow.ellipsis,
+            overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               color: Color(0xFFD5DDD8),
               fontSize: 14,
@@ -671,19 +509,14 @@ class _InfoRow extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(
-          width: 10,
-        ),
+        const SizedBox(width: 10),
 
         Flexible(
           child: Text(
             value,
             maxLines: 1,
-            overflow:
-            TextOverflow.ellipsis,
-            textAlign: rightAligned
-                ? TextAlign.right
-                : TextAlign.left,
+            overflow: TextOverflow.ellipsis,
+            textAlign: rightAligned ? TextAlign.right : TextAlign.left,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 14,
@@ -701,10 +534,7 @@ class _InfoRow extends StatelessWidget {
 /// ===========================================================
 
 class _ErrorView extends StatelessWidget {
-  const _ErrorView({
-    required this.message,
-    required this.onRetry,
-  });
+  const _ErrorView({required this.message, required this.onRetry});
 
   final String message;
   final VoidCallback onRetry;
@@ -713,51 +543,28 @@ class _ErrorView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(
-          24,
-        ),
+        padding: const EdgeInsets.all(24),
         child: Column(
-          mainAxisSize:
-          MainAxisSize.min,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(
-              Icons.error_outline,
-              color: Colors.redAccent,
-              size: 45,
-            ),
+            const Icon(Icons.error_outline, color: Colors.redAccent, size: 45),
 
-            const SizedBox(
-              height: 15,
-            ),
+            const SizedBox(height: 15),
 
             Text(
               message,
-              textAlign:
-              TextAlign.center,
-              style: const TextStyle(
-                color: Colors.white,
-              ),
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white),
             ),
 
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
 
             ElevatedButton(
               onPressed: onRetry,
-              style:
-              ElevatedButton.styleFrom(
-                backgroundColor:
-                const Color(
-                  0xFF16894D,
-                ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF16894D),
               ),
-              child: const Text(
-                'Retry',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
+              child: const Text('Retry', style: TextStyle(color: Colors.white)),
             ),
           ],
         ),
@@ -785,8 +592,7 @@ class LeadPagination extends StatelessWidget {
   final int total;
   final int perPage;
 
-  final ValueChanged<int>
-  onPageChanged;
+  final ValueChanged<int> onPageChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -794,90 +600,56 @@ class LeadPagination extends StatelessWidget {
       children: [
         Text(
           _resultText(),
-          style: const TextStyle(
-            color: Colors.white70,
-            fontSize: 12,
-          ),
+          style: const TextStyle(color: Colors.white70, fontSize: 12),
         ),
 
-        const SizedBox(
-          height: 14,
-        ),
+        const SizedBox(height: 14),
 
         Row(
-          mainAxisAlignment:
-          MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _PaginationArrow(
               icon: Icons.chevron_left,
               enabled: currentPage > 1,
               onTap: () {
                 if (currentPage > 1) {
-                  onPageChanged(
-                    currentPage - 1,
-                  );
+                  onPageChanged(currentPage - 1);
                 }
               },
             ),
 
-            const SizedBox(
-              width: 8,
-            ),
+            const SizedBox(width: 8),
 
-            ..._pageNumbers().map(
-                  (page) {
-                if (page == -1) {
-                  return const Padding(
-                    padding:
-                    EdgeInsets.symmetric(
-                      horizontal: 8,
-                    ),
-                    child: Text(
-                      '...',
-                      style: TextStyle(
-                        color:
-                        Colors.white70,
-                      ),
-                    ),
-                  );
-                }
-
-                return Padding(
-                  padding:
-                  const EdgeInsets.symmetric(
-                    horizontal: 3,
-                  ),
-                  child: _PageButton(
-                    page: page,
-                    selected:
-                    page == currentPage,
-                    onTap: () {
-                      if (page !=
-                          currentPage) {
-                        onPageChanged(
-                          page,
-                        );
-                      }
-                    },
-                  ),
+            ..._pageNumbers().map((page) {
+              if (page == -1) {
+                return const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  child: Text('...', style: TextStyle(color: Colors.white70)),
                 );
-              },
-            ),
+              }
 
-            const SizedBox(
-              width: 8,
-            ),
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 3),
+                child: _PageButton(
+                  page: page,
+                  selected: page == currentPage,
+                  onTap: () {
+                    if (page != currentPage) {
+                      onPageChanged(page);
+                    }
+                  },
+                ),
+              );
+            }),
+
+            const SizedBox(width: 8),
 
             _PaginationArrow(
               icon: Icons.chevron_right,
-              enabled:
-              currentPage < lastPage,
+              enabled: currentPage < lastPage,
               onTap: () {
-                if (currentPage <
-                    lastPage) {
-                  onPageChanged(
-                    currentPage + 1,
-                  );
+                if (currentPage < lastPage) {
+                  onPageChanged(currentPage + 1);
                 }
               },
             ),
@@ -892,61 +664,29 @@ class LeadPagination extends StatelessWidget {
       return '0 results';
     }
 
-    final from =
-        ((currentPage - 1) *
-            perPage) +
-            1;
+    final from = ((currentPage - 1) * perPage) + 1;
 
-    final calculatedTo =
-        currentPage * perPage;
+    final calculatedTo = currentPage * perPage;
 
-    final to = calculatedTo > total
-        ? total
-        : calculatedTo;
+    final to = calculatedTo > total ? total : calculatedTo;
 
     return 'Showing $from - $to of $total';
   }
 
   List<int> _pageNumbers() {
     if (lastPage <= 5) {
-      return List.generate(
-        lastPage,
-            (index) => index + 1,
-      );
+      return List.generate(lastPage, (index) => index + 1);
     }
 
     if (currentPage <= 3) {
-      return [
-        1,
-        2,
-        3,
-        4,
-        -1,
-        lastPage,
-      ];
+      return [1, 2, 3, 4, -1, lastPage];
     }
 
-    if (currentPage >=
-        lastPage - 2) {
-      return [
-        1,
-        -1,
-        lastPage - 3,
-        lastPage - 2,
-        lastPage - 1,
-        lastPage,
-      ];
+    if (currentPage >= lastPage - 2) {
+      return [1, -1, lastPage - 3, lastPage - 2, lastPage - 1, lastPage];
     }
 
-    return [
-      1,
-      -1,
-      currentPage - 1,
-      currentPage,
-      currentPage + 1,
-      -1,
-      lastPage,
-    ];
+    return [1, -1, currentPage - 1, currentPage, currentPage + 1, -1, lastPage];
   }
 }
 
@@ -965,40 +705,22 @@ class _PageButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius:
-      BorderRadius.circular(
-        10,
-      ),
+      borderRadius: BorderRadius.circular(10),
       child: Container(
         width: 36,
         height: 36,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: selected
-              ? const Color(
-            0xFF16894D,
-          )
-              : const Color(
-            0xFF0B341F,
-          ),
-          borderRadius:
-          BorderRadius.circular(
-            10,
-          ),
-          border: Border.all(
-            color: const Color(
-              0xFF16894D,
-            ),
-          ),
+          color: selected ? const Color(0xFF16894D) : const Color(0xFF0B341F),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: const Color(0xFF16894D)),
         ),
         child: Text(
           '$page',
           style: TextStyle(
             color: Colors.white,
             fontSize: 12,
-            fontWeight: selected
-                ? FontWeight.bold
-                : FontWeight.normal,
+            fontWeight: selected ? FontWeight.bold : FontWeight.normal,
           ),
         ),
       ),
@@ -1020,38 +742,20 @@ class _PaginationArrow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap:
-      enabled ? onTap : null,
-      borderRadius:
-      BorderRadius.circular(
-        10,
-      ),
+      onTap: enabled ? onTap : null,
+      borderRadius: BorderRadius.circular(10),
       child: Container(
         width: 38,
         height: 38,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: const Color(
-            0xFF0B341F,
-          ),
-          borderRadius:
-          BorderRadius.circular(
-            10,
-          ),
+          color: const Color(0xFF0B341F),
+          borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: enabled
-                ? const Color(
-              0xFF16894D,
-            )
-                : Colors.white24,
+            color: enabled ? const Color(0xFF16894D) : Colors.white24,
           ),
         ),
-        child: Icon(
-          icon,
-          color: enabled
-              ? Colors.white
-              : Colors.white24,
-        ),
+        child: Icon(icon, color: enabled ? Colors.white : Colors.white24),
       ),
     );
   }

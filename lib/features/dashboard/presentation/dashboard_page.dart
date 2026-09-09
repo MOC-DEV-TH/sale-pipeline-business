@@ -27,8 +27,8 @@ class _DashboardPageState
   final pages = const [
     HomePage(),
     LeadsPage(),
-    ContractsPage(),
-    TargetPage(),
+    // ContractsPage(),
+    // TargetPage(),
     LogoutPage(),
   ];
 

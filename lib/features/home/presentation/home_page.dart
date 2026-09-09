@@ -34,7 +34,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     if (organizationId == null) {
       return const SafeArea(
         child: Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(color: Color(0xFF16B65B)),
         ),
       );
     }
@@ -47,7 +47,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     return SafeArea(
       child: reportSummaryState.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const Center(child: CircularProgressIndicator(color: Color(0xFF16B65B))),
         error: (error, _) => Center(
           child: Text(
             error.toString(),

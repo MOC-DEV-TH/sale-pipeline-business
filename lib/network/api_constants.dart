@@ -18,7 +18,6 @@ const String kEndPointGetSaleDdlData = "/get_sale_ddl_data";
 const String kEndPointSubmitLead = "/leads";
 const String kEndPointUpdateLead = "/post_lead_form_data";
 const String kEndPointLeadListByUid ="/get_lead_list_by_uid?";
-const String kEndPointLeadDetailByLeadId = "/get_activity_detail?";
 const String kEndPointContractedLeadListByUid = "/get_contracted_lead_lists_by_uid?";
 const String kEndPointContractedLeadByProfileId = "/get_contracted_detail?";
 const String kEndPointUpdateContractedLead ="/post_contracted_data";
@@ -28,6 +27,9 @@ const String kEndPointGetOrganizations = "/organizations";
 const String kEndPointGetReportSummaryByOrganizationID = "/reports/summary";
 const String kEndPointGetLeadFormConfigByOrganizationID = "/leads/form-config";
 const String kEndPointGetLeadsByOrganizationID = "/leads";
+const String kEndPointDeleteLeadByID = "/leads";
+const String kEndPointLeadDetailByLeadId = "/leads";
+
 
 
 

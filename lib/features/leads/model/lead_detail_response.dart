@@ -1,275 +1,617 @@
 import 'dart:convert';
 
-LeadDetailResponse businessDetailVoFromJson(String str) =>
-    LeadDetailResponse.fromJson(json.decode(str));
+LeadDetailsResponse leadDetailsResponseFromJson(String str) => LeadDetailsResponse.fromJson(json.decode(str));
 
-String businessDetailVoToJson(LeadDetailResponse data) =>
-    json.encode(data.toJson());
+String leadDetailsResponseToJson(LeadDetailsResponse data) => json.encode(data.toJson());
 
-class LeadDetailResponse {
-  LeadDetailResponse({
+class LeadDetailsResponse {
+  String? status;
+  LeadDetailData? data;
+
+  LeadDetailsResponse({
     this.status,
-    this.responseCode,
-    this.description,
-    this.isRequieredUpdate,
-    this.isforceUpdate,
-    this.details,
+    this.data,
   });
 
-  String? status;
-  String? responseCode;
-  String? description;
-  bool? isRequieredUpdate;
-  bool? isforceUpdate;
-  LeadDetailVO? details;
-
-  factory LeadDetailResponse.fromJson(Map<String, dynamic> json) {
-    return LeadDetailResponse(
-      status: json["status"]?.toString(),
-      responseCode: json["response_code"]?.toString(),
-      description: json["description"]?.toString(),
-      isRequieredUpdate: json["is_requiered_update"],
-      isforceUpdate: json["isforce_update"],
-      details: json["details"] == null
-          ? null
-          : LeadDetailVO.fromJson(json["details"]),
-    );
-  }
+  factory LeadDetailsResponse.fromJson(Map<String, dynamic> json) => LeadDetailsResponse(
+    status: json["status"],
+    data: json["data"] == null ? null : LeadDetailData.fromJson(json["data"]),
+  );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "response_code": responseCode,
-    "description": description,
-    "is_requiered_update": isRequieredUpdate,
-    "isforce_update": isforceUpdate,
-    "details": details?.toJson(),
+    "data": data?.toJson(),
   };
 }
 
-class LeadDetailVO {
-  LeadDetailVO({
+class LeadDetailData {
+  int? lid;
+  String? uuid;
+  String? businessName;
+  String? firstname;
+  String? firstName;
+  String? lastName;
+  String? contactName;
+  String? contactEmail;
+  dynamic contactno;
+  dynamic phone;
+  String? secondaryContactNumber;
+  String? bizType;
+  String? source;
+  String? division;
+  String? township;
+  dynamic address;
+  dynamic product;
+  String? package;
+  String? packageTotal;
+  dynamic discount;
+  dynamic note;
+  String? status;
+  dynamic channel;
+  dynamic installationAppointment;
+  dynamic estContractDate;
+  dynamic estStartDate;
+  dynamic followupDate;
+  dynamic followUpDate;
+  dynamic estFollowUpDate;
+  dynamic closedDate;
+  bool? isReferral;
+  String? meetingNote;
+  String? nextStep;
+  int? organizationId;
+  CustomFields? customFields;
+  String? plan;
+  int? leadAssign;
+  int? createdBy;
+  String? createdByName;
+  String? uploadedBy;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  CustomFieldsByLabel? customFieldsByLabel;
+  FieldsByLabel? fieldsByLabel;
+  List<LabeledField>? labeledFields;
+
+  LeadDetailData({
     this.lid,
-    this.uid,
-    this.profileId,
-    this.firstname,
-    this.lastname,
-    this.email,
-    this.address,
-    this.contactInformation,
-    this.package,
-    this.plan,
-    this.notes,
-    this.installation,
-    this.leadSource,
-    this.businessType,
-    this.businessCategory,
-    this.township,
-    this.division,
-    this.contactno,
+    this.uuid,
     this.businessName,
-    this.currentIsp,
-    this.potential,
-    this.weighted,
-    this.followupVia,
-    this.followupDate,
-    this.estimateFlightdate,
-    this.channel,
-    this.designation,
-    this.compound,
-    this.createdBy,
-    this.updatedBy,
-    this.creationDate,
-    this.modifiedDate,
-    this.status,
-    this.statusKey,
-    this.packageTotal,
-    this.referrelId,
-    this.leadAssign,
-    this.isReferal,
-    this.discount,
-    this.latitude,
-    this.longitude,
-    this.contractDate,
-    this.customerNote,
-    this.installationAppointmentDate,
+    this.firstname,
+    this.firstName,
+    this.lastName,
+    this.contactName,
+    this.contactEmail,
+    this.contactno,
+    this.phone,
     this.secondaryContactNumber,
-    this.businessTypeOther,
-    this.designationTypeOther,
-    this.meetingNotes,
-    this.nextStep,
+    this.bizType,
+    this.source,
+    this.division,
+    this.township,
+    this.address,
+    this.product,
+    this.package,
+    this.packageTotal,
+    this.discount,
+    this.note,
+    this.status,
+    this.channel,
+    this.installationAppointment,
     this.estContractDate,
     this.estStartDate,
+    this.followupDate,
+    this.followUpDate,
     this.estFollowUpDate,
-    this.customerType,
+    this.closedDate,
+    this.isReferral,
+    this.meetingNote,
+    this.nextStep,
+    this.organizationId,
+    this.customFields,
+    this.plan,
+    this.leadAssign,
+    this.createdBy,
+    this.createdByName,
+    this.uploadedBy,
+    this.createdAt,
+    this.updatedAt,
+    this.customFieldsByLabel,
+    this.fieldsByLabel,
+    this.labeledFields,
   });
 
-  String? lid;
-  String? uid;
-  String? profileId;
-  String? firstname;
-  String? lastname;
-  String? email;
-  String? address;
-  String? contactInformation;
-  String? package;
-  String? plan;
-  String? notes;
-  String? installation;
-  String? leadSource;
-  String? customerType;
-  String? businessType;
-  String? businessCategory;
-  String? township;
-  String? division;
-  String? contactno;
-  String? businessName;
-  String? currentIsp;
-  String? potential;
-  String? weighted;
-  String? followupVia;
-  String? followupDate;
-  String? estimateFlightdate;
-  String? channel;
-  String? designation;
-  String? compound;
-  String? createdBy;
-  String? updatedBy;
-  String? creationDate;
-  String? modifiedDate;
-  String? status;
-  String? statusKey;
-  String? packageTotal;
-  String? referrelId;
-  String? leadAssign;
-  String? isReferal;
-  String? discount;
-  String? latitude;
-  String? longitude;
-  String? contractDate;
-  String? installationAppointmentDate;
-  String? customerNote;
-  String? secondaryContactNumber;
-  String? businessTypeOther;
-  String? designationTypeOther;
-  String? meetingNotes;
-  String? nextStep;
-  String? estContractDate;
-  String? estStartDate;
-  String? estFollowUpDate;
-
-  factory LeadDetailVO.fromJson(Map<String, dynamic> json) {
-    return LeadDetailVO(
-      lid: json["lid"]?.toString(),
-      uid: json["uid"]?.toString(),
-      profileId: json["profile_id"]?.toString(),
-      firstname: json["firstname"]?.toString(),
-      lastname: json["lastname"]?.toString(),
-      email: json["email"]?.toString(),
-      customerType: json["customer_type"]?.toString(),
-      address: json["address"]?.toString(),
-      contactInformation: json["contact_information"]?.toString(),
-      package: json["package"]?.toString(),
-      plan: json["plan"]?.toString(),
-      notes: json["notes"]?.toString(),
-      installation: json["installation"]?.toString(),
-      leadSource: json["lead_source"]?.toString(),
-      businessType: json["business_type"]?.toString(),
-      businessCategory: json["business_category"]?.toString(),
-      township: json["township"]?.toString(),
-      division: json["division"]?.toString(),
-      contactno: json["contactno"]?.toString(),
-      businessName: json["business_name"]?.toString(),
-      currentIsp: json["current_isp"]?.toString(),
-      potential: json["potential"]?.toString(),
-      weighted: json["weighted"]?.toString(),
-      followupVia: json["followup_via"]?.toString(),
-      followupDate: json["followup_date"]?.toString(),
-      estimateFlightdate: json["estimate_flightdate"]?.toString(),
-      channel: json["channel"]?.toString(),
-      designation: json["designation"]?.toString(),
-      compound: json["compound"]?.toString(),
-      createdBy: json["created_by"]?.toString(),
-      updatedBy: json["updated_by"]?.toString(),
-      creationDate: json["creation_date"]?.toString(),
-      modifiedDate: json["modified_date"]?.toString(),
-      status: json["status"]?.toString(),
-      statusKey: json["status_key"]?.toString(),
-      packageTotal: json["package_total"]?.toString(),
-      referrelId: json["referrel_id"]?.toString(),
-      leadAssign: json["lead_assign"]?.toString(),
-      isReferal: json["isReferal"]?.toString(),
-      discount: json["discount"]?.toString(),
-      latitude: json["latitude"]?.toString(),
-      longitude: json["longitude"]?.toString(),
-      contractDate: json["contract_date"]?.toString(),
-      installationAppointmentDate:
-      json["installation_appointment_date"]?.toString(),
-      customerNote: json["customer_note"]?.toString(),
-      secondaryContactNumber:
-      json["secondary_contact_number"]?.toString(),
-      businessTypeOther: json["business_type_other"]?.toString(),
-      designationTypeOther: json["designation_other"]?.toString(),
-      meetingNotes: json["meeting_notes"]?.toString(),
-      nextStep: json["next_step"]?.toString(),
-      estContractDate: json["est_contract_date"]?.toString(),
-      estStartDate: json["est_start_date"]?.toString(),
-      estFollowUpDate: json["follow_up_date"]?.toString(),
-    );
-  }
+  factory LeadDetailData.fromJson(Map<String, dynamic> json) => LeadDetailData(
+    lid: json["lid"],
+    uuid: json["uuid"],
+    businessName: json["business_name"],
+    firstname: json["firstname"],
+    firstName: json["first_name"],
+    lastName: json["last_name"],
+    contactName: json["contact_name"],
+    contactEmail: json["contact_email"],
+    contactno: json["contactno"],
+    phone: json["phone"],
+    secondaryContactNumber: json["secondary_contact_number"],
+    bizType: json["biz_type"],
+    source: json["source"],
+    division: json["division"],
+    township: json["township"],
+    address: json["address"],
+    product: json["product"],
+    package: json["package"],
+    packageTotal: json["package_total"],
+    discount: json["discount"],
+    note: json["note"],
+    status: json["status"],
+    channel: json["channel"],
+    installationAppointment: json["installation_appointment"],
+    estContractDate: json["est_contract_date"],
+    estStartDate: json["est_start_date"],
+    followupDate: json["followup_date"],
+    followUpDate: json["follow_up_date"],
+    estFollowUpDate: json["est_follow_up_date"],
+    closedDate: json["closed_date"],
+    isReferral: json["is_referral"],
+    meetingNote: json["meeting_note"],
+    nextStep: json["next_step"],
+    organizationId: json["organization_id"],
+    customFields: json["custom_fields"] == null ? null : CustomFields.fromJson(json["custom_fields"]),
+    plan: json["plan"],
+    leadAssign: json["lead_assign"],
+    createdBy: json["created_by"],
+    createdByName: json["created_by_name"],
+    uploadedBy: json["uploaded_by"],
+    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+    customFieldsByLabel: json["custom_fields_by_label"] == null ? null : CustomFieldsByLabel.fromJson(json["custom_fields_by_label"]),
+    fieldsByLabel: json["fields_by_label"] == null ? null : FieldsByLabel.fromJson(json["fields_by_label"]),
+    labeledFields: json["labeled_fields"] == null ? [] : List<LabeledField>.from(json["labeled_fields"]!.map((x) => LabeledField.fromJson(x))),
+  );
 
   Map<String, dynamic> toJson() => {
     "lid": lid,
-    "uid": uid,
-    "profile_id": profileId,
-    "firstname": firstname,
-    "lastname": lastname,
-    "email": email,
-    "customer_type": customerType,
-    "address": address,
-    "contact_information": contactInformation,
-    "package": package,
-    "plan": plan,
-    "notes": notes,
-    "installation": installation,
-    "lead_source": leadSource,
-    "business_type": businessType,
-    "business_category": businessCategory,
-    "township": township,
-    "division": division,
-    "contactno": contactno,
+    "uuid": uuid,
     "business_name": businessName,
-    "current_isp": currentIsp,
-    "potential": potential,
-    "weighted": weighted,
-    "followup_via": followupVia,
-    "followup_date": followupDate,
-    "estimate_flightdate": estimateFlightdate,
-    "channel": channel,
-    "designation": designation,
-    "compound": compound,
-    "created_by": createdBy,
-    "updated_by": updatedBy,
-    "creation_date": creationDate,
-    "modified_date": modifiedDate,
-    "status": status,
-    "status_key": statusKey,
-    "package_total": packageTotal,
-    "referrel_id": referrelId,
-    "lead_assign": leadAssign,
-    "isReferal": isReferal,
-    "discount": discount,
-    "latitude": latitude,
-    "longitude": longitude,
-    "contract_date": contractDate,
-    "installation_appointment_date": installationAppointmentDate,
-    "customer_note": customerNote,
+    "firstname": firstname,
+    "first_name": firstName,
+    "last_name": lastName,
+    "contact_name": contactName,
+    "contact_email": contactEmail,
+    "contactno": contactno,
+    "phone": phone,
     "secondary_contact_number": secondaryContactNumber,
-    "designation_other": designationTypeOther,
-    "business_type_other": businessTypeOther,
-    "meeting_notes": meetingNotes,
-    "next_step": nextStep,
+    "biz_type": bizType,
+    "source": source,
+    "division": division,
+    "township": township,
+    "address": address,
+    "product": product,
+    "package": package,
+    "package_total": packageTotal,
+    "discount": discount,
+    "note": note,
+    "status": status,
+    "channel": channel,
+    "installation_appointment": installationAppointment,
     "est_contract_date": estContractDate,
     "est_start_date": estStartDate,
-    "follow_up_date": estFollowUpDate,
+    "followup_date": followupDate,
+    "follow_up_date": followUpDate,
+    "est_follow_up_date": estFollowUpDate,
+    "closed_date": closedDate,
+    "is_referral": isReferral,
+    "meeting_note": meetingNote,
+    "next_step": nextStep,
+    "organization_id": organizationId,
+    "custom_fields": customFields?.toJson(),
+    "plan": plan,
+    "lead_assign": leadAssign,
+    "created_by": createdBy,
+    "created_by_name": createdByName,
+    "uploaded_by": uploadedBy,
+    "created_at": createdAt?.toIso8601String(),
+    "updated_at": updatedAt?.toIso8601String(),
+    "custom_fields_by_label": customFieldsByLabel?.toJson(),
+    "fields_by_label": fieldsByLabel?.toJson(),
+    "labeled_fields": labeledFields == null ? [] : List<dynamic>.from(labeledFields!.map((x) => x.toJson())),
+  };
+}
+
+class CustomFields {
+  dynamic cfBusinessName;
+  dynamic cfName;
+  dynamic cfWhoDidYouMeetWith;
+  dynamic cfMail;
+  dynamic cfSeptember;
+  dynamic pfTest;
+  dynamic cfTestingPhone;
+  dynamic cfTest5;
+  dynamic pfTest22;
+  dynamic cfTestingAugust;
+  dynamic cfAungSoeOo;
+  dynamic pfTest4;
+  dynamic cfTestingSsso;
+  dynamic pfTest66;
+  dynamic cfTest7;
+  dynamic cfTestSoe;
+  dynamic cf8;
+  dynamic cf9;
+  dynamic pfTesttt88;
+  dynamic cf92;
+
+  CustomFields({
+    this.cfBusinessName,
+    this.cfName,
+    this.cfWhoDidYouMeetWith,
+    this.cfMail,
+    this.cfSeptember,
+    this.pfTest,
+    this.cfTestingPhone,
+    this.cfTest5,
+    this.pfTest22,
+    this.cfTestingAugust,
+    this.cfAungSoeOo,
+    this.pfTest4,
+    this.cfTestingSsso,
+    this.pfTest66,
+    this.cfTest7,
+    this.cfTestSoe,
+    this.cf8,
+    this.cf9,
+    this.pfTesttt88,
+    this.cf92,
+  });
+
+  factory CustomFields.fromJson(Map<String, dynamic> json) => CustomFields(
+    cfBusinessName: json["cf_business_name"],
+    cfName: json["cf_name"],
+    cfWhoDidYouMeetWith: json["cf_who_did_you_meet_with"],
+    cfMail: json["cf_mail"],
+    cfSeptember: json["cf_september"],
+    pfTest: json["pf_test"],
+    cfTestingPhone: json["cf_testing_phone"],
+    cfTest5: json["cf_test_5"],
+    pfTest22: json["pf_test_22"],
+    cfTestingAugust: json["cf_testing_august"],
+    cfAungSoeOo: json["cf_aung_soe_oo"],
+    pfTest4: json["pf_test_4"],
+    cfTestingSsso: json["cf_testing_ssso"],
+    pfTest66: json["pf_test_66"],
+    cfTest7: json["cf_test_7"],
+    cfTestSoe: json["cf_test_soe"],
+    cf8: json["cf_8"],
+    cf9: json["cf_9"],
+    pfTesttt88: json["pf_testtt88"],
+    cf92: json["cf_9_2"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "cf_business_name": cfBusinessName,
+    "cf_name": cfName,
+    "cf_who_did_you_meet_with": cfWhoDidYouMeetWith,
+    "cf_mail": cfMail,
+    "cf_september": cfSeptember,
+    "pf_test": pfTest,
+    "cf_testing_phone": cfTestingPhone,
+    "cf_test_5": cfTest5,
+    "pf_test_22": pfTest22,
+    "cf_testing_august": cfTestingAugust,
+    "cf_aung_soe_oo": cfAungSoeOo,
+    "pf_test_4": pfTest4,
+    "cf_testing_ssso": cfTestingSsso,
+    "pf_test_66": pfTest66,
+    "cf_test_7": cfTest7,
+    "cf_test_soe": cfTestSoe,
+    "cf_8": cf8,
+    "cf_9": cf9,
+    "pf_testtt88": pfTesttt88,
+    "cf_9_2": cf92,
+  };
+}
+
+class CustomFieldsByLabel {
+  dynamic the8;
+  dynamic the9;
+  dynamic the10;
+  dynamic businessName;
+  dynamic testingCustomer;
+  dynamic whoDidYouMeetWith;
+  dynamic mail;
+  dynamic september;
+  dynamic test1;
+  dynamic phoneNumber;
+  dynamic test5;
+  dynamic test2;
+  dynamic testingAugust;
+  dynamic aungSoeOo;
+  dynamic test4;
+  dynamic testingSsso;
+  dynamic test65;
+  dynamic test7;
+  dynamic testSoe;
+  dynamic testtt88;
+
+  CustomFieldsByLabel({
+    this.the8,
+    this.the9,
+    this.the10,
+    this.businessName,
+    this.testingCustomer,
+    this.whoDidYouMeetWith,
+    this.mail,
+    this.september,
+    this.test1,
+    this.phoneNumber,
+    this.test5,
+    this.test2,
+    this.testingAugust,
+    this.aungSoeOo,
+    this.test4,
+    this.testingSsso,
+    this.test65,
+    this.test7,
+    this.testSoe,
+    this.testtt88,
+  });
+
+  factory CustomFieldsByLabel.fromJson(Map<String, dynamic> json) => CustomFieldsByLabel(
+    the8: json["8"],
+    the9: json["9"],
+    the10: json["10"],
+    businessName: json["Business Name"],
+    testingCustomer: json["Testing customer"],
+    whoDidYouMeetWith: json["Who did you meet with?"],
+    mail: json["mail"],
+    september: json["September"],
+    test1: json["Test 1"],
+    phoneNumber: json["Phone Number"],
+    test5: json["test 5"],
+    test2: json["test 2"],
+    testingAugust: json["testing august"],
+    aungSoeOo: json["Aung Soe Oo"],
+    test4: json["test 4"],
+    testingSsso: json["testing ssso"],
+    test65: json["test 65"],
+    test7: json["test 7"],
+    testSoe: json["Test soe"],
+    testtt88: json["Testtt88"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "8": the8,
+    "9": the9,
+    "10": the10,
+    "Business Name": businessName,
+    "Testing customer": testingCustomer,
+    "Who did you meet with?": whoDidYouMeetWith,
+    "mail": mail,
+    "September": september,
+    "Test 1": test1,
+    "Phone Number": phoneNumber,
+    "test 5": test5,
+    "test 2": test2,
+    "testing august": testingAugust,
+    "Aung Soe Oo": aungSoeOo,
+    "test 4": test4,
+    "testing ssso": testingSsso,
+    "test 65": test65,
+    "test 7": test7,
+    "Test soe": testSoe,
+    "Testtt88": testtt88,
+  };
+}
+
+class FieldsByLabel {
+  dynamic the8;
+  dynamic the9;
+  dynamic the10;
+  String? companyName;
+  String? campaign;
+  String? customerName;
+  String? contactEmail;
+  dynamic phoneNumber;
+  String? title;
+  String? type;
+  String? funnelStage;
+  String? channel;
+  String? country;
+  dynamic address;
+  dynamic paymentStage;
+  String? currency;
+  String? estimatedRevenue;
+  dynamic estimatedProbability;
+  dynamic note;
+  String? status;
+  dynamic meetingType;
+  dynamic meetingDue;
+  dynamic proposalDue;
+  dynamic startDate;
+  dynamic endDate;
+  dynamic closedDate;
+  String? meetingNoteParticipantList;
+  String? nextStep;
+  dynamic businessName;
+  dynamic testingCustomer;
+  dynamic whoDidYouMeetWith;
+  dynamic mail;
+  dynamic september;
+  dynamic test1;
+  dynamic test5;
+  dynamic test2;
+  dynamic testingAugust;
+  dynamic aungSoeOo;
+  dynamic test4;
+  dynamic testingSsso;
+  dynamic test65;
+  dynamic test7;
+  dynamic testSoe;
+  dynamic testtt88;
+
+  FieldsByLabel({
+    this.the8,
+    this.the9,
+    this.the10,
+    this.companyName,
+    this.campaign,
+    this.customerName,
+    this.contactEmail,
+    this.phoneNumber,
+    this.title,
+    this.type,
+    this.funnelStage,
+    this.channel,
+    this.country,
+    this.address,
+    this.paymentStage,
+    this.currency,
+    this.estimatedRevenue,
+    this.estimatedProbability,
+    this.note,
+    this.status,
+    this.meetingType,
+    this.meetingDue,
+    this.proposalDue,
+    this.startDate,
+    this.endDate,
+    this.closedDate,
+    this.meetingNoteParticipantList,
+    this.nextStep,
+    this.businessName,
+    this.testingCustomer,
+    this.whoDidYouMeetWith,
+    this.mail,
+    this.september,
+    this.test1,
+    this.test5,
+    this.test2,
+    this.testingAugust,
+    this.aungSoeOo,
+    this.test4,
+    this.testingSsso,
+    this.test65,
+    this.test7,
+    this.testSoe,
+    this.testtt88,
+  });
+
+  factory FieldsByLabel.fromJson(Map<String, dynamic> json) => FieldsByLabel(
+    the8: json["8"],
+    the9: json["9"],
+    the10: json["10"],
+    companyName: json["Company Name"],
+    campaign: json["Campaign"],
+    customerName: json["Customer Name"],
+    contactEmail: json["Contact Email"],
+    phoneNumber: json["Phone Number"],
+    title: json["Title"],
+    type: json["Type"],
+    funnelStage: json["Funnel Stage"],
+    channel: json["Channel"],
+    country: json["Country"],
+    address: json["Address"],
+    paymentStage: json["Payment Stage"],
+    currency: json["Currency"],
+    estimatedRevenue: json["Estimated Revenue"],
+    estimatedProbability: json["Estimated Probability"],
+    note: json["Note"],
+    status: json["Status"],
+    meetingType: json["Meeting Type"],
+    meetingDue: json["Meeting Due"],
+    proposalDue: json["Proposal Due"],
+    startDate: json["Start Date"],
+    endDate: json["End Date"],
+    closedDate: json["Closed Date"],
+    meetingNoteParticipantList: json["Meeting Note / Participant List"],
+    nextStep: json["Next Step"],
+    businessName: json["Business Name"],
+    testingCustomer: json["Testing customer"],
+    whoDidYouMeetWith: json["Who did you meet with?"],
+    mail: json["mail"],
+    september: json["September"],
+    test1: json["Test 1"],
+    test5: json["test 5"],
+    test2: json["test 2"],
+    testingAugust: json["testing august"],
+    aungSoeOo: json["Aung Soe Oo"],
+    test4: json["test 4"],
+    testingSsso: json["testing ssso"],
+    test65: json["test 65"],
+    test7: json["test 7"],
+    testSoe: json["Test soe"],
+    testtt88: json["Testtt88"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "8": the8,
+    "9": the9,
+    "10": the10,
+    "Company Name": companyName,
+    "Campaign": campaign,
+    "Customer Name": customerName,
+    "Contact Email": contactEmail,
+    "Phone Number": phoneNumber,
+    "Title": title,
+    "Type": type,
+    "Funnel Stage": funnelStage,
+    "Channel": channel,
+    "Country": country,
+    "Address": address,
+    "Payment Stage": paymentStage,
+    "Currency": currency,
+    "Estimated Revenue": estimatedRevenue,
+    "Estimated Probability": estimatedProbability,
+    "Note": note,
+    "Status": status,
+    "Meeting Type": meetingType,
+    "Meeting Due": meetingDue,
+    "Proposal Due": proposalDue,
+    "Start Date": startDate,
+    "End Date": endDate,
+    "Closed Date": closedDate,
+    "Meeting Note / Participant List": meetingNoteParticipantList,
+    "Next Step": nextStep,
+    "Business Name": businessName,
+    "Testing customer": testingCustomer,
+    "Who did you meet with?": whoDidYouMeetWith,
+    "mail": mail,
+    "September": september,
+    "Test 1": test1,
+    "test 5": test5,
+    "test 2": test2,
+    "testing august": testingAugust,
+    "Aung Soe Oo": aungSoeOo,
+    "test 4": test4,
+    "testing ssso": testingSsso,
+    "test 65": test65,
+    "test 7": test7,
+    "Test soe": testSoe,
+    "Testtt88": testtt88,
+  };
+}
+
+class LabeledField {
+  String? key;
+  String? label;
+  String? value;
+  String? type;
+
+  LabeledField({
+    this.key,
+    this.label,
+    this.value,
+    this.type,
+  });
+
+  factory LabeledField.fromJson(Map<String, dynamic> json) => LabeledField(
+    key: json["key"],
+    label: json["label"],
+    value: json["value"],
+    type: json["type"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "key": key,
+    "label": label,
+    "value": value,
+    "type": type,
   };
 }
