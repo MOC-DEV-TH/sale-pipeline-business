@@ -88,6 +88,7 @@ class LeadVO {
   dynamic source;
   dynamic updatedAt;
   dynamic closedDate;
+  dynamic createdAt;
 
   LeadVO({
     this.lid,
@@ -108,7 +109,8 @@ class LeadVO {
     this.bizType,
     this.source,
     this.updatedAt,
-    this.closedDate
+    this.closedDate,
+    this.createdAt
   });
 
   factory LeadVO.fromJson(Map<String, dynamic> json) => LeadVO(
@@ -138,6 +140,7 @@ class LeadVO {
     source: json["source"],
     updatedAt: json["updated_at"],
     closedDate: json["closed_date"],
+    createdAt: json["created_at"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -167,6 +170,7 @@ class LeadVO {
     "source": source,
     "updated_at": updatedAt,
     "closed_date": closedDate,
+    "created_at": createdAt,
   };
 }
 

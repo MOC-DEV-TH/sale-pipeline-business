@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:sale_pipeline_business/features/leads/widgets/lead_detail/remove_log_confirm_dialog.dart';
 import '../../../../utils/app_snackbar.dart';
 import '../../controller/leads_controller.dart';
@@ -57,9 +58,7 @@ class ActivityTab extends ConsumerWidget {
                   description: activity.description ?? '-',
                   participants: _participantNames(activity),
                   creatorName: activity.creatorName ?? '-',
-                  dateTime:
-                      activity.activityAtLocal ??
-                      _formatDateTime(activity.activityAt),
+                  dateTime: formatDateTime(activity.createdAt),
 
                   onMoreTap: () {
                     showLeadLogOptionSheet(
@@ -100,21 +99,14 @@ class ActivityTab extends ConsumerWidget {
         .join(', ');
   }
 
-  String _formatDateTime(DateTime? date) {
-    if (date == null) {
+  String formatDateTime(DateTime? dateTime) {
+    if (dateTime == null) {
       return '-';
     }
 
-    final local = date.toLocal();
-
-    final day = local.day.toString().padLeft(2, '0');
-    final month = local.month.toString().padLeft(2, '0');
-
-    final hour = local.hour.toString().padLeft(2, '0');
-
-    final minute = local.minute.toString().padLeft(2, '0');
-
-    return '$day/$month/${local.year} $hour:$minute';
+    return DateFormat('d MMM yyyy, h:mm a').format(
+      dateTime.toLocal(),
+    );
   }
 
   Future<void> _editActivity(

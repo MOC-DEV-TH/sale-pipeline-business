@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:sale_pipeline_business/features/leads/widgets/lead_detail/remove_log_confirm_dialog.dart';
 
 import '../../../../utils/app_snackbar.dart';
@@ -59,9 +60,7 @@ class ReminderTab extends ConsumerWidget {
 
                   creatorName: reminder.creatorName ?? '-',
 
-                  dateTime:
-                      reminder.remindAtLocal ??
-                      _formatDateTime(reminder.remindAt),
+                  dateTime: formatDateTime(reminder.createdAt),
 
                   showReminderIcon: true,
 
@@ -74,7 +73,7 @@ class ReminderTab extends ConsumerWidget {
                       removeSuccessMessage: 'Reminder removed successfully',
 
                       onEdit: () {
-                        _editReminder(context,ref, reminder);
+                        _editReminder(context, ref, reminder);
                       },
 
                       onRemove: () {
@@ -104,31 +103,20 @@ class ReminderTab extends ConsumerWidget {
         .join(', ');
   }
 
-  String _formatDateTime(DateTime? date) {
-    if (date == null) {
+  String formatDateTime(DateTime? dateTime) {
+    if (dateTime == null) {
       return '-';
     }
 
-    final local = date.toLocal();
-
-    final day = local.day.toString().padLeft(2, '0');
-
-    final month = local.month.toString().padLeft(2, '0');
-
-    final hour = local.hour.toString().padLeft(2, '0');
-
-    final minute = local.minute.toString().padLeft(2, '0');
-
-    return '$day/$month/${local.year} $hour:$minute';
+    return DateFormat('d MMM yyyy, h:mm a').format(dateTime.toLocal());
   }
 
   Future<void> _editReminder(
-      BuildContext context,
-      WidgetRef ref,
-      LeadReminderVO reminder,
-      ) async {
-    final updated =
-    await Navigator.of(context).push<bool>(
+    BuildContext context,
+    WidgetRef ref,
+    LeadReminderVO reminder,
+  ) async {
+    final updated = await Navigator.of(context).push<bool>(
       MaterialPageRoute(
         builder: (_) => EditReminderPage(
           reminder: reminder,
@@ -139,11 +127,7 @@ class ReminderTab extends ConsumerWidget {
     );
 
     if (updated == true) {
-      ref.invalidate(
-        leadRemindersProvider(
-          leadId: leadId,
-        ),
-      );
+      ref.invalidate(leadRemindersProvider(leadId: leadId));
     }
   }
 

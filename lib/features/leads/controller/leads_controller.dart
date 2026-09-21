@@ -1,8 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sale_pipeline_business/features/leads/data/leads_repository.dart';
 
-import '../../../network/model/default_network_response.dart';
-
 part 'leads_controller.g.dart';
 
 @riverpod
@@ -10,22 +8,25 @@ class LeadsController extends _$LeadsController {
   @override
   FutureOr<void> build() {}
 
-  Future<DefaultNetworkResponse?> updateLead({
+  Future<bool> updateLead({
+    required int leadId,
     required Map<String, dynamic> payload,
   }) async {
-    state = const AsyncValue.loading();
+    state = const AsyncLoading();
 
-    final repo = ref.read(leadsRepositoryProvider);
+    try {
+      await ref
+          .read(leadsRepositoryProvider)
+          .updateLead(leadId: leadId, payload: payload);
 
-    final result = await AsyncValue.guard<DefaultNetworkResponse>(() {
-      return repo.updateLead(payload: payload);
-    });
+      state = const AsyncData(null);
 
-    state = result.hasError
-        ? AsyncValue.error(result.error!, result.stackTrace!)
-        : const AsyncValue.data(null);
+      return true;
+    } catch (e, stackTrace) {
+      state = AsyncError(e, stackTrace);
 
-    return result.valueOrNull;
+      return false;
+    }
   }
 
   Future<bool> deleteLead({required int leadId}) async {

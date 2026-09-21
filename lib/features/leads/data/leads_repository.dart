@@ -11,6 +11,7 @@ import '../../../network/api_constants.dart';
 import '../../../network/dio_provider.dart';
 import '../../../network/error_handler.dart';
 import '../../../network/model/default_network_response.dart';
+import '../../new_lead_step_page/model/lead_form_config_response.dart';
 
 part 'leads_repository.g.dart';
 
@@ -27,19 +28,6 @@ class LeadsRepository {
       final response = await dio.get("$kEndPointLeadDetailByLeadId/$leadId");
 
       return LeadDetailsResponse.fromJson(response.data);
-    } on DioException catch (e) {
-      throw e.response?.data["message"] ??
-          ErrorHandler.handle(e).failure.message;
-    }
-  }
-
-  Future<DefaultNetworkResponse> updateLead({
-    required Map<String, dynamic> payload,
-  }) async {
-    try {
-      final response = await dio.post(kEndPointUpdateLead, data: payload);
-
-      return DefaultNetworkResponse.fromJson(response.data);
     } on DioException catch (e) {
       throw e.response?.data["message"] ??
           ErrorHandler.handle(e).failure.message;
@@ -359,6 +347,63 @@ class LeadsRepository {
   }
 
   /// =========================================================
+  /// GET EDIT LEAD FORM CONFIG
+  /// =========================================================
+
+  Future<LeadFormConfigResponse> getEditLeadFormConfig({
+    required int leadId,
+  }) async {
+    try {
+      final response = await dio.get('leads/$leadId/edit-form-config');
+
+      return LeadFormConfigResponse.fromJson(response.data);
+    } on DioException catch (e) {
+      final data = e.response?.data;
+
+      if (data is Map<String, dynamic>) {
+        throw data['message']?.toString() ??
+            ErrorHandler.handle(e).failure.message;
+      }
+
+      throw ErrorHandler.handle(e).failure.message;
+    }
+  }
+
+  /// =========================================================
+  /// UPDATE LEAD
+  /// =========================================================
+
+  Future<DefaultNetworkResponse> updateLead({
+    required int leadId,
+    required Map<String, dynamic> payload,
+  }) async {
+    try {
+      final response = await dio.patch('leads/$leadId', data: payload);
+
+      return DefaultNetworkResponse.fromJson(response.data);
+    } on DioException catch (e) {
+      final data = e.response?.data;
+
+      if (data is Map<String, dynamic>) {
+        final errors = data['errors'];
+
+        if (errors is Map<String, dynamic>) {
+          for (final value in errors.values) {
+            if (value is List && value.isNotEmpty) {
+              throw value.first.toString();
+            }
+          }
+        }
+
+        throw data['message']?.toString() ??
+            ErrorHandler.handle(e).failure.message;
+      }
+
+      throw ErrorHandler.handle(e).failure.message;
+    }
+  }
+
+  /// =========================================================
   /// GET ERROR MESSAGE
   /// =========================================================
 
@@ -438,4 +483,14 @@ Future<ParticipantsResponse> leadParticipants(
   required int leadId,
 }) {
   return ref.watch(leadsRepositoryProvider).getLeadParticipants(leadId: leadId);
+}
+
+@riverpod
+Future<LeadFormConfigResponse> editLeadFormConfig(
+  EditLeadFormConfigRef ref, {
+  required int leadId,
+}) {
+  return ref
+      .watch(leadsRepositoryProvider)
+      .getEditLeadFormConfig(leadId: leadId);
 }

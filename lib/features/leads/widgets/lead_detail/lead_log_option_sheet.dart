@@ -36,7 +36,7 @@ Future<void> showLeadLogOptionSheet({
                       child: Text(
                         title,
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: Colors.white54,
                           fontSize: 17,
                         ),
                       ),

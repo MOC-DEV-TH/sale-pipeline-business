@@ -360,7 +360,7 @@ class LeadCard extends StatelessWidget {
                   const SizedBox(width: 12),
 
                   Text(
-                    _formatDateTime(lead.updatedAt ?? '-'),
+                    _formatDateTime(lead.createdAt ?? '-'),
                     style: const TextStyle(color: Colors.white, fontSize: 12),
                   ),
                 ],
@@ -495,12 +495,11 @@ class _InfoRow extends StatelessWidget {
       mainAxisAlignment: rightAligned
           ? MainAxisAlignment.end
           : MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Flexible(
           child: Text(
             label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               color: Color(0xFFD5DDD8),
               fontSize: 14,
@@ -514,9 +513,9 @@ class _InfoRow extends StatelessWidget {
         Flexible(
           child: Text(
             value,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: rightAligned ? TextAlign.right : TextAlign.left,
+            textAlign: rightAligned
+                ? TextAlign.right
+                : TextAlign.left,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 14,

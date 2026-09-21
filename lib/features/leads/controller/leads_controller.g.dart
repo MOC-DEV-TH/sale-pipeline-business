@@ -6,7 +6,7 @@ part of 'leads_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$leadsControllerHash() => r'1293f710c36f8053571804b024b64cf5c5c682fb';
+String _$leadsControllerHash() => r'45c73193b156017ee171fbe564a9a4b2054b20ab';
 
 /// See also [LeadsController].
 @ProviderFor(LeadsController)

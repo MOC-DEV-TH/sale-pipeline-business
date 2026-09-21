@@ -473,6 +473,9 @@ class _NewLeadStepPageState extends ConsumerState<NewLeadStepPage> {
     /// success step.
     final indicatorCurrent = safeCurrentStep.clamp(0, visibleSteps.length - 1);
 
+    final isLastIndicatorStep =
+        indicatorCurrent == visibleSteps.length - 1;
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(22, 28, 22, 22),
       child: Column(
@@ -544,7 +547,9 @@ class _NewLeadStepPageState extends ConsumerState<NewLeadStepPage> {
           /// =================================================
           /// Skip
           /// =================================================
-          if (step.showSkip && step.type != StepType.success) ...[
+          if (step.showSkip &&
+              step.type != StepType.success &&
+              !isLastIndicatorStep) ...[
             const SizedBox(height: 18),
 
             GestureDetector(

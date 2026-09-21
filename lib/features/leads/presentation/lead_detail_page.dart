@@ -13,6 +13,7 @@ import '../widgets/lead_detail/lead_detail_body.dart';
 import '../widgets/lead_detail/lead_detail_header.dart' show Header;
 import 'create_activity_page.dart';
 import 'create_reminder_page.dart';
+import 'edit_lead_page.dart';
 
 class LeadDetailPage extends ConsumerStatefulWidget {
   const LeadDetailPage({super.key, required this.uid, required this.leadId});
@@ -114,8 +115,30 @@ class _LeadDetailPageState extends ConsumerState<LeadDetailPage> {
                             });
                           },
 
-                          onEdit: () async {},
+                          ///ON EDIT
+                          onEdit: () async {
+                            final updated =
+                            await Navigator.of(context).push<bool>(
+                              MaterialPageRoute(
+                                builder: (_) => EditLeadPage(
+                                  leadId: _leadId,
+                                ),
+                              ),
+                            );
 
+                            if (updated == true) {
+                              ref.invalidate(
+                                fetchLeadDetailProvider(
+                                  leadId: _leadId,
+                                ),
+                              );
+
+                              ref.invalidate(fetchLeadsByOrganizationIDProvider);
+
+                            }
+                          },
+
+                          ///ON ACTIVITY
                           onActivity: () async {
                             final updated = await Navigator.of(context)
                                 .push<bool>(
@@ -135,6 +158,7 @@ class _LeadDetailPageState extends ConsumerState<LeadDetailPage> {
                             }
                           },
 
+                          ///ON REMINDER
                           onReminder: () async {
                             final updated = await Navigator.of(context)
                                 .push<bool>(
@@ -154,6 +178,7 @@ class _LeadDetailPageState extends ConsumerState<LeadDetailPage> {
                             }
                           },
 
+                          ///ON DELETE
                           onDelete: () async {
                             await _deleteLead(lead);
                           },

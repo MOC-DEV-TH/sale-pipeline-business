@@ -71,6 +71,7 @@ class LeadFormStepVO {
   bool? showSkip;
   List<dynamic>? options;
   List<LeadFormFieldVO>? fields;
+  dynamic selectedValue;
 
   LeadFormStepVO({
     this.key,
@@ -79,6 +80,7 @@ class LeadFormStepVO {
     this.showSkip,
     this.options,
     this.fields,
+    this.selectedValue
   });
 
   factory LeadFormStepVO.fromJson(
@@ -89,6 +91,7 @@ class LeadFormStepVO {
         title: json["title"],
         type: json["type"],
         showSkip: json["show_skip"],
+        selectedValue: json["selected_value"],
         options: json["options"] == null
             ? []
             : List<dynamic>.from(json["options"]),
@@ -107,6 +110,7 @@ class LeadFormStepVO {
     "type": type,
     "show_skip": showSkip,
     "options": options ?? [],
+    "selected_value": selectedValue,
     "fields": fields == null
         ? []
         : List<dynamic>.from(
@@ -132,6 +136,7 @@ class LeadFormFieldVO {
   ///   {"id": 11, "label": "Anna Myat"}
   /// ]
   List<dynamic>? options;
+  dynamic selectedValue;
 
   LeadFormFieldVO({
     this.key,
@@ -140,6 +145,7 @@ class LeadFormFieldVO {
     this.required,
     this.multiple,
     this.options,
+    this.selectedValue
   });
 
   factory LeadFormFieldVO.fromJson(
@@ -154,6 +160,7 @@ class LeadFormFieldVO {
         options: json["options"] == null
             ? []
             : List<dynamic>.from(json["options"]),
+        selectedValue: json["selected_value"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -163,6 +170,7 @@ class LeadFormFieldVO {
     "required": required,
     "multiple": multiple,
     "options": options ?? [],
+    "selected_value": selectedValue,
   };
 
   /// Returns dropdown options in a consistent format.

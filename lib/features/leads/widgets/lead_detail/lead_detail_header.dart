@@ -17,8 +17,8 @@ class Header extends StatelessWidget {
             onTap: onBack,
             borderRadius: BorderRadius.circular(50),
             child: Container(
-              width: 58,
-              height: 58,
+              width: 45,
+              height: 45,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: const Color(0xFF0B341F),

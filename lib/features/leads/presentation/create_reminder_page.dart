@@ -111,7 +111,7 @@ class _CreateReminderPageState
 
                   /// Date & Time
                   ActivityFormField(
-                    label: 'Date & Time',
+                    label: 'Remind At',
                     required: true,
                     controller: dateController,
                     hint: 'dd/mm/yyyy H:m',
@@ -234,7 +234,7 @@ class _CreateReminderPageState
                       }
 
                       return UserMultiSelectField(
-                        label: 'Assignee',
+                        label: 'Participants',
                         required: true,
                         users: participants,
                         selectedUsers:

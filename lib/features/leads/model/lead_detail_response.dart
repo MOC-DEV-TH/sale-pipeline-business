@@ -1,3 +1,7 @@
+// To parse this JSON data, do
+//
+//     final leadDetailsResponse = leadDetailsResponseFromJson(jsonString);
+
 import 'dart:convert';
 
 LeadDetailsResponse leadDetailsResponseFromJson(String str) => LeadDetailsResponse.fromJson(json.decode(str));
@@ -40,20 +44,20 @@ class LeadDetailData {
   String? source;
   String? division;
   String? township;
-  dynamic address;
-  dynamic product;
+  String? address;
+  String? product;
   String? package;
   String? packageTotal;
   dynamic discount;
-  dynamic note;
+  String? note;
   String? status;
-  dynamic channel;
+  String? channel;
   dynamic installationAppointment;
-  dynamic estContractDate;
-  dynamic estStartDate;
-  dynamic followupDate;
-  dynamic followUpDate;
-  dynamic estFollowUpDate;
+  DateTime? estContractDate;
+  DateTime? estStartDate;
+  DateTime? followupDate;
+  DateTime? followUpDate;
+  DateTime? estFollowUpDate;
   dynamic closedDate;
   bool? isReferral;
   String? meetingNote;
@@ -70,6 +74,7 @@ class LeadDetailData {
   CustomFieldsByLabel? customFieldsByLabel;
   FieldsByLabel? fieldsByLabel;
   List<LabeledField>? labeledFields;
+  List<Section>? sections;
 
   LeadDetailData({
     this.lid,
@@ -117,6 +122,7 @@ class LeadDetailData {
     this.customFieldsByLabel,
     this.fieldsByLabel,
     this.labeledFields,
+    this.sections,
   });
 
   factory LeadDetailData.fromJson(Map<String, dynamic> json) => LeadDetailData(
@@ -144,11 +150,11 @@ class LeadDetailData {
     status: json["status"],
     channel: json["channel"],
     installationAppointment: json["installation_appointment"],
-    estContractDate: json["est_contract_date"],
-    estStartDate: json["est_start_date"],
-    followupDate: json["followup_date"],
-    followUpDate: json["follow_up_date"],
-    estFollowUpDate: json["est_follow_up_date"],
+    estContractDate: json["est_contract_date"] == null ? null : DateTime.parse(json["est_contract_date"]),
+    estStartDate: json["est_start_date"] == null ? null : DateTime.parse(json["est_start_date"]),
+    followupDate: json["followup_date"] == null ? null : DateTime.parse(json["followup_date"]),
+    followUpDate: json["follow_up_date"] == null ? null : DateTime.parse(json["follow_up_date"]),
+    estFollowUpDate: json["est_follow_up_date"] == null ? null : DateTime.parse(json["est_follow_up_date"]),
     closedDate: json["closed_date"],
     isReferral: json["is_referral"],
     meetingNote: json["meeting_note"],
@@ -165,6 +171,7 @@ class LeadDetailData {
     customFieldsByLabel: json["custom_fields_by_label"] == null ? null : CustomFieldsByLabel.fromJson(json["custom_fields_by_label"]),
     fieldsByLabel: json["fields_by_label"] == null ? null : FieldsByLabel.fromJson(json["fields_by_label"]),
     labeledFields: json["labeled_fields"] == null ? [] : List<LabeledField>.from(json["labeled_fields"]!.map((x) => LabeledField.fromJson(x))),
+    sections: json["sections"] == null ? [] : List<Section>.from(json["sections"]!.map((x) => Section.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -192,11 +199,11 @@ class LeadDetailData {
     "status": status,
     "channel": channel,
     "installation_appointment": installationAppointment,
-    "est_contract_date": estContractDate,
-    "est_start_date": estStartDate,
-    "followup_date": followupDate,
-    "follow_up_date": followUpDate,
-    "est_follow_up_date": estFollowUpDate,
+    "est_contract_date": estContractDate == null ? null : "${estContractDate!.year.toString().padLeft(4, '0')}-${estContractDate!.month.toString().padLeft(2, '0')}-${estContractDate!.day.toString().padLeft(2, '0')}",
+    "est_start_date": estStartDate == null ? null : "${estStartDate!.year.toString().padLeft(4, '0')}-${estStartDate!.month.toString().padLeft(2, '0')}-${estStartDate!.day.toString().padLeft(2, '0')}",
+    "followup_date": followupDate == null ? null : "${followupDate!.year.toString().padLeft(4, '0')}-${followupDate!.month.toString().padLeft(2, '0')}-${followupDate!.day.toString().padLeft(2, '0')}",
+    "follow_up_date": followUpDate == null ? null : "${followUpDate!.year.toString().padLeft(4, '0')}-${followUpDate!.month.toString().padLeft(2, '0')}-${followUpDate!.day.toString().padLeft(2, '0')}",
+    "est_follow_up_date": estFollowUpDate == null ? null : "${estFollowUpDate!.year.toString().padLeft(4, '0')}-${estFollowUpDate!.month.toString().padLeft(2, '0')}-${estFollowUpDate!.day.toString().padLeft(2, '0')}",
     "closed_date": closedDate,
     "is_referral": isReferral,
     "meeting_note": meetingNote,
@@ -213,6 +220,7 @@ class LeadDetailData {
     "custom_fields_by_label": customFieldsByLabel?.toJson(),
     "fields_by_label": fieldsByLabel?.toJson(),
     "labeled_fields": labeledFields == null ? [] : List<dynamic>.from(labeledFields!.map((x) => x.toJson())),
+    "sections": sections == null ? [] : List<dynamic>.from(sections!.map((x) => x.toJson())),
   };
 }
 
@@ -414,18 +422,18 @@ class FieldsByLabel {
   String? funnelStage;
   String? channel;
   String? country;
-  dynamic address;
-  dynamic paymentStage;
+  String? address;
+  String? paymentStage;
   String? currency;
   String? estimatedRevenue;
   dynamic estimatedProbability;
-  dynamic note;
+  String? note;
   String? status;
-  dynamic meetingType;
+  String? meetingType;
   dynamic meetingDue;
-  dynamic proposalDue;
-  dynamic startDate;
-  dynamic endDate;
+  DateTime? proposalDue;
+  DateTime? startDate;
+  DateTime? endDate;
   dynamic closedDate;
   String? meetingNoteParticipantList;
   String? nextStep;
@@ -516,9 +524,9 @@ class FieldsByLabel {
     status: json["Status"],
     meetingType: json["Meeting Type"],
     meetingDue: json["Meeting Due"],
-    proposalDue: json["Proposal Due"],
-    startDate: json["Start Date"],
-    endDate: json["End Date"],
+    proposalDue: json["Proposal Due"] == null ? null : DateTime.parse(json["Proposal Due"]),
+    startDate: json["Start Date"] == null ? null : DateTime.parse(json["Start Date"]),
+    endDate: json["End Date"] == null ? null : DateTime.parse(json["End Date"]),
     closedDate: json["Closed Date"],
     meetingNoteParticipantList: json["Meeting Note / Participant List"],
     nextStep: json["Next Step"],
@@ -563,9 +571,9 @@ class FieldsByLabel {
     "Status": status,
     "Meeting Type": meetingType,
     "Meeting Due": meetingDue,
-    "Proposal Due": proposalDue,
-    "Start Date": startDate,
-    "End Date": endDate,
+    "Proposal Due": proposalDue == null ? null : "${proposalDue!.year.toString().padLeft(4, '0')}-${proposalDue!.month.toString().padLeft(2, '0')}-${proposalDue!.day.toString().padLeft(2, '0')}",
+    "Start Date": startDate == null ? null : "${startDate!.year.toString().padLeft(4, '0')}-${startDate!.month.toString().padLeft(2, '0')}-${startDate!.day.toString().padLeft(2, '0')}",
+    "End Date": endDate == null ? null : "${endDate!.year.toString().padLeft(4, '0')}-${endDate!.month.toString().padLeft(2, '0')}-${endDate!.day.toString().padLeft(2, '0')}",
     "Closed Date": closedDate,
     "Meeting Note / Participant List": meetingNoteParticipantList,
     "Next Step": nextStep,
@@ -592,12 +600,16 @@ class LabeledField {
   String? key;
   String? label;
   String? value;
+  String? selectedValue;
+  List<String>? options;
   String? type;
 
   LabeledField({
     this.key,
     this.label,
     this.value,
+    this.selectedValue,
+    this.options,
     this.type,
   });
 
@@ -605,6 +617,8 @@ class LabeledField {
     key: json["key"],
     label: json["label"],
     value: json["value"],
+    selectedValue: json["selected_value"],
+    options: json["options"] == null ? [] : List<String>.from(json["options"]!.map((x) => x)),
     type: json["type"],
   );
 
@@ -612,6 +626,64 @@ class LabeledField {
     "key": key,
     "label": label,
     "value": value,
+    "selected_value": selectedValue,
+    "options": options == null ? [] : List<dynamic>.from(options!.map((x) => x)),
     "type": type,
+  };
+}
+
+class Section {
+  String? key;
+  String? title;
+  List<Field>? fields;
+
+  Section({
+    this.key,
+    this.title,
+    this.fields,
+  });
+
+  factory Section.fromJson(Map<String, dynamic> json) => Section(
+    key: json["key"],
+    title: json["title"],
+    fields: json["fields"] == null ? [] : List<Field>.from(json["fields"]!.map((x) => Field.fromJson(x))),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "key": key,
+    "title": title,
+    "fields": fields == null ? [] : List<dynamic>.from(fields!.map((x) => x.toJson())),
+  };
+}
+
+class Field {
+  String? key;
+  String? label;
+  String? type;
+  String? value;
+  String? display;
+
+  Field({
+    this.key,
+    this.label,
+    this.type,
+    this.value,
+    this.display,
+  });
+
+  factory Field.fromJson(Map<String, dynamic> json) => Field(
+    key: json["key"],
+    label: json["label"],
+    type: json["type"],
+    value: json["value"],
+    display: json["display"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "key": key,
+    "label": label,
+    "type": type,
+    "value": value,
+    "display": display,
   };
 }

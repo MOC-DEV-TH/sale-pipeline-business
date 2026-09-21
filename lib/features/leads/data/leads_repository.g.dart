@@ -757,5 +757,131 @@ class _LeadParticipantsProviderElement
   int get leadId => (origin as LeadParticipantsProvider).leadId;
 }
 
+String _$editLeadFormConfigHash() =>
+    r'2608542c532268b0b89bf54127a606a330c05af7';
+
+/// See also [editLeadFormConfig].
+@ProviderFor(editLeadFormConfig)
+const editLeadFormConfigProvider = EditLeadFormConfigFamily();
+
+/// See also [editLeadFormConfig].
+class EditLeadFormConfigFamily
+    extends Family<AsyncValue<LeadFormConfigResponse>> {
+  /// See also [editLeadFormConfig].
+  const EditLeadFormConfigFamily();
+
+  /// See also [editLeadFormConfig].
+  EditLeadFormConfigProvider call({required int leadId}) {
+    return EditLeadFormConfigProvider(leadId: leadId);
+  }
+
+  @override
+  EditLeadFormConfigProvider getProviderOverride(
+    covariant EditLeadFormConfigProvider provider,
+  ) {
+    return call(leadId: provider.leadId);
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'editLeadFormConfigProvider';
+}
+
+/// See also [editLeadFormConfig].
+class EditLeadFormConfigProvider
+    extends AutoDisposeFutureProvider<LeadFormConfigResponse> {
+  /// See also [editLeadFormConfig].
+  EditLeadFormConfigProvider({required int leadId})
+    : this._internal(
+        (ref) =>
+            editLeadFormConfig(ref as EditLeadFormConfigRef, leadId: leadId),
+        from: editLeadFormConfigProvider,
+        name: r'editLeadFormConfigProvider',
+        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+            ? null
+            : _$editLeadFormConfigHash,
+        dependencies: EditLeadFormConfigFamily._dependencies,
+        allTransitiveDependencies:
+            EditLeadFormConfigFamily._allTransitiveDependencies,
+        leadId: leadId,
+      );
+
+  EditLeadFormConfigProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.leadId,
+  }) : super.internal();
+
+  final int leadId;
+
+  @override
+  Override overrideWith(
+    FutureOr<LeadFormConfigResponse> Function(EditLeadFormConfigRef provider)
+    create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: EditLeadFormConfigProvider._internal(
+        (ref) => create(ref as EditLeadFormConfigRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        leadId: leadId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<LeadFormConfigResponse> createElement() {
+    return _EditLeadFormConfigProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is EditLeadFormConfigProvider && other.leadId == leadId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, leadId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin EditLeadFormConfigRef
+    on AutoDisposeFutureProviderRef<LeadFormConfigResponse> {
+  /// The parameter `leadId` of this provider.
+  int get leadId;
+}
+
+class _EditLeadFormConfigProviderElement
+    extends AutoDisposeFutureProviderElement<LeadFormConfigResponse>
+    with EditLeadFormConfigRef {
+  _EditLeadFormConfigProviderElement(super.provider);
+
+  @override
+  int get leadId => (origin as EditLeadFormConfigProvider).leadId;
+}
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

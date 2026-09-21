@@ -111,7 +111,7 @@ class _EditReminderPageState extends ConsumerState<EditReminderPage> {
                   const SizedBox(height: 20),
 
                   ActivityFormField(
-                    label: 'Date & Time',
+                    label: 'Remind At',
                     required: true,
                     controller: dateController,
                     hint: 'dd/mm/yyyy H:m',
@@ -150,7 +150,7 @@ class _EditReminderPageState extends ConsumerState<EditReminderPage> {
                       _initializeParticipants(participants);
 
                       return UserMultiSelectField(
-                        label: 'Assignee',
+                        label: 'Participants',
                         required: true,
                         users: participants,
                         selectedUsers: selectedAssignees,

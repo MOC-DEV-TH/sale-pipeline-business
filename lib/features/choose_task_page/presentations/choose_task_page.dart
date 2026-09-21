@@ -34,29 +34,48 @@ class _ChooseTaskPageState extends ConsumerState<ChooseTaskPage> {
         child: Stack(
           children: [
             Positioned.fill(
-              child: Image.asset(kBgPatternImage, fit: BoxFit.cover),
+              child: Image.asset(
+                kBgPatternImage,
+                fit: BoxFit.cover,
+              ),
             ),
 
             SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(28, 42, 28, 34),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.fromLTRB(
+                  28,
+                  30,
+                  28,
+                  34,
+                ),
                 child: Column(
                   children: [
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment:
+                      CrossAxisAlignment.center,
                       children: [
                         const Text(
                           'Welcome to',
-                          style: TextStyle(color: Colors.white70, fontSize: 24),
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 24,
+                          ),
                         ),
-                        Image.asset(kLogoImage, width: 270, height: 66),
+
+                        Image.asset(
+                          kLogoImage,
+                          width: 270,
+                          height: 66,
+                        ),
                       ],
                     ),
 
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 20),
 
                     const Text(
-                      'Manage your customers\nand stay on top of your workflow',
+                      'Manage your customers\n'
+                          'and stay on top of your workflow',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white70,
@@ -65,18 +84,21 @@ class _ChooseTaskPageState extends ConsumerState<ChooseTaskPage> {
                       ),
                     ),
 
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 30),
 
                     SizedBox(
-                      width: 290,
-                      height: 290,
-                      child: Image.asset(kTargetImage, fit: BoxFit.contain),
+                      width: 250,
+                      height: 250,
+                      child: Image.asset(
+                        kTargetImage,
+                        fit: BoxFit.contain,
+                      ),
                     ),
 
-                    const Spacer(),
+                    const SizedBox(height: 35),
 
                     const Text(
-                      'Choose your task!',
+                      'Choose your Org!',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 26,
@@ -95,13 +117,16 @@ class _ChooseTaskPageState extends ConsumerState<ChooseTaskPage> {
                         if (organizations.isEmpty) {
                           return const Text(
                             'No organizations available',
-                            style: TextStyle(color: Colors.white70),
+                            style: TextStyle(
+                              color: Colors.white70,
+                            ),
                           );
                         }
 
                         return _OrganizationDropdown(
                           organizations: organizations,
-                          selectedOrganization: _selectedOrganization,
+                          selectedOrganization:
+                          _selectedOrganization,
                           onChanged: (value) {
                             if (value == null) {
                               return;
@@ -113,7 +138,8 @@ class _ChooseTaskPageState extends ConsumerState<ChooseTaskPage> {
 
                             ref
                                 .read(
-                              selectedOrganizationProvider.notifier,
+                              selectedOrganizationProvider
+                                  .notifier,
                             )
                                 .setOrganization(value);
 
@@ -132,7 +158,9 @@ class _ChooseTaskPageState extends ConsumerState<ChooseTaskPage> {
                       loading: () => const SizedBox(
                         height: 56,
                         child: Center(
-                          child: CircularProgressIndicator(color: Colors.white),
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
 
@@ -142,7 +170,9 @@ class _ChooseTaskPageState extends ConsumerState<ChooseTaskPage> {
                         decoration: BoxDecoration(
                           color: Colors.red.withOpacity(0.15),
                           borderRadius: BorderRadius.circular(14),
-                          border: Border.all(color: Colors.redAccent),
+                          border: Border.all(
+                            color: Colors.redAccent,
+                          ),
                         ),
                         child: Text(
                           error.toString(),
@@ -162,7 +192,6 @@ class _ChooseTaskPageState extends ConsumerState<ChooseTaskPage> {
                       onTap: () {
                         if (_selectedOrganization == null) {
                           _showOrganizationRequired(context);
-
                           return;
                         }
 
@@ -180,14 +209,10 @@ class _ChooseTaskPageState extends ConsumerState<ChooseTaskPage> {
                       onTap: () {
                         if (_selectedOrganization == null) {
                           _showOrganizationRequired(context);
-
                           return;
                         }
 
-                        ///dashboard
-                        context.go(
-                          '/',
-                        );
+                        context.go('/');
                       },
                     ),
                   ],
@@ -195,7 +220,6 @@ class _ChooseTaskPageState extends ConsumerState<ChooseTaskPage> {
               ),
             ),
 
-            /// Loading overlay
             if (organizationState.isLoading)
               Container(
                 color: Colors.black12,
