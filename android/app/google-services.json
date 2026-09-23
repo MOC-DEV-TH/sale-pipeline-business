@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "373602809260",
+    "project_id": "sale-pipeline-business",
+    "storage_bucket": "sale-pipeline-business.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:373602809260:android:78662e97ec732015b4f609",
+        "android_client_info": {
+          "package_name": "com.moc.salepipeline"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_1DfuA8Old1sTcKpGORhj5nyZFN3Joow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

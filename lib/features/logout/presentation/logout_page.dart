@@ -112,10 +112,6 @@ class LogoutPage extends ConsumerWidget {
                           );
 
                           ref.invalidate(
-                            getBaseApiUrlProvider,
-                          );
-
-                          ref.invalidate(
                             getUidProvider,
                           );
 
