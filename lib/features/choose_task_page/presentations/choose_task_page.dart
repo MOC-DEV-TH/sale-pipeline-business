@@ -13,9 +13,7 @@ import '../../../common_widgets/loading_view.dart';
 import '../provider/selected_organization_provider.dart';
 
 class ChooseTaskPage extends ConsumerStatefulWidget {
-  const ChooseTaskPage({
-    super.key,
-  });
+  const ChooseTaskPage({super.key});
 
   @override
   ConsumerState<ChooseTaskPage> createState() {
@@ -23,14 +21,13 @@ class ChooseTaskPage extends ConsumerStatefulWidget {
   }
 }
 
-class _ChooseTaskPageState
-    extends ConsumerState<ChooseTaskPage> {
+class _ChooseTaskPageState extends ConsumerState<ChooseTaskPage> {
   int? _selectedOrganizationId;
 
   OrganizationVO? _findOrganizationById(
-      List<OrganizationVO> organizations,
-      int? id,
-      ) {
+    List<OrganizationVO> organizations,
+    int? id,
+  ) {
     if (id == null) {
       return null;
     }
@@ -44,317 +41,189 @@ class _ChooseTaskPageState
     return null;
   }
 
-  void _selectOrganization(
-      OrganizationVO organization,
-      ) {
+  void _selectOrganization(OrganizationVO organization) {
     setState(() {
-      _selectedOrganizationId =
-          organization.id;
+      _selectedOrganizationId = organization.id;
     });
 
     ref
-        .read(
-      selectedOrganizationProvider.notifier,
-    )
-        .setOrganization(
-      organization,
-    );
+        .read(selectedOrganizationProvider.notifier)
+        .setOrganization(organization);
 
     debugPrint(
       'Selected Organization >>> '
-          '${organization.id} - '
-          '${organization.name}',
+      '${organization.id} - '
+      '${organization.name}',
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final organizationState =
-    ref.watch(
-      fetchOrganizationListProvider,
-    );
+    final organizationState = ref.watch(fetchOrganizationListProvider);
 
     return Scaffold(
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        color: const Color(
-          0xFF061B10,
-        ),
+        color: const Color(0xFF061B10),
         child: Stack(
           children: [
             Positioned.fill(
-              child: Image.asset(
-                kBgPatternImage,
-                fit: BoxFit.cover,
-              ),
+              child: Image.asset(kBgPatternImage, fit: BoxFit.cover),
             ),
 
             SafeArea(
               child: SingleChildScrollView(
-                physics:
-                const BouncingScrollPhysics(),
-                padding:
-                const EdgeInsets.fromLTRB(
-                  28,
-                  30,
-                  28,
-                  34,
-                ),
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.fromLTRB(28, 30, 28, 34),
                 child: Column(
                   children: [
                     Column(
-                      crossAxisAlignment:
-                      CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const Text(
                           'Welcome to',
-                          style: TextStyle(
-                            color:
-                            Colors.white70,
-                            fontSize:
-                            24,
-                          ),
+                          style: TextStyle(color: Colors.white70, fontSize: 24),
                         ),
 
-                        Image.asset(
-                          kLogoImage,
-                          width: 270,
-                          height: 66,
-                        ),
+                        Image.asset(kLogoImage, width: 270, height: 66),
                       ],
                     ),
 
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 20),
 
                     const Text(
                       'Manage your customers\n'
-                          'and stay on top of your workflow',
-                      textAlign:
-                      TextAlign.center,
+                      'and stay on top of your workflow',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
-                        color:
-                        Colors.white70,
-                        fontSize:
-                        15,
-                        height:
-                        1.4,
+                        color: Colors.white70,
+                        fontSize: 15,
+                        height: 1.4,
                       ),
                     ),
 
-                    const SizedBox(
-                      height: 30,
-                    ),
+                    const SizedBox(height: 30),
 
                     SizedBox(
                       width: 250,
                       height: 250,
-                      child: Image.asset(
-                        kTargetImage,
-                        fit:
-                        BoxFit.contain,
-                      ),
+                      child: Image.asset(kTargetImage, fit: BoxFit.contain),
                     ),
 
-                    const SizedBox(
-                      height: 35,
-                    ),
+                    const SizedBox(height: 35),
 
                     const Text(
                       'Choose your Org!',
                       style: TextStyle(
-                        color:
-                        Colors.white,
-                        fontSize:
-                        26,
-                        fontWeight:
-                        FontWeight.w900,
+                        color: Colors.white,
+                        fontSize: 26,
+                        fontWeight: FontWeight.w900,
                       ),
                     ),
 
-                    const SizedBox(
-                      height: 18,
-                    ),
+                    const SizedBox(height: 18),
 
                     organizationState.when(
-                      data: (
-                          response,
-                          ) {
+                      data: (response) {
+                        if (response == null) {
+                          return const SizedBox.shrink();
+                        }
                         final organizations =
-                            response
-                                .data
-                                ?.organizations ??
-                                [];
+                            response.data?.organizations ?? [];
 
-                        if (organizations
-                            .isEmpty) {
+                        if (organizations.isEmpty) {
                           return const Text(
                             'No organizations available',
-                            style: TextStyle(
-                              color:
-                              Colors.white70,
-                            ),
+                            style: TextStyle(color: Colors.white70),
                           );
                         }
 
                         /// Make sure selected ID
                         /// still exists in refreshed list.
-                        final selectedOrganization =
-                        _findOrganizationById(
+                        final selectedOrganization = _findOrganizationById(
                           organizations,
                           _selectedOrganizationId,
                         );
 
                         return _OrganizationDropdown(
-                          organizations:
-                          organizations,
-                          selectedOrganizationId:
-                          selectedOrganization
-                              ?.id,
-                          onChanged:
-                              (
-                              organizationId,
-                              ) {
-                            if (organizationId ==
-                                null) {
+                          organizations: organizations,
+                          selectedOrganizationId: selectedOrganization?.id,
+                          onChanged: (organizationId) {
+                            if (organizationId == null) {
                               return;
                             }
 
-                            final organization =
-                            _findOrganizationById(
+                            final organization = _findOrganizationById(
                               organizations,
                               organizationId,
                             );
 
-                            if (organization ==
-                                null) {
+                            if (organization == null) {
                               return;
                             }
 
-                            _selectOrganization(
-                              organization,
-                            );
+                            _selectOrganization(organization);
                           },
                         );
                       },
 
-                      loading:
-                          () =>
-                      const SizedBox(
+                      loading: () => const SizedBox(
                         height: 56,
                         child: Center(
-                          child:
-                          CircularProgressIndicator(
-                            color:
-                            Colors.white,
-                          ),
+                          child: CircularProgressIndicator(color: Colors.white),
                         ),
                       ),
 
-                      error:
-                          (
-                          error,
-                          stack,
-                          ) =>
-                          Container(
-                            width:
-                            double.infinity,
-                            padding:
-                            const EdgeInsets.all(
-                              14,
-                            ),
-                            decoration:
-                            BoxDecoration(
-                              color: Colors.red
-                                  .withOpacity(
-                                0.15,
-                              ),
-                              borderRadius:
-                              BorderRadius.circular(
-                                14,
-                              ),
-                              border:
-                              Border.all(
-                                color:
-                                Colors.redAccent,
-                              ),
-                            ),
-                            child:
-                            const Text(
-                              'Unable to load organizations. '
-                                  'Please try again.',
-                              style:
-                              TextStyle(
-                                color:
-                                Colors.white,
-                                fontSize:
-                                13,
-                              ),
-                            ),
-                          ),
+                      error: (error, stack) => Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                          color: Colors.red.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(color: Colors.redAccent),
+                        ),
+                        child: const Text(
+                          'Unable to load organizations. '
+                          'Please try again.',
+                          style: TextStyle(color: Colors.white, fontSize: 13),
+                        ),
+                      ),
                     ),
 
-                    const SizedBox(
-                      height: 22,
-                    ),
+                    const SizedBox(height: 22),
 
                     CommonButton(
-                      text:
-                      'Add New Lead',
-                      color:
-                      kPrimaryColor,
+                      text: 'Add New Lead',
+                      color: kPrimaryColor,
                       onTap: () {
-                        final selected =
-                        ref.read(
-                          selectedOrganizationProvider,
-                        );
+                        final selected = ref.read(selectedOrganizationProvider);
 
-                        if (selected ==
-                            null) {
-                          _showOrganizationRequired(
-                            context,
-                          );
+                        if (selected == null) {
+                          _showOrganizationRequired(context);
 
                           return;
                         }
 
-                        context.go(
-                          RoutePath
-                              .newLeadStep
-                              .path,
-                        );
+                        context.go(RoutePath.newLeadStep.path);
                       },
                     ),
 
-                    const SizedBox(
-                      height: 16,
-                    ),
+                    const SizedBox(height: 16),
 
                     CommonButton(
-                      text:
-                      'Go to Dashboard',
-                      color:
-                      kSecondaryColor,
+                      text: 'Go to Dashboard',
+                      color: kSecondaryColor,
                       onTap: () {
-                        final selected =
-                        ref.read(
-                          selectedOrganizationProvider,
-                        );
+                        final selected = ref.read(selectedOrganizationProvider);
 
-                        if (selected ==
-                            null) {
-                          _showOrganizationRequired(
-                            context,
-                          );
+                        if (selected == null) {
+                          _showOrganizationRequired(context);
 
                           return;
                         }
 
-                        context.go(
-                          '/',
-                        );
+                        context.go('/');
                       },
                     ),
                   ],
@@ -362,19 +231,13 @@ class _ChooseTaskPageState
               ),
             ),
 
-            if (organizationState
-                .isLoading)
+            if (organizationState.isLoading)
               Container(
-                color:
-                Colors.black12,
-                child:
-                const Center(
+                color: Colors.black12,
+                child: const Center(
                   child: LoadingView(
-                    indicatorColor:
-                    Colors.white,
-                    indicator:
-                    Indicator
-                        .ballRotate,
+                    indicatorColor: Colors.white,
+                    indicator: Indicator.ballRotate,
                   ),
                 ),
               ),
@@ -384,188 +247,98 @@ class _ChooseTaskPageState
     );
   }
 
-  void _showOrganizationRequired(
-      BuildContext context,
-      ) {
-    ScaffoldMessenger.of(
-      context,
-    )
+  void _showOrganizationRequired(BuildContext context) {
+    ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
         const SnackBar(
-          backgroundColor:
-          Colors.red,
-          duration:
-          Duration(
-            milliseconds:
-            1000,
-          ),
+          backgroundColor: Colors.red,
+          duration: Duration(milliseconds: 1000),
           content: Text(
             'Please choose an organization',
-            style:
-            TextStyle(
-              color:
-              Colors.white,
-            ),
+            style: TextStyle(color: Colors.white),
           ),
         ),
       );
   }
 }
 
-class _OrganizationDropdown
-    extends StatelessWidget {
+class _OrganizationDropdown extends StatelessWidget {
   const _OrganizationDropdown({
     required this.organizations,
     required this.selectedOrganizationId,
     required this.onChanged,
   });
 
-  final List<OrganizationVO>
-  organizations;
+  final List<OrganizationVO> organizations;
 
-  final int?
-  selectedOrganizationId;
+  final int? selectedOrganizationId;
 
-  final ValueChanged<int?>
-  onChanged;
+  final ValueChanged<int?> onChanged;
 
   @override
-  Widget build(
-      BuildContext context,
-      ) {
+  Widget build(BuildContext context) {
     return Container(
-      width:
-      double.infinity,
-      height:
-      58,
-      padding:
-      const EdgeInsets.symmetric(
-        horizontal:
-        18,
+      width: double.infinity,
+      height: 58,
+      padding: const EdgeInsets.symmetric(horizontal: 18),
+      decoration: BoxDecoration(
+        color: const Color(0xFF0B2A19),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.white.withOpacity(0.18), width: 1.2),
       ),
-      decoration:
-      BoxDecoration(
-        color:
-        const Color(
-          0xFF0B2A19,
-        ),
-        borderRadius:
-        BorderRadius.circular(
-          16,
-        ),
-        border:
-        Border.all(
-          color:
-          Colors.white
-              .withOpacity(
-            0.18,
-          ),
-          width:
-          1.2,
-        ),
-      ),
-      child:
-      DropdownButtonHideUnderline(
-        child:
-        DropdownButton<int>(
-          value:
-          selectedOrganizationId,
-          isExpanded:
-          true,
-          dropdownColor:
-          const Color(
-            0xFF0B2A19,
-          ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<int>(
+          value: selectedOrganizationId,
+          isExpanded: true,
+          dropdownColor: const Color(0xFF0B2A19),
 
-          hint:
-          const Text(
+          hint: const Text(
             'Choose organization',
-            style:
-            TextStyle(
-              color:
-              Colors.white60,
-              fontSize:
-              15,
-            ),
+            style: TextStyle(color: Colors.white60, fontSize: 15),
           ),
 
-          icon:
-          const Icon(
-            Icons
-                .keyboard_arrow_down_rounded,
-            color:
-            Colors.white70,
-            size:
-            28,
+          icon: const Icon(
+            Icons.keyboard_arrow_down_rounded,
+            color: Colors.white70,
+            size: 28,
           ),
 
-          style:
-          const TextStyle(
-            color:
-            Colors.white,
-            fontSize:
-            15,
-            fontWeight:
-            FontWeight.w600,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
           ),
 
-          items:
-          organizations
-              .where(
-                (
-                organization,
-                ) =>
-            organization
-                .id !=
-                null,
-          )
-              .map(
-                (
-                organization,
-                ) {
-              return DropdownMenuItem<
-                  int>(
-                value:
-                organization.id!,
-                child:
-                Row(
-                  children: [
-                    const Icon(
-                      Icons
-                          .business_rounded,
-                      color:
-                      kPrimaryColor,
-                      size:
-                      21,
-                    ),
-
-                    const SizedBox(
-                      width:
-                      12,
-                    ),
-
-                    Expanded(
-                      child:
-                      Text(
-                        organization.name ??
-                            'Organization',
-                        maxLines:
-                        1,
-                        overflow:
-                        TextOverflow
-                            .ellipsis,
+          items: organizations
+              .where((organization) => organization.id != null)
+              .map((organization) {
+                return DropdownMenuItem<int>(
+                  value: organization.id!,
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.business_rounded,
+                        color: kPrimaryColor,
+                        size: 21,
                       ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          )
+
+                      const SizedBox(width: 12),
+
+                      Expanded(
+                        child: Text(
+                          organization.name ?? 'Organization',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              })
               .toList(),
 
-          onChanged:
-          onChanged,
+          onChanged: onChanged,
         ),
       ),
     );
