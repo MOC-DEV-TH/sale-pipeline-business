@@ -7,9 +7,13 @@ part of 'choose_task_repository.dart';
 // **************************************************************************
 
 String _$chooseTaskRepositoryHash() =>
-    r'7ab93843f16d2ab33e2753cf20ee24c6d0cd6d1d';
+    r'c7c051ebee01778bd9cc58d52c80f3fb3e18bfd5';
 
-/// See also [chooseTaskRepository].
+/// ============================================================
+/// REPOSITORY
+/// ============================================================
+///
+/// Copied from [chooseTaskRepository].
 @ProviderFor(chooseTaskRepository)
 final chooseTaskRepositoryProvider =
     AutoDisposeProvider<ChooseTaskRepository>.internal(
@@ -26,12 +30,16 @@ final chooseTaskRepositoryProvider =
 // ignore: unused_element
 typedef ChooseTaskRepositoryRef = AutoDisposeProviderRef<ChooseTaskRepository>;
 String _$fetchOrganizationListHash() =>
-    r'b5ce6b69dc64c8eaf57b5a201e1648f54a894b82';
+    r'71bd43bf71a88c7c98f098a9967132b935963891';
 
-/// See also [fetchOrganizationList].
+/// ============================================================
+/// ORGANIZATION LIST
+/// ============================================================
+///
+/// Copied from [fetchOrganizationList].
 @ProviderFor(fetchOrganizationList)
 final fetchOrganizationListProvider =
-    AutoDisposeFutureProvider<OrganizationsResponse>.internal(
+    AutoDisposeFutureProvider<OrganizationsResponse?>.internal(
       fetchOrganizationList,
       name: r'fetchOrganizationListProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -44,6 +52,6 @@ final fetchOrganizationListProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef FetchOrganizationListRef =
-    AutoDisposeFutureProviderRef<OrganizationsResponse>;
+    AutoDisposeFutureProviderRef<OrganizationsResponse?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

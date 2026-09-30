@@ -51,12 +51,6 @@ dependencies:
   #webview_flutter:
   webview_flutter: ^4.13.1
 
-  # ---------------- FIREBASE ---------------- #
-  firebase_core: ^3.1.1
-  firebase_messaging: ^15.1.6
-  firebase_analytics: ^11.2.0
-  flutter_local_notifications: ^18.0.1
-
   #image_picker:
   image_picker: any
 
