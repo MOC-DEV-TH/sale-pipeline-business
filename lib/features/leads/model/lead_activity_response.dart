@@ -40,6 +40,7 @@ class LeadActivityVO {
   String? creatorName;
   DateTime? createdAt;
   DateTime? updatedAt;
+  bool? status;
 
   LeadActivityVO({
     this.id,
@@ -57,6 +58,7 @@ class LeadActivityVO {
     this.creatorName,
     this.createdAt,
     this.updatedAt,
+    this.status
   });
 
   factory LeadActivityVO.fromJson(Map<String, dynamic> json) => LeadActivityVO(
@@ -75,6 +77,7 @@ class LeadActivityVO {
     creatorName: json["creator_name"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+    status: json["status"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -93,6 +96,7 @@ class LeadActivityVO {
     "creator_name": creatorName,
     "created_at": createdAt?.toIso8601String(),
     "updated_at": updatedAt?.toIso8601String(),
+    "status": status,
   };
 }
 

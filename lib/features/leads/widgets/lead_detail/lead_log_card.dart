@@ -11,6 +11,7 @@ class LeadLogCard extends StatelessWidget {
     required this.dateTime,
     required this.onMoreTap,
     this.showReminderIcon = false,
+    this.status
   });
 
   final String? title;
@@ -24,6 +25,7 @@ class LeadLogCard extends StatelessWidget {
   final VoidCallback onMoreTap;
 
   final bool showReminderIcon;
+  final bool? status;
 
   @override
   Widget build(BuildContext context) {
@@ -70,9 +72,7 @@ class LeadLogCard extends StatelessWidget {
 
             const SizedBox(width: 10),
 
-            _MoreButton(
-              onTap: onMoreTap,
-            ),
+            _MoreButton(onTap: onMoreTap)
           ],
         ),
 
@@ -193,8 +193,11 @@ class LeadLogCard extends StatelessWidget {
 
             const SizedBox(width: 10),
 
-            _MoreButton(
-              onTap: onMoreTap,
+            Visibility(
+              visible: status == true,
+              child: _MoreButton(
+                onTap: onMoreTap,
+              ),
             ),
           ],
         ),

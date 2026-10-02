@@ -38,6 +38,7 @@ class LeadReminderVO {
   String? creatorName;
   DateTime? createdAt;
   DateTime? updatedAt;
+  bool? status;
 
   LeadReminderVO({
     this.id,
@@ -53,6 +54,7 @@ class LeadReminderVO {
     this.creatorName,
     this.createdAt,
     this.updatedAt,
+    this.status
   });
 
   factory LeadReminderVO.fromJson(Map<String, dynamic> json) => LeadReminderVO(
@@ -69,6 +71,7 @@ class LeadReminderVO {
     creatorName: json["creator_name"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+    status: json["status"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -85,6 +88,7 @@ class LeadReminderVO {
     "creator_name": creatorName,
     "created_at": createdAt?.toIso8601String(),
     "updated_at": updatedAt?.toIso8601String(),
+    "status": status,
   };
 }
 

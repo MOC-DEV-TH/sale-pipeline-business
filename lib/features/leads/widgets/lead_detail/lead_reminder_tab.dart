@@ -64,6 +64,8 @@ class ReminderTab extends ConsumerWidget {
 
                   showReminderIcon: true,
 
+                  status: reminder.status,
+
                   onMoreTap: () {
                     showLeadLogOptionSheet(
                       context: context,
