@@ -1,20 +1,19 @@
 import 'dart:convert';
 
 LeadsResponse leadsResponseFromJson(String str) =>
-    LeadsResponse.fromJson(json.decode(str));
+    LeadsResponse.fromJson(json.decode(str) as Map<String, dynamic>);
 
-String leadsResponseToJson(LeadsResponse data) => json.encode(data.toJson());
+String leadsResponseToJson(LeadsResponse data) =>
+    json.encode(data.toJson());
 
 class LeadsResponse {
-  dynamic status;
-  dynamic responseCode;
-  dynamic description;
-  dynamic isRequieredUpdate;
-  dynamic isforceUpdate;
-
+  String? status;
+  String? responseCode;
+  String? description;
+  bool? isRequieredUpdate;
+  bool? isforceUpdate;
   List<LeadVO>? details;
-
-  PaginationVO? pagination;
+  Pagination? pagination;
 
   LeadsResponse({
     this.status,
@@ -26,25 +25,24 @@ class LeadsResponse {
     this.pagination,
   });
 
-  factory LeadsResponse.fromJson(Map<String, dynamic> json) => LeadsResponse(
-    status: json["status"],
-    responseCode: json["response_code"],
-    description: json["description"],
-    isRequieredUpdate: json["is_requiered_update"],
-    isforceUpdate: json["isforce_update"],
-
-    details: json["details"] == null
-        ? []
-        : List<LeadVO>.from(
-            (json["details"] as List).map(
-              (x) => LeadVO.fromJson(Map<String, dynamic>.from(x)),
-            ),
-          ),
-
-    pagination: json["pagination"] == null
-        ? null
-        : PaginationVO.fromJson(Map<String, dynamic>.from(json["pagination"])),
-  );
+  factory LeadsResponse.fromJson(Map<String, dynamic> json) =>
+      LeadsResponse(
+        status: json["status"],
+        responseCode: json["response_code"],
+        description: json["description"],
+        isRequieredUpdate: json["is_requiered_update"],
+        isforceUpdate: json["isforce_update"],
+        details: (json["details"] as List<dynamic>? ?? [])
+            .map((x) => LeadVO.fromJson(
+          Map<String, dynamic>.from(x as Map),
+        ))
+            .toList(),
+        pagination: json["pagination"] == null
+            ? null
+            : Pagination.fromJson(
+          Map<String, dynamic>.from(json["pagination"] as Map),
+        ),
+      );
 
   Map<String, dynamic> toJson() => {
     "status": status,
@@ -52,141 +50,169 @@ class LeadsResponse {
     "description": description,
     "is_requiered_update": isRequieredUpdate,
     "isforce_update": isforceUpdate,
-
-    "details": details == null
-        ? []
-        : List<dynamic>.from(details!.map((x) => x.toJson())),
-
+    "details": details?.map((x) => x.toJson()).toList() ?? [],
     "pagination": pagination?.toJson(),
   };
 }
 
 class LeadVO {
-  dynamic lid;
-  dynamic businessName;
-  dynamic status;
-  dynamic firstname;
-
-  dynamic followupDate;
-  dynamic followUpDate;
-
-  dynamic contactno;
-
-  dynamic package;
-  dynamic plan;
-
-  dynamic leadAssign;
-  dynamic createdByName;
-  dynamic createdDate;
-
-  dynamic customFields;
-
-  dynamic estContractDate;
-
-  dynamic title;
-  dynamic bizType;
-  dynamic source;
-  dynamic updatedAt;
-  dynamic closedDate;
-  dynamic createdAt;
+  int? lid;
+  String? uuid;
+  List<Field>? fields;
+  int? organizationId;
+  String? plan;
+  int? leadAssign;
+  int? createdBy;
+  String? createdByName;
+  String? uploadedBy;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
   LeadVO({
     this.lid,
-    this.businessName,
-    this.status,
-    this.firstname,
-    this.followupDate,
-    this.followUpDate,
-    this.contactno,
-    this.package,
+    this.uuid,
+    this.fields,
+    this.organizationId,
     this.plan,
     this.leadAssign,
+    this.createdBy,
     this.createdByName,
-    this.createdDate,
-    this.customFields,
-    this.estContractDate,
-    this.title,
-    this.bizType,
-    this.source,
+    this.uploadedBy,
+    this.createdAt,
     this.updatedAt,
-    this.closedDate,
-    this.createdAt
   });
 
   factory LeadVO.fromJson(Map<String, dynamic> json) => LeadVO(
-    lid: json["lid"],
-    businessName: json["business_name"],
-    status: json["status"],
-    firstname: json["firstname"],
-
-    followupDate: json["followup_date"],
-    followUpDate: json["follow_up_date"],
-
-    contactno: json["contactno"],
-
-    package: json["package"],
+    lid: _parseInt(json["lid"]),
+    uuid: json["uuid"],
+    fields: (json["fields"] as List<dynamic>? ?? [])
+        .map((x) => Field.fromJson(
+      Map<String, dynamic>.from(x as Map),
+    ))
+        .toList(),
+    organizationId: _parseInt(json["organization_id"]),
     plan: json["plan"],
-
-    leadAssign: json["lead_assign"],
+    leadAssign: _parseInt(json["lead_assign"]),
+    createdBy: _parseInt(json["created_by"]),
     createdByName: json["created_by_name"],
-    createdDate: json["created_date"],
-
-    customFields: json["custom_fields"],
-
-    estContractDate: json["est_contract_date"],
-
-    title: json["title"],
-    bizType: json["biz_type"],
-    source: json["source"],
-    updatedAt: json["updated_at"],
-    closedDate: json["closed_date"],
-    createdAt: json["created_at"],
+    uploadedBy: json["uploaded_by"],
+    createdAt: _parseDate(json["created_at"]),
+    updatedAt: _parseDate(json["updated_at"]),
   );
+
+  /// Access a field by its API key.
+  Field? fieldByKey(String key) {
+    for (final field in fields ?? const <Field>[]) {
+      if (field.key == key) return field;
+    }
+    return null;
+  }
+
+  String? fieldValue(String key) => fieldByKey(key)?.value;
+
+  String? get businessName => fieldValue("business_name");
+  String? get contactName => fieldValue("contact_name");
+
+  // Compatibility with your existing LeadCard.
+  String? get firstname => contactName;
+
+  String? get lastName => fieldValue("last_name");
+  String? get contactEmail => fieldValue("contact_email");
+  String? get phone => fieldValue("phone");
+  String? get secondaryContactNumber =>
+      fieldValue("secondary_contact_number");
+  String? get bizType => fieldValue("biz_type");
+  String? get source => fieldValue("source");
+  String? get division => fieldValue("division");
+  String? get township => fieldValue("township");
+  String? get address => fieldValue("address");
+  String? get product => fieldValue("product");
+  String? get package => fieldValue("package");
+  String? get packageTotal => fieldValue("package_total");
+  String? get discount => fieldValue("discount");
+  String? get note => fieldValue("note");
+  String? get status => fieldValue("status");
+  String? get channel => fieldValue("channel");
+  String? get installationAppointment =>
+      fieldValue("installation_appointment");
+  String? get estContractDate => fieldValue("est_contract_date");
+  String? get estStartDate => fieldValue("est_start_date");
+  String? get estFollowUpDate => fieldValue("est_follow_up_date");
+  String? get closedDate => fieldValue("closed_date");
+  String? get meetingNote => fieldValue("meeting_note");
+  String? get nextStep => fieldValue("next_step");
+  String? get priority => fieldValue("pf_priority");
+
+  String? get cfIo => fieldValue("cf_io");
+  String? get cfWhoDidYouMeetWith =>
+      fieldValue("cf_who_did_you_meet_with");
+  String? get cfBillingNote => fieldValue("cf_billing_note");
+  String? get cfProposalReceivedDateFromBw =>
+      fieldValue("cf_proposal_received_date_from_bw");
+  String? get cfSubmissionDate => fieldValue("cf_submission_date");
 
   Map<String, dynamic> toJson() => {
     "lid": lid,
-    "business_name": businessName,
-    "status": status,
-    "firstname": firstname,
-
-    "followup_date": followupDate,
-    "follow_up_date": followUpDate,
-
-    "contactno": contactno,
-
-    "package": package,
+    "uuid": uuid,
+    "fields": fields?.map((x) => x.toJson()).toList() ?? [],
+    "organization_id": organizationId,
     "plan": plan,
-
     "lead_assign": leadAssign,
-    "created_by": createdByName,
-    "created_by_name": createdDate,
-
-    "custom_fields": customFields,
-
-    "est_contract_date": estContractDate,
-
-    "title": title,
-    "biz_type": bizType,
-    "source": source,
-    "updated_at": updatedAt,
-    "closed_date": closedDate,
-    "created_at": createdAt,
+    "created_by": createdBy,
+    "created_by_name": createdByName,
+    "uploaded_by": uploadedBy,
+    "created_at": createdAt?.toIso8601String(),
+    "updated_at": updatedAt?.toIso8601String(),
   };
 }
 
-class PaginationVO {
-  dynamic currentPage;
-  dynamic perPage;
-  dynamic total;
-  dynamic lastPage;
+class Field {
+  String? key;
+  String? label;
+  String? type;
+  String? value;
 
-  PaginationVO({this.currentPage, this.perPage, this.total, this.lastPage});
+  Field({
+    this.key,
+    this.label,
+    this.type,
+    this.value,
+  });
 
-  factory PaginationVO.fromJson(Map<String, dynamic> json) => PaginationVO(
-    currentPage: json["current_page"],
-    perPage: json["per_page"],
-    total: json["total"],
-    lastPage: json["last_page"],
+  factory Field.fromJson(Map<String, dynamic> json) => Field(
+    key: json["key"],
+    label: json["label"],
+    type: json["type"],
+    // Accept string or numeric scalar values while preserving null.
+    value: json["value"]?.toString(),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "key": key,
+    "label": label,
+    "type": type,
+    "value": value,
+  };
+}
+
+class Pagination {
+  int? currentPage;
+  int? perPage;
+  int? total;
+  int? lastPage;
+
+  Pagination({
+    this.currentPage,
+    this.perPage,
+    this.total,
+    this.lastPage,
+  });
+
+  factory Pagination.fromJson(Map<String, dynamic> json) => Pagination(
+    currentPage: _parseInt(json["current_page"]),
+    perPage: _parseInt(json["per_page"]),
+    total: _parseInt(json["total"]),
+    lastPage: _parseInt(json["last_page"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -195,4 +221,14 @@ class PaginationVO {
     "total": total,
     "last_page": lastPage,
   };
+}
+
+int? _parseInt(dynamic value) {
+  if (value is int) return value;
+  return int.tryParse(value?.toString() ?? "");
+}
+
+DateTime? _parseDate(dynamic value) {
+  if (value == null) return null;
+  return DateTime.tryParse(value.toString());
 }

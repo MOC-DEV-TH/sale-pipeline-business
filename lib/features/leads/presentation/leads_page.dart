@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sale_pipeline_business/features/leads/model/leads_response.dart';
 import 'package:sale_pipeline_business/utils/app_colors.dart';
+import 'package:sale_pipeline_business/widgets/error_retry_view.dart';
 
 import '../../choose_task_page/provider/selected_organization_provider.dart';
 import '../data/leads_repository.dart';
@@ -45,7 +46,7 @@ class _LeadsPageState extends ConsumerState<LeadsPage> {
           },
 
           error: (error, stackTrace) {
-            return _ErrorView(
+            return ErrorRetryView(
               message: error.toString(),
               onRetry: () {
                 ref.invalidate(
@@ -323,7 +324,7 @@ class LeadCard extends StatelessWidget {
                   Expanded(
                     child: _InfoRow(
                       label: 'Closed Date:',
-                      value: _dateOnly(lead.closedDate ?? lead.followupDate),
+                      value: _dateOnly(lead.closedDate),
                       rightAligned: true,
                     ),
                   ),
@@ -360,7 +361,7 @@ class LeadCard extends StatelessWidget {
                   const SizedBox(width: 12),
 
                   Text(
-                    _formatDateTime(lead.createdAt ?? '-'),
+                    _formatDateTime(lead.createdAt.toString()),
                     style: const TextStyle(color: Colors.white, fontSize: 12),
                   ),
                 ],
@@ -524,50 +525,6 @@ class _InfoRow extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-/// ===========================================================
-/// ERROR
-/// ===========================================================
-
-class _ErrorView extends StatelessWidget {
-  const _ErrorView({required this.message, required this.onRetry});
-
-  final String message;
-  final VoidCallback onRetry;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.error_outline, color: Colors.redAccent, size: 45),
-
-            const SizedBox(height: 15),
-
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white),
-            ),
-
-            const SizedBox(height: 20),
-
-            ElevatedButton(
-              onPressed: onRetry,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF16894D),
-              ),
-              child: const Text('Retry', style: TextStyle(color: Colors.white)),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

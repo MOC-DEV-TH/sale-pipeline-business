@@ -60,7 +60,7 @@ class ReminderTab extends ConsumerWidget {
 
                   creatorName: reminder.creatorName ?? '-',
 
-                  dateTime: formatDateTime(reminder.createdAt),
+                  dateTime: formatDateTime(reminder.remindAt),
 
                   showReminderIcon: true,
 

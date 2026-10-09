@@ -5,6 +5,7 @@ import 'package:sale_pipeline_business/features/home/data/home_repository.dart';
 import 'package:sale_pipeline_business/features/home/model/report_summary_response.dart';
 import 'package:sale_pipeline_business/routing/go_router/go_router_delegate.dart';
 import 'package:sale_pipeline_business/utils/app_colors.dart';
+import 'package:sale_pipeline_business/widgets/error_retry_view.dart';
 
 import '../../choose_task_page/provider/selected_organization_provider.dart';
 
@@ -48,12 +49,18 @@ class _HomePageState extends ConsumerState<HomePage> {
     return SafeArea(
       child: reportSummaryState.when(
         loading: () => const Center(child: CircularProgressIndicator(color: Color(0xFF16B65B))),
-        error: (error, _) => Center(
-          child: Text(
-            error.toString(),
-            style: const TextStyle(color: Colors.white),
-          ),
-        ),
+        error: (error, stackTrace) {
+          return ErrorRetryView(
+            message: error.toString(),
+            onRetry: () {
+              ref.invalidate(
+                fetchReportSummaryByOrganizationIDProvider(
+                  organizationID: organizationId,
+                ),
+              );
+            }
+          );
+        },
         data: (response) {
           final details = response.details;
 

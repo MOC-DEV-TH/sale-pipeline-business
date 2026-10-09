@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 class DeadlineRetryInterceptor extends Interceptor {
   DeadlineRetryInterceptor(this.dio);
@@ -13,8 +14,9 @@ class DeadlineRetryInterceptor extends Interceptor {
 
     if (data is Map && data['status_code'] != null) {
       final sc = data['status_code'];
-      final int? statusCode =
-      sc is int ? sc : (sc is String ? int.tryParse(sc) : null);
+      final int? statusCode = sc is int
+          ? sc
+          : (sc is String ? int.tryParse(sc) : null);
 
       if (statusCode != null && statusCode != 200) {
         return handler.reject(
@@ -32,57 +34,76 @@ class DeadlineRetryInterceptor extends Interceptor {
   }
 
   @override
-  Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
+  Future<void> onError(
+    DioException err,
+    ErrorInterceptorHandler handler,
+  ) async {
     final options = err.requestOptions;
-
-    /// 4xx / 5xx -> fail immediately
-    if (err.type == DioExceptionType.badResponse) {
-      return handler.reject(err);
-    }
-
-    /// ✅ check real internet availability first
-    final connectivityResult = await Connectivity().checkConnectivity();
-    final hasInternet = connectivityResult.any((e) => e != ConnectivityResult.none);
-
-    /// ❌ no internet at all -> fail immediately
-    if (!hasInternet) {
-      return handler.reject(
-        DioException(
-          requestOptions: options,
-          type: DioExceptionType.connectionError,
-          error: 'No internet connection',
-        ),
-      );
-    }
-
-    /// weak / unstable internet -> retry until deadline
-    final deadlineRaw = options.extra['deadline'];
-    final DateTime deadline = deadlineRaw is DateTime
-        ? deadlineRaw
-        : DateTime.now().add(const Duration(minutes: 1));
 
     final isRetryable =
         err.type == DioExceptionType.connectionTimeout ||
-            err.type == DioExceptionType.receiveTimeout ||
-            err.type == DioExceptionType.connectionError;
+        err.type == DioExceptionType.receiveTimeout ||
+        err.type == DioExceptionType.connectionError;
 
-    if (!isRetryable || DateTime.now().isAfter(deadline)) {
-      return handler.reject(err);
+    // Pass through API errors, cancellation, and other errors.
+    if (!isRetryable) {
+      return handler.next(err);
     }
 
-    await Future.delayed(const Duration(seconds: 3));
+    // Automatically retry reads only.
+    // Retrying POST requests may create duplicate records/payments.
+    final method = options.method.toUpperCase();
+    if (method != 'GET' && method != 'HEAD') {
+      return handler.next(err);
+    }
+
+    // Save the deadline so subsequent retries reuse the same value.
+    final deadlineRaw = options.extra['deadline'];
+    final deadline = deadlineRaw is DateTime
+        ? deadlineRaw
+        : DateTime.now().add(const Duration(minutes: 1));
+
+    options.extra['deadline'] = deadline;
+
+    if (!DateTime.now().isBefore(deadline)) {
+      return handler.next(err);
+    }
 
     try {
-      final response = await dio.fetch(options);
+      final hasInternet = await InternetConnection().hasInternetAccess;
+
+      if (!hasInternet) {
+        return handler.next(
+          DioException(
+            requestOptions: options,
+            type: DioExceptionType.connectionError,
+            error: 'No internet connection',
+            message: 'No internet connection',
+          ),
+        );
+      }
+
+      await Future<void>.delayed(const Duration(seconds: 3));
+
+      // Check again after waiting.
+      if (options.cancelToken?.isCancelled ?? false) {
+        return handler.next(options.cancelToken!.cancelError!);
+      }
+
+      if (!DateTime.now().isBefore(deadline)) {
+        return handler.next(err);
+      }
+
+      final response = await dio.fetch<dynamic>(options);
       return handler.resolve(response);
-    } catch (e) {
-      return handler.reject(
-        e is DioException
-            ? e
-            : DioException(
+    } on DioException catch (retryError) {
+      return handler.next(retryError);
+    } catch (error) {
+      return handler.next(
+        DioException(
           requestOptions: options,
-          error: e,
           type: DioExceptionType.unknown,
+          error: error,
         ),
       );
     }

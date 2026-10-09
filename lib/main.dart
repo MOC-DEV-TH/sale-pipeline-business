@@ -10,6 +10,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:sale_pipeline_business/widgets/internet_banner.dart';
 
 import 'fcm/fcm_service.dart';
 import 'firebase_options.dart';
@@ -183,7 +184,10 @@ class _MyAppState extends ConsumerState<MyApp> {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
 
-      supportedLocales: const [Locale('en'), Locale('my')],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('my'),
+      ],
 
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
@@ -192,10 +196,19 @@ class _MyAppState extends ConsumerState<MyApp> {
       ],
 
       routeInformationParser: router.routeInformationParser,
-
       routeInformationProvider: router.routeInformationProvider,
-
       routerDelegate: router.routerDelegate,
+
+      builder: (context, child) {
+        return Column(
+          children: [
+            const InternetBanner(),
+            Expanded(
+              child: child ?? const SizedBox.shrink(),
+            ),
+          ],
+        );
+      },
 
       theme: ThemeData(
         primarySwatch: Colors.blue,

@@ -1,6 +1,3 @@
-// To parse this JSON data, do
-//
-//     final leadDetailsResponse = leadDetailsResponseFromJson(jsonString);
 
 import 'dart:convert';
 
@@ -660,7 +657,7 @@ class Field {
   String? key;
   String? label;
   String? type;
-  String? value;
+  dynamic value;
   String? display;
 
   Field({
@@ -672,11 +669,11 @@ class Field {
   });
 
   factory Field.fromJson(Map<String, dynamic> json) => Field(
-    key: json["key"],
-    label: json["label"],
-    type: json["type"],
+    key: json["key"]?.toString(),
+    label: json["label"]?.toString(),
+    type: json["type"]?.toString(),
     value: json["value"],
-    display: json["display"],
+    display: json["display"]?.toString(),
   );
 
   Map<String, dynamic> toJson() => {
