@@ -6,24 +6,47 @@ part of 'auth_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$authRepositoryNoTokenHash() =>
-    r'f63c47b0da457c6c66ae8bb5bf532d1140c32dee';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [authRepositoryNoToken].
 @ProviderFor(authRepositoryNoToken)
-final authRepositoryNoTokenProvider =
-    AutoDisposeProvider<AuthRepository>.internal(
-      authRepositoryNoToken,
-      name: r'authRepositoryNoTokenProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$authRepositoryNoTokenHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+final authRepositoryNoTokenProvider = AuthRepositoryNoTokenProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef AuthRepositoryNoTokenRef = AutoDisposeProviderRef<AuthRepository>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class AuthRepositoryNoTokenProvider
+    extends $FunctionalProvider<AuthRepository, AuthRepository, AuthRepository>
+    with $Provider<AuthRepository> {
+  AuthRepositoryNoTokenProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'authRepositoryNoTokenProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$authRepositoryNoTokenHash();
+
+  @$internal
+  @override
+  $ProviderElement<AuthRepository> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  AuthRepository create(Ref ref) {
+    return authRepositoryNoToken(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AuthRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AuthRepository>(value),
+    );
+  }
+}
+
+String _$authRepositoryNoTokenHash() =>
+    r'10c1191e09f5fc68a67e36c418ad58754e4ce6db';

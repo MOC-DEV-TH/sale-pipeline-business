@@ -6,338 +6,235 @@ part of 'contracts_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$contractsRepositoryHash() =>
-    r'6db68a37761b8dff0a78b289f3e64a1f50c7188c';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [contractsRepository].
 @ProviderFor(contractsRepository)
-final contractsRepositoryProvider =
-    AutoDisposeProvider<ContractsRepository>.internal(
-      contractsRepository,
-      name: r'contractsRepositoryProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$contractsRepositoryHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+final contractsRepositoryProvider = ContractsRepositoryProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ContractsRepositoryRef = AutoDisposeProviderRef<ContractsRepository>;
-String _$fetchContractListHash() => r'a696dac0ae61ee728ca316a036acb060f571d3ea';
-
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-/// See also [fetchContractList].
-@ProviderFor(fetchContractList)
-const fetchContractListProvider = FetchContractListFamily();
-
-/// See also [fetchContractList].
-class FetchContractListFamily extends Family<AsyncValue<ContractsResponse>> {
-  /// See also [fetchContractList].
-  const FetchContractListFamily();
-
-  /// See also [fetchContractList].
-  FetchContractListProvider call({
-    required String uid,
-    String? filterParamName,
-  }) {
-    return FetchContractListProvider(
-      uid: uid,
-      filterParamName: filterParamName,
-    );
-  }
-
-  @override
-  FetchContractListProvider getProviderOverride(
-    covariant FetchContractListProvider provider,
-  ) {
-    return call(uid: provider.uid, filterParamName: provider.filterParamName);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'fetchContractListProvider';
-}
-
-/// See also [fetchContractList].
-class FetchContractListProvider
-    extends AutoDisposeFutureProvider<ContractsResponse> {
-  /// See also [fetchContractList].
-  FetchContractListProvider({required String uid, String? filterParamName})
-    : this._internal(
-        (ref) => fetchContractList(
-          ref as FetchContractListRef,
-          uid: uid,
-          filterParamName: filterParamName,
-        ),
-        from: fetchContractListProvider,
-        name: r'fetchContractListProvider',
-        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-            ? null
-            : _$fetchContractListHash,
-        dependencies: FetchContractListFamily._dependencies,
-        allTransitiveDependencies:
-            FetchContractListFamily._allTransitiveDependencies,
-        uid: uid,
-        filterParamName: filterParamName,
+final class ContractsRepositoryProvider
+    extends
+        $FunctionalProvider<
+          ContractsRepository,
+          ContractsRepository,
+          ContractsRepository
+        >
+    with $Provider<ContractsRepository> {
+  ContractsRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'contractsRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
       );
 
-  FetchContractListProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.uid,
-    required this.filterParamName,
-  }) : super.internal();
+  @override
+  String debugGetCreateSourceHash() => _$contractsRepositoryHash();
 
-  final String uid;
-  final String? filterParamName;
+  @$internal
+  @override
+  $ProviderElement<ContractsRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
-  Override overrideWith(
-    FutureOr<ContractsResponse> Function(FetchContractListRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: FetchContractListProvider._internal(
-        (ref) => create(ref as FetchContractListRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        uid: uid,
-        filterParamName: filterParamName,
-      ),
-    );
+  ContractsRepository create(Ref ref) {
+    return contractsRepository(ref);
   }
 
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ContractsRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ContractsRepository>(value),
+    );
+  }
+}
+
+String _$contractsRepositoryHash() =>
+    r'254fecd83d620791b9669bd4f2d2b3f8798fbea1';
+
+@ProviderFor(fetchContractList)
+final fetchContractListProvider = FetchContractListFamily._();
+
+final class FetchContractListProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<ContractsResponse>,
+          ContractsResponse,
+          FutureOr<ContractsResponse>
+        >
+    with
+        $FutureModifier<ContractsResponse>,
+        $FutureProvider<ContractsResponse> {
+  FetchContractListProvider._({
+    required FetchContractListFamily super.from,
+    required ({String uid, String? filterParamName}) super.argument,
+  }) : super(
+         retry: null,
+         name: r'fetchContractListProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
   @override
-  AutoDisposeFutureProviderElement<ContractsResponse> createElement() {
-    return _FetchContractListProviderElement(this);
+  String debugGetCreateSourceHash() => _$fetchContractListHash();
+
+  @override
+  String toString() {
+    return r'fetchContractListProvider'
+        ''
+        '$argument';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<ContractsResponse> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<ContractsResponse> create(Ref ref) {
+    final argument = this.argument as ({String uid, String? filterParamName});
+    return fetchContractList(
+      ref,
+      uid: argument.uid,
+      filterParamName: argument.filterParamName,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return other is FetchContractListProvider &&
-        other.uid == uid &&
-        other.filterParamName == filterParamName;
+    return other is FetchContractListProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, uid.hashCode);
-    hash = _SystemHash.combine(hash, filterParamName.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin FetchContractListRef on AutoDisposeFutureProviderRef<ContractsResponse> {
-  /// The parameter `uid` of this provider.
-  String get uid;
+String _$fetchContractListHash() => r'5742e30d3c08a8e8c4cd4b597743107c2b5e3dfe';
 
-  /// The parameter `filterParamName` of this provider.
-  String? get filterParamName;
-}
+final class FetchContractListFamily extends $Family
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<ContractsResponse>,
+          ({String uid, String? filterParamName})
+        > {
+  FetchContractListFamily._()
+    : super(
+        retry: null,
+        name: r'fetchContractListProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
 
-class _FetchContractListProviderElement
-    extends AutoDisposeFutureProviderElement<ContractsResponse>
-    with FetchContractListRef {
-  _FetchContractListProviderElement(super.provider);
+  FetchContractListProvider call({
+    required String uid,
+    String? filterParamName,
+  }) => FetchContractListProvider._(
+    argument: (uid: uid, filterParamName: filterParamName),
+    from: this,
+  );
 
   @override
-  String get uid => (origin as FetchContractListProvider).uid;
-  @override
-  String? get filterParamName =>
-      (origin as FetchContractListProvider).filterParamName;
+  String toString() => r'fetchContractListProvider';
 }
 
-String _$fetchContractedLeadDetailHash() =>
-    r'86beb95cabd15b3387f708e4b902d474c4b7e6b2';
-
-/// See also [fetchContractedLeadDetail].
 @ProviderFor(fetchContractedLeadDetail)
-const fetchContractedLeadDetailProvider = FetchContractedLeadDetailFamily();
+final fetchContractedLeadDetailProvider = FetchContractedLeadDetailFamily._();
 
-/// See also [fetchContractedLeadDetail].
-class FetchContractedLeadDetailFamily
-    extends Family<AsyncValue<ContractedDetailResponse>> {
-  /// See also [fetchContractedLeadDetail].
-  const FetchContractedLeadDetailFamily();
-
-  /// See also [fetchContractedLeadDetail].
-  FetchContractedLeadDetailProvider call({
-    required String uid,
-    required String profileId,
-  }) {
-    return FetchContractedLeadDetailProvider(uid: uid, profileId: profileId);
-  }
-
-  @override
-  FetchContractedLeadDetailProvider getProviderOverride(
-    covariant FetchContractedLeadDetailProvider provider,
-  ) {
-    return call(uid: provider.uid, profileId: provider.profileId);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'fetchContractedLeadDetailProvider';
-}
-
-/// See also [fetchContractedLeadDetail].
-class FetchContractedLeadDetailProvider
-    extends AutoDisposeFutureProvider<ContractedDetailResponse> {
-  /// See also [fetchContractedLeadDetail].
-  FetchContractedLeadDetailProvider({
-    required String uid,
-    required String profileId,
-  }) : this._internal(
-         (ref) => fetchContractedLeadDetail(
-           ref as FetchContractedLeadDetailRef,
-           uid: uid,
-           profileId: profileId,
-         ),
-         from: fetchContractedLeadDetailProvider,
+final class FetchContractedLeadDetailProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<ContractedDetailResponse>,
+          ContractedDetailResponse,
+          FutureOr<ContractedDetailResponse>
+        >
+    with
+        $FutureModifier<ContractedDetailResponse>,
+        $FutureProvider<ContractedDetailResponse> {
+  FetchContractedLeadDetailProvider._({
+    required FetchContractedLeadDetailFamily super.from,
+    required ({String uid, String profileId}) super.argument,
+  }) : super(
+         retry: null,
          name: r'fetchContractedLeadDetailProvider',
-         debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-             ? null
-             : _$fetchContractedLeadDetailHash,
-         dependencies: FetchContractedLeadDetailFamily._dependencies,
-         allTransitiveDependencies:
-             FetchContractedLeadDetailFamily._allTransitiveDependencies,
-         uid: uid,
-         profileId: profileId,
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
        );
 
-  FetchContractedLeadDetailProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.uid,
-    required this.profileId,
-  }) : super.internal();
-
-  final String uid;
-  final String profileId;
+  @override
+  String debugGetCreateSourceHash() => _$fetchContractedLeadDetailHash();
 
   @override
-  Override overrideWith(
-    FutureOr<ContractedDetailResponse> Function(
-      FetchContractedLeadDetailRef provider,
-    )
-    create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: FetchContractedLeadDetailProvider._internal(
-        (ref) => create(ref as FetchContractedLeadDetailRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        uid: uid,
-        profileId: profileId,
-      ),
-    );
+  String toString() {
+    return r'fetchContractedLeadDetailProvider'
+        ''
+        '$argument';
   }
 
+  @$internal
   @override
-  AutoDisposeFutureProviderElement<ContractedDetailResponse> createElement() {
-    return _FetchContractedLeadDetailProviderElement(this);
+  $FutureProviderElement<ContractedDetailResponse> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<ContractedDetailResponse> create(Ref ref) {
+    final argument = this.argument as ({String uid, String profileId});
+    return fetchContractedLeadDetail(
+      ref,
+      uid: argument.uid,
+      profileId: argument.profileId,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return other is FetchContractedLeadDetailProvider &&
-        other.uid == uid &&
-        other.profileId == profileId;
+        other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, uid.hashCode);
-    hash = _SystemHash.combine(hash, profileId.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin FetchContractedLeadDetailRef
-    on AutoDisposeFutureProviderRef<ContractedDetailResponse> {
-  /// The parameter `uid` of this provider.
-  String get uid;
+String _$fetchContractedLeadDetailHash() =>
+    r'9df251d3a44ba50a9fed6172b175a0d4277fd63c';
 
-  /// The parameter `profileId` of this provider.
-  String get profileId;
-}
+final class FetchContractedLeadDetailFamily extends $Family
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<ContractedDetailResponse>,
+          ({String uid, String profileId})
+        > {
+  FetchContractedLeadDetailFamily._()
+    : super(
+        retry: null,
+        name: r'fetchContractedLeadDetailProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
 
-class _FetchContractedLeadDetailProviderElement
-    extends AutoDisposeFutureProviderElement<ContractedDetailResponse>
-    with FetchContractedLeadDetailRef {
-  _FetchContractedLeadDetailProviderElement(super.provider);
+  FetchContractedLeadDetailProvider call({
+    required String uid,
+    required String profileId,
+  }) => FetchContractedLeadDetailProvider._(
+    argument: (uid: uid, profileId: profileId),
+    from: this,
+  );
 
   @override
-  String get uid => (origin as FetchContractedLeadDetailProvider).uid;
-  @override
-  String get profileId =>
-      (origin as FetchContractedLeadDetailProvider).profileId;
+  String toString() => r'fetchContractedLeadDetailProvider';
 }
-
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

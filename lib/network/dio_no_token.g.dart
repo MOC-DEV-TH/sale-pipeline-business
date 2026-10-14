@@ -6,22 +6,45 @@ part of 'dio_no_token.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$dioNoTokenHash() => r'559d496a5745c02bd0c35bef320ee3bdd2fb0cb6';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [dioNoToken].
 @ProviderFor(dioNoToken)
-final dioNoTokenProvider = AutoDisposeProvider<Dio>.internal(
-  dioNoToken,
-  name: r'dioNoTokenProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$dioNoTokenHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final dioNoTokenProvider = DioNoTokenProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef DioNoTokenRef = AutoDisposeProviderRef<Dio>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class DioNoTokenProvider extends $FunctionalProvider<Dio, Dio, Dio>
+    with $Provider<Dio> {
+  DioNoTokenProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'dioNoTokenProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$dioNoTokenHash();
+
+  @$internal
+  @override
+  $ProviderElement<Dio> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  Dio create(Ref ref) {
+    return dioNoToken(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Dio value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Dio>(value),
+    );
+  }
+}
+
+String _$dioNoTokenHash() => r'f67de0b208c0c4968e9aaa7e1f23da83dd6d8b91';

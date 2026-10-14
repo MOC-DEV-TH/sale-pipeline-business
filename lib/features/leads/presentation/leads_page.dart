@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sale_pipeline_business/features/leads/model/leads_response.dart';
@@ -7,6 +9,7 @@ import 'package:sale_pipeline_business/widgets/error_retry_view.dart';
 import '../../choose_task_page/provider/selected_organization_provider.dart';
 import '../data/leads_repository.dart';
 import 'lead_detail_page.dart';
+
 
 class LeadsPage extends ConsumerStatefulWidget {
   const LeadsPage({super.key});
@@ -18,17 +21,124 @@ class LeadsPage extends ConsumerStatefulWidget {
 class _LeadsPageState extends ConsumerState<LeadsPage> {
   int currentPage = 1;
 
+  final TextEditingController _searchController =
+  TextEditingController();
+
+  Timer? _debounce;
+
+  String _searchQuery = '';
+
+  bool get _isSearching => _searchQuery.trim().isNotEmpty;
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged(String value) {
+    _debounce?.cancel();
+
+    final query = value.trim();
+
+    /// Immediately restore the normal list when cleared.
+    if (query.isEmpty) {
+      setState(() {
+        _searchQuery = '';
+        currentPage = 1;
+      });
+      return;
+    }
+
+    _debounce = Timer(
+      const Duration(milliseconds: 400),
+          () {
+        if (!mounted) return;
+
+        setState(() {
+          _searchQuery = query;
+          currentPage = 1;
+        });
+      },
+    );
+  }
+
+  void _clearSearch() {
+    _debounce?.cancel();
+    _searchController.clear();
+
+    setState(() {
+      _searchQuery = '';
+      currentPage = 1;
+    });
+  }
+
+  void _refreshLeads(int organizationId) {
+    if (_isSearching) {
+      ref.invalidate(
+        searchLeadsProvider(
+          search: _searchQuery,
+          perPage: 20,
+          page: currentPage,
+        ),
+      );
+    } else {
+      ref.invalidate(
+        fetchLeadsByOrganizationIDProvider(
+          organizationID: organizationId,
+          pageNo: currentPage,
+        ),
+      );
+    }
+  }
+
+  Future<void> _onRefresh(int organizationId) async {
+    if (_isSearching) {
+      await ref.refresh(
+        searchLeadsProvider(
+          search: _searchQuery,
+          perPage: 20,
+          page: currentPage,
+        ).future,
+      );
+    } else {
+      await ref.refresh(
+        fetchLeadsByOrganizationIDProvider(
+          organizationID: organizationId,
+          pageNo: currentPage,
+        ).future,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final organizationId = ref.watch(
-      selectedOrganizationProvider.select((organization) => organization?.id),
+      selectedOrganizationProvider.select(
+            (organization) => organization?.id,
+      ),
     );
 
     if (organizationId == null) {
-      return const SafeArea(child: Center(child: CircularProgressIndicator()));
+      return const SafeArea(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
     }
 
-    final leadsState = ref.watch(
+    // Choose API based on search query.
+    final AsyncValue<LeadsResponse> leadsState =
+    _isSearching
+        ? ref.watch(
+      searchLeadsProvider(
+        search: _searchQuery,
+        perPage: 20,
+        page: currentPage,
+      ),
+    )
+        : ref.watch(
       fetchLeadsByOrganizationIDProvider(
         organizationID: organizationId,
         pageNo: currentPage,
@@ -38,50 +148,18 @@ class _LeadsPageState extends ConsumerState<LeadsPage> {
     return Container(
       color: const Color(0xFF061B10),
       child: SafeArea(
-        child: leadsState.when(
-          loading: () {
-            return const Center(
-              child: CircularProgressIndicator(color: Color(0xFF16B65B)),
-            );
-          },
-
-          error: (error, stackTrace) {
-            return ErrorRetryView(
-              message: error.toString(),
-              onRetry: () {
-                ref.invalidate(
-                  fetchLeadsByOrganizationIDProvider(
-                    organizationID: organizationId,
-                    pageNo: currentPage,
-                  ),
-                );
-              },
-            );
-          },
-
-          data: (data) {
-            final leads = data.details ?? [];
-            final pagination = data.pagination;
-
-            return RefreshIndicator(
-              color: const Color(0xFF16B65B),
-              onRefresh: () async {
-                ref.invalidate(
-                  fetchLeadsByOrganizationIDProvider(
-                    organizationID: organizationId,
-                    pageNo: currentPage,
-                  ),
-                );
-              },
-              child: ListView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.fromLTRB(16, 14, 16, 30),
+        child: Column(
+          children: [
+            // ==========================================
+            // TITLE AND SEARCH BOX
+            // ==========================================
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                16, 44, 16, 0,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  /// ==========================================
-                  /// TITLE
-                  /// ==========================================
-                  const SizedBox(height: 30),
-
                   const Text(
                     'All Lead List',
                     style: TextStyle(
@@ -91,87 +169,235 @@ class _LeadsPageState extends ConsumerState<LeadsPage> {
                     ),
                   ),
 
-                  const SizedBox(height: 28),
+                  const SizedBox(height: 18),
 
-                  /// ==========================================
-                  /// EMPTY
-                  /// ==========================================
-                  if (leads.isEmpty)
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 80),
-                      child: Center(
-                        child: Text(
-                          'No leads found',
-                          style: TextStyle(color: Colors.white70, fontSize: 14),
+                  // SEARCH TEXT FIELD
+                  TextField(
+                    controller: _searchController,
+                    onChanged: _onSearchChanged,
+                    textInputAction: TextInputAction.search,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                    ),
+                    cursorColor: kPrimaryColor,
+                    decoration: InputDecoration(
+                      hintText: 'Search leads...',
+                      hintStyle: const TextStyle(
+                        color: Colors.white54,
+                        fontSize: 14,
+                      ),
+                      prefixIcon: const Icon(
+                        Icons.search,
+                        color: kPrimaryColor,
+                      ),
+                      suffixIcon: ValueListenableBuilder<TextEditingValue>(
+                        valueListenable: _searchController,
+                        builder: (context, value, child) {
+                          if (value.text.isEmpty) {
+                            return const SizedBox.shrink();
+                          }
+
+                          return IconButton(
+                            onPressed: _clearSearch,
+                            icon: const Icon(
+                              Icons.close,
+                              color: Colors.white70,
+                            ),
+                          );
+                        },
+                      ),
+                      filled: true,
+                      fillColor: const Color(0xFF0B341F),
+                      contentPadding:
+                      const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 16,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide: const BorderSide(
+                          color: Color(0xFF397457),
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide: const BorderSide(
+                          color: Color(0xFF397457),
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide: const BorderSide(
+                          color: kPrimaryColor,
+                          width: 1.5,
                         ),
                       ),
                     ),
+                  ),
 
-                  /// ==========================================
-                  /// LEAD CARDS
-                  /// ==========================================
-                  ...List.generate(leads.length, (index) {
-                    final lead = leads[index];
-
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 28),
-                      child: LeadCard(
-                        lead: lead,
-                        onTap: () async {
-                          final updated = await Navigator.of(context)
-                              .push<bool>(
-                                MaterialPageRoute(
-                                  builder: (_) => LeadDetailPage(
-                                    uid: lead.lid.toString(),
-                                    leadId: lead.lid.toString(),
-                                  ),
-                                ),
-                              );
-
-                          if (updated == true) {
-                            ref.invalidate(
-                              fetchLeadsByOrganizationIDProvider(
-                                organizationID: organizationId,
-                                pageNo: currentPage,
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                    );
-                  }),
-
-                  const SizedBox(height: 50),
-
-                  /// ==========================================
-                  /// PAGINATION
-                  /// ==========================================
-                  if (pagination != null && (pagination.lastPage ?? 1) > 1) ...[
-                    const SizedBox(height: 4),
-
-                    LeadPagination(
-                      currentPage: pagination.currentPage ?? currentPage,
-                      lastPage: pagination.lastPage ?? 1,
-                      total: pagination.total ?? 0,
-                      perPage: pagination.perPage ?? 20,
-                      onPageChanged: (page) {
-                        setState(() {
-                          currentPage = page;
-                        });
-                      },
-                    ),
-
-                    const SizedBox(height: 90),
-                  ],
+                  const SizedBox(height: 12),
                 ],
               ),
-            );
-          },
+            ),
+
+            // ==========================================
+            // LEADS LIST
+            // ==========================================
+            Expanded(
+              child: leadsState.when(
+                loading: () {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: Color(0xFF16B65B),
+                    ),
+                  );
+                },
+
+                error: (error, stackTrace) {
+                  return ErrorRetryView(
+                    message: error.toString(),
+                    onRetry: () {
+                      _refreshLeads(organizationId);
+                    },
+                  );
+                },
+
+                data: (data) {
+                  final leads = data.details ?? [];
+                  final pagination = data.pagination;
+
+                  return RefreshIndicator(
+                    color: const Color(0xFF16B65B),
+                    onRefresh: () =>
+                        _onRefresh(organizationId),
+                    child: ListView(
+                      physics:
+                      const AlwaysScrollableScrollPhysics(),
+                      padding: const EdgeInsets.fromLTRB(
+                        16, 14, 16, 30,
+                      ),
+                      children: [
+                        // ==========================================
+                        // EMPTY STATE
+                        // ==========================================
+                        if (leads.isEmpty)
+                          Padding(
+                            padding:
+                            const EdgeInsets.symmetric(
+                              vertical: 80,
+                            ),
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  const Icon(
+                                    Icons.search_off,
+                                    color: Colors.white54,
+                                    size: 48,
+                                  ),
+
+                                  const SizedBox(height: 12),
+
+                                  Text(
+                                    _isSearching
+                                        ? 'No leads found for "$_searchQuery"'
+                                        : 'No leads found',
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                        // ==========================================
+                        // LEAD CARDS
+                        // ==========================================
+                        ...List.generate(
+                          leads.length,
+                              (index) {
+                            final lead = leads[index];
+
+                            return Padding(
+                              padding:
+                              const EdgeInsets.only(
+                                bottom: 28,
+                              ),
+                              child: LeadCard(
+                                lead: lead,
+                                onTap: () async {
+                                  final updated =
+                                  await Navigator.of(
+                                    context,
+                                  ).push<bool>(
+                                    MaterialPageRoute(
+                                      builder: (_) =>
+                                          LeadDetailPage(
+                                            uid:
+                                            lead.lid.toString(),
+                                            leadId:
+                                            lead.lid.toString(),
+                                          ),
+                                    ),
+                                  );
+
+                                  if (updated == true &&
+                                      mounted) {
+                                    _refreshLeads(
+                                      organizationId,
+                                    );
+                                  }
+                                },
+                              ),
+                            );
+                          },
+                        ),
+
+                        const SizedBox(height: 50),
+
+                        // ==========================================
+                        // PAGINATION
+                        // ==========================================
+                        if (pagination != null &&
+                            (pagination.lastPage ?? 1) > 1)
+                          ...[
+                            const SizedBox(height: 4),
+
+                            LeadPagination(
+                              currentPage:
+                              pagination.currentPage ??
+                                  currentPage,
+                              lastPage:
+                              pagination.lastPage ?? 1,
+                              total:
+                              pagination.total ?? 0,
+                              perPage:
+                              pagination.perPage ?? 20,
+                              onPageChanged: (page) {
+                                setState(() {
+                                  currentPage = page;
+                                });
+                              },
+                            ),
+
+                            const SizedBox(height: 90),
+                          ],
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
+
 
 /// ===========================================================
 /// LEAD CARD

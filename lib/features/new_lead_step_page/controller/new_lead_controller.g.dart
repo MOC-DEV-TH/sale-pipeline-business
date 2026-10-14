@@ -6,21 +6,49 @@ part of 'new_lead_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$newLeadControllerHash() => r'70ceaf26a287e5e8ea9cebf2760aaaa98c325474';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [NewLeadController].
 @ProviderFor(NewLeadController)
-final newLeadControllerProvider =
-    AutoDisposeAsyncNotifierProvider<NewLeadController, void>.internal(
-      NewLeadController.new,
-      name: r'newLeadControllerProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$newLeadControllerHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+final newLeadControllerProvider = NewLeadControllerProvider._();
 
-typedef _$NewLeadController = AutoDisposeAsyncNotifier<void>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class NewLeadControllerProvider
+    extends $AsyncNotifierProvider<NewLeadController, void> {
+  NewLeadControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'newLeadControllerProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$newLeadControllerHash();
+
+  @$internal
+  @override
+  NewLeadController create() => NewLeadController();
+}
+
+String _$newLeadControllerHash() => r'4e230f9488e988fa9ef45eb28c0640a7ef4e8c5d';
+
+abstract class _$NewLeadController extends $AsyncNotifier<void> {
+  FutureOr<void> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref = this.ref as $Ref<AsyncValue<void>, void>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<void>, void>,
+              AsyncValue<void>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
+  }
+}

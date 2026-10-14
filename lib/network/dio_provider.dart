@@ -9,7 +9,7 @@ import 'session_interceptor.dart';
 part 'dio_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-Dio dio(DioRef ref) {
+Dio dio(Ref ref) {
   final token = ref.watch(
     getAuthTokenProvider,
   );

@@ -54,7 +54,7 @@ class ChooseTaskRepository {
 
 @riverpod
 ChooseTaskRepository chooseTaskRepository(
-    ChooseTaskRepositoryRef ref,
+    Ref ref,
     ) {
   return ChooseTaskRepository(
     dio: ref.watch(
@@ -69,7 +69,7 @@ ChooseTaskRepository chooseTaskRepository(
 
 @riverpod
 Future<OrganizationsResponse?> fetchOrganizationList(
-    FetchOrganizationListRef ref,
+    Ref ref,
     ) async {
   /// Check session first.
   final token = ref.watch(

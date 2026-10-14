@@ -403,6 +403,28 @@ class LeadsRepository {
     }
   }
 
+  Future<LeadsResponse> searchLeads({
+    required String search,
+    int perPage = 20,
+    int page = 1,
+  }) async {
+    try {
+      final response = await dio.get(
+        '/leads',
+        queryParameters: {
+          'per_page': perPage,
+          'search': search,
+          'page': page,
+        },
+      );
+
+      return LeadsResponse.fromJson(response.data);
+    } on DioException catch (e) {
+      throw e.response?.data?['message'] ??
+          ErrorHandler.handle(e).failure.message;
+    }
+  }
+
   /// =========================================================
   /// GET ERROR MESSAGE
   /// =========================================================
@@ -421,13 +443,13 @@ class LeadsRepository {
 }
 
 @riverpod
-LeadsRepository leadsRepository(LeadsRepositoryRef ref) {
+LeadsRepository leadsRepository(Ref ref) {
   return LeadsRepository(dio: ref.watch(dioProvider), ref: ref);
 }
 
 @riverpod
 Future<LeadDetailsResponse> fetchLeadDetail(
-  FetchLeadDetailRef ref, {
+  Ref ref, {
   required int leadId,
 }) async {
   final repository = ref.watch(leadsRepositoryProvider);
@@ -437,7 +459,7 @@ Future<LeadDetailsResponse> fetchLeadDetail(
 
 @riverpod
 Future<LeadsResponse> fetchLeadsByOrganizationID(
-  FetchLeadsByOrganizationIDRef ref, {
+  Ref ref, {
   required int organizationID,
   required int pageNo,
 }) async {
@@ -455,7 +477,7 @@ Future<LeadsResponse> fetchLeadsByOrganizationID(
 
 @riverpod
 Future<LeadActivityResponse> leadActivityLogs(
-  LeadActivityLogsRef ref, {
+  Ref ref, {
   required int leadId,
 }) {
   return ref.watch(leadsRepositoryProvider).getLeadActivityLogs(leadId: leadId);
@@ -467,7 +489,7 @@ Future<LeadActivityResponse> leadActivityLogs(
 
 @riverpod
 Future<LeadReminderResponse> leadReminders(
-  LeadRemindersRef ref, {
+  Ref ref, {
   required int leadId,
 }) {
   return ref.watch(leadsRepositoryProvider).getLeadReminders(leadId: leadId);
@@ -479,7 +501,7 @@ Future<LeadReminderResponse> leadReminders(
 
 @riverpod
 Future<ParticipantsResponse> leadParticipants(
-  LeadParticipantsRef ref, {
+  Ref ref, {
   required int leadId,
 }) {
   return ref.watch(leadsRepositoryProvider).getLeadParticipants(leadId: leadId);
@@ -487,10 +509,25 @@ Future<ParticipantsResponse> leadParticipants(
 
 @riverpod
 Future<LeadFormConfigResponse> editLeadFormConfig(
-  EditLeadFormConfigRef ref, {
+  Ref ref, {
   required int leadId,
 }) {
   return ref
       .watch(leadsRepositoryProvider)
       .getEditLeadFormConfig(leadId: leadId);
+}
+
+
+@riverpod
+Future<LeadsResponse> searchLeads(
+    Ref ref, {
+      required String search,
+      int perPage = 20,
+      int page = 1,
+    }) {
+  return ref.watch(leadsRepositoryProvider).searchLeads(
+    search: search,
+    perPage: perPage,
+    page: page,
+  );
 }

@@ -6,22 +6,50 @@ part of 'contracts_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$contractsControllerHash() =>
-    r'7646a6d0340283c6345fa85ec8960a94a1b35254';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [ContractsController].
 @ProviderFor(ContractsController)
-final contractsControllerProvider =
-    AutoDisposeAsyncNotifierProvider<ContractsController, void>.internal(
-      ContractsController.new,
-      name: r'contractsControllerProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$contractsControllerHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+final contractsControllerProvider = ContractsControllerProvider._();
 
-typedef _$ContractsController = AutoDisposeAsyncNotifier<void>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class ContractsControllerProvider
+    extends $AsyncNotifierProvider<ContractsController, void> {
+  ContractsControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'contractsControllerProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$contractsControllerHash();
+
+  @$internal
+  @override
+  ContractsController create() => ContractsController();
+}
+
+String _$contractsControllerHash() =>
+    r'530cb7478dbfc717acca9fd04fb0751b49e99164';
+
+abstract class _$ContractsController extends $AsyncNotifier<void> {
+  FutureOr<void> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref = this.ref as $Ref<AsyncValue<void>, void>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<void>, void>,
+              AsyncValue<void>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
+  }
+}

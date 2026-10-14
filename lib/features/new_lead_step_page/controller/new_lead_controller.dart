@@ -32,6 +32,6 @@ class NewLeadController extends _$NewLeadController {
           : const AsyncValue.data(null);
     }
 
-    return result.valueOrNull;
+    return result.value;
   }
 }

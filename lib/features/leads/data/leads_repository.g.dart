@@ -6,882 +6,670 @@ part of 'leads_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$leadsRepositoryHash() => r'e427a6e0b654e649667b8cde9cb3fae524aa8e48';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [leadsRepository].
 @ProviderFor(leadsRepository)
-final leadsRepositoryProvider = AutoDisposeProvider<LeadsRepository>.internal(
-  leadsRepository,
-  name: r'leadsRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$leadsRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final leadsRepositoryProvider = LeadsRepositoryProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef LeadsRepositoryRef = AutoDisposeProviderRef<LeadsRepository>;
-String _$fetchLeadDetailHash() => r'bb170f00e396efbc161bee389002567b8ebfb3c5';
-
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-/// See also [fetchLeadDetail].
-@ProviderFor(fetchLeadDetail)
-const fetchLeadDetailProvider = FetchLeadDetailFamily();
-
-/// See also [fetchLeadDetail].
-class FetchLeadDetailFamily extends Family<AsyncValue<LeadDetailsResponse>> {
-  /// See also [fetchLeadDetail].
-  const FetchLeadDetailFamily();
-
-  /// See also [fetchLeadDetail].
-  FetchLeadDetailProvider call({required int leadId}) {
-    return FetchLeadDetailProvider(leadId: leadId);
-  }
-
-  @override
-  FetchLeadDetailProvider getProviderOverride(
-    covariant FetchLeadDetailProvider provider,
-  ) {
-    return call(leadId: provider.leadId);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'fetchLeadDetailProvider';
-}
-
-/// See also [fetchLeadDetail].
-class FetchLeadDetailProvider
-    extends AutoDisposeFutureProvider<LeadDetailsResponse> {
-  /// See also [fetchLeadDetail].
-  FetchLeadDetailProvider({required int leadId})
-    : this._internal(
-        (ref) => fetchLeadDetail(ref as FetchLeadDetailRef, leadId: leadId),
-        from: fetchLeadDetailProvider,
-        name: r'fetchLeadDetailProvider',
-        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-            ? null
-            : _$fetchLeadDetailHash,
-        dependencies: FetchLeadDetailFamily._dependencies,
-        allTransitiveDependencies:
-            FetchLeadDetailFamily._allTransitiveDependencies,
-        leadId: leadId,
+final class LeadsRepositoryProvider
+    extends
+        $FunctionalProvider<LeadsRepository, LeadsRepository, LeadsRepository>
+    with $Provider<LeadsRepository> {
+  LeadsRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'leadsRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
       );
 
-  FetchLeadDetailProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.leadId,
-  }) : super.internal();
+  @override
+  String debugGetCreateSourceHash() => _$leadsRepositoryHash();
 
-  final int leadId;
+  @$internal
+  @override
+  $ProviderElement<LeadsRepository> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
 
   @override
-  Override overrideWith(
-    FutureOr<LeadDetailsResponse> Function(FetchLeadDetailRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: FetchLeadDetailProvider._internal(
-        (ref) => create(ref as FetchLeadDetailRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        leadId: leadId,
-      ),
-    );
+  LeadsRepository create(Ref ref) {
+    return leadsRepository(ref);
   }
 
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(LeadsRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<LeadsRepository>(value),
+    );
+  }
+}
+
+String _$leadsRepositoryHash() => r'1409a170f6b51ea521fded26db6b632b95693a6d';
+
+@ProviderFor(fetchLeadDetail)
+final fetchLeadDetailProvider = FetchLeadDetailFamily._();
+
+final class FetchLeadDetailProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<LeadDetailsResponse>,
+          LeadDetailsResponse,
+          FutureOr<LeadDetailsResponse>
+        >
+    with
+        $FutureModifier<LeadDetailsResponse>,
+        $FutureProvider<LeadDetailsResponse> {
+  FetchLeadDetailProvider._({
+    required FetchLeadDetailFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'fetchLeadDetailProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
   @override
-  AutoDisposeFutureProviderElement<LeadDetailsResponse> createElement() {
-    return _FetchLeadDetailProviderElement(this);
+  String debugGetCreateSourceHash() => _$fetchLeadDetailHash();
+
+  @override
+  String toString() {
+    return r'fetchLeadDetailProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<LeadDetailsResponse> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<LeadDetailsResponse> create(Ref ref) {
+    final argument = this.argument as int;
+    return fetchLeadDetail(ref, leadId: argument);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is FetchLeadDetailProvider && other.leadId == leadId;
+    return other is FetchLeadDetailProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, leadId.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin FetchLeadDetailRef on AutoDisposeFutureProviderRef<LeadDetailsResponse> {
-  /// The parameter `leadId` of this provider.
-  int get leadId;
-}
+String _$fetchLeadDetailHash() => r'880932565fc78df9236ba641bff7fd2bc99ff55d';
 
-class _FetchLeadDetailProviderElement
-    extends AutoDisposeFutureProviderElement<LeadDetailsResponse>
-    with FetchLeadDetailRef {
-  _FetchLeadDetailProviderElement(super.provider);
+final class FetchLeadDetailFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<LeadDetailsResponse>, int> {
+  FetchLeadDetailFamily._()
+    : super(
+        retry: null,
+        name: r'fetchLeadDetailProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  FetchLeadDetailProvider call({required int leadId}) =>
+      FetchLeadDetailProvider._(argument: leadId, from: this);
 
   @override
-  int get leadId => (origin as FetchLeadDetailProvider).leadId;
+  String toString() => r'fetchLeadDetailProvider';
 }
 
-String _$fetchLeadsByOrganizationIDHash() =>
-    r'f5a289abe5f2c737a24762e34166ce7f7fa33b20';
-
-/// See also [fetchLeadsByOrganizationID].
 @ProviderFor(fetchLeadsByOrganizationID)
-const fetchLeadsByOrganizationIDProvider = FetchLeadsByOrganizationIDFamily();
+final fetchLeadsByOrganizationIDProvider = FetchLeadsByOrganizationIDFamily._();
 
-/// See also [fetchLeadsByOrganizationID].
-class FetchLeadsByOrganizationIDFamily
-    extends Family<AsyncValue<LeadsResponse>> {
-  /// See also [fetchLeadsByOrganizationID].
-  const FetchLeadsByOrganizationIDFamily();
-
-  /// See also [fetchLeadsByOrganizationID].
-  FetchLeadsByOrganizationIDProvider call({
-    required int organizationID,
-    required int pageNo,
-  }) {
-    return FetchLeadsByOrganizationIDProvider(
-      organizationID: organizationID,
-      pageNo: pageNo,
-    );
-  }
-
-  @override
-  FetchLeadsByOrganizationIDProvider getProviderOverride(
-    covariant FetchLeadsByOrganizationIDProvider provider,
-  ) {
-    return call(
-      organizationID: provider.organizationID,
-      pageNo: provider.pageNo,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'fetchLeadsByOrganizationIDProvider';
-}
-
-/// See also [fetchLeadsByOrganizationID].
-class FetchLeadsByOrganizationIDProvider
-    extends AutoDisposeFutureProvider<LeadsResponse> {
-  /// See also [fetchLeadsByOrganizationID].
-  FetchLeadsByOrganizationIDProvider({
-    required int organizationID,
-    required int pageNo,
-  }) : this._internal(
-         (ref) => fetchLeadsByOrganizationID(
-           ref as FetchLeadsByOrganizationIDRef,
-           organizationID: organizationID,
-           pageNo: pageNo,
-         ),
-         from: fetchLeadsByOrganizationIDProvider,
+final class FetchLeadsByOrganizationIDProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<LeadsResponse>,
+          LeadsResponse,
+          FutureOr<LeadsResponse>
+        >
+    with $FutureModifier<LeadsResponse>, $FutureProvider<LeadsResponse> {
+  FetchLeadsByOrganizationIDProvider._({
+    required FetchLeadsByOrganizationIDFamily super.from,
+    required ({int organizationID, int pageNo}) super.argument,
+  }) : super(
+         retry: null,
          name: r'fetchLeadsByOrganizationIDProvider',
-         debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-             ? null
-             : _$fetchLeadsByOrganizationIDHash,
-         dependencies: FetchLeadsByOrganizationIDFamily._dependencies,
-         allTransitiveDependencies:
-             FetchLeadsByOrganizationIDFamily._allTransitiveDependencies,
-         organizationID: organizationID,
-         pageNo: pageNo,
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
        );
 
-  FetchLeadsByOrganizationIDProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.organizationID,
-    required this.pageNo,
-  }) : super.internal();
-
-  final int organizationID;
-  final int pageNo;
+  @override
+  String debugGetCreateSourceHash() => _$fetchLeadsByOrganizationIDHash();
 
   @override
-  Override overrideWith(
-    FutureOr<LeadsResponse> Function(FetchLeadsByOrganizationIDRef provider)
-    create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: FetchLeadsByOrganizationIDProvider._internal(
-        (ref) => create(ref as FetchLeadsByOrganizationIDRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        organizationID: organizationID,
-        pageNo: pageNo,
-      ),
-    );
+  String toString() {
+    return r'fetchLeadsByOrganizationIDProvider'
+        ''
+        '$argument';
   }
 
+  @$internal
   @override
-  AutoDisposeFutureProviderElement<LeadsResponse> createElement() {
-    return _FetchLeadsByOrganizationIDProviderElement(this);
+  $FutureProviderElement<LeadsResponse> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<LeadsResponse> create(Ref ref) {
+    final argument = this.argument as ({int organizationID, int pageNo});
+    return fetchLeadsByOrganizationID(
+      ref,
+      organizationID: argument.organizationID,
+      pageNo: argument.pageNo,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return other is FetchLeadsByOrganizationIDProvider &&
-        other.organizationID == organizationID &&
-        other.pageNo == pageNo;
+        other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, organizationID.hashCode);
-    hash = _SystemHash.combine(hash, pageNo.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin FetchLeadsByOrganizationIDRef
-    on AutoDisposeFutureProviderRef<LeadsResponse> {
-  /// The parameter `organizationID` of this provider.
-  int get organizationID;
+String _$fetchLeadsByOrganizationIDHash() =>
+    r'2f2ecdc050a3f9f72966f9a256596841d79ef295';
 
-  /// The parameter `pageNo` of this provider.
-  int get pageNo;
-}
+final class FetchLeadsByOrganizationIDFamily extends $Family
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<LeadsResponse>,
+          ({int organizationID, int pageNo})
+        > {
+  FetchLeadsByOrganizationIDFamily._()
+    : super(
+        retry: null,
+        name: r'fetchLeadsByOrganizationIDProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
 
-class _FetchLeadsByOrganizationIDProviderElement
-    extends AutoDisposeFutureProviderElement<LeadsResponse>
-    with FetchLeadsByOrganizationIDRef {
-  _FetchLeadsByOrganizationIDProviderElement(super.provider);
+  FetchLeadsByOrganizationIDProvider call({
+    required int organizationID,
+    required int pageNo,
+  }) => FetchLeadsByOrganizationIDProvider._(
+    argument: (organizationID: organizationID, pageNo: pageNo),
+    from: this,
+  );
 
   @override
-  int get organizationID =>
-      (origin as FetchLeadsByOrganizationIDProvider).organizationID;
-  @override
-  int get pageNo => (origin as FetchLeadsByOrganizationIDProvider).pageNo;
+  String toString() => r'fetchLeadsByOrganizationIDProvider';
 }
-
-String _$leadActivityLogsHash() => r'b8b80671287c6d429b874f319622331d6066f8f9';
 
 /// ===========================================================
 /// ACTIVITY LOG PROVIDER
 /// ===========================================================
-///
-/// Copied from [leadActivityLogs].
+
 @ProviderFor(leadActivityLogs)
-const leadActivityLogsProvider = LeadActivityLogsFamily();
+final leadActivityLogsProvider = LeadActivityLogsFamily._();
 
 /// ===========================================================
 /// ACTIVITY LOG PROVIDER
 /// ===========================================================
-///
-/// Copied from [leadActivityLogs].
-class LeadActivityLogsFamily extends Family<AsyncValue<LeadActivityResponse>> {
+
+final class LeadActivityLogsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<LeadActivityResponse>,
+          LeadActivityResponse,
+          FutureOr<LeadActivityResponse>
+        >
+    with
+        $FutureModifier<LeadActivityResponse>,
+        $FutureProvider<LeadActivityResponse> {
   /// ===========================================================
   /// ACTIVITY LOG PROVIDER
   /// ===========================================================
-  ///
-  /// Copied from [leadActivityLogs].
-  const LeadActivityLogsFamily();
+  LeadActivityLogsProvider._({
+    required LeadActivityLogsFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'leadActivityLogsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
-  /// ===========================================================
-  /// ACTIVITY LOG PROVIDER
-  /// ===========================================================
-  ///
-  /// Copied from [leadActivityLogs].
-  LeadActivityLogsProvider call({required int leadId}) {
-    return LeadActivityLogsProvider(leadId: leadId);
+  @override
+  String debugGetCreateSourceHash() => _$leadActivityLogsHash();
+
+  @override
+  String toString() {
+    return r'leadActivityLogsProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<LeadActivityResponse> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<LeadActivityResponse> create(Ref ref) {
+    final argument = this.argument as int;
+    return leadActivityLogs(ref, leadId: argument);
   }
 
   @override
-  LeadActivityLogsProvider getProviderOverride(
-    covariant LeadActivityLogsProvider provider,
-  ) {
-    return call(leadId: provider.leadId);
+  bool operator ==(Object other) {
+    return other is LeadActivityLogsProvider && other.argument == argument;
   }
 
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
   @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'leadActivityLogsProvider';
+  int get hashCode {
+    return argument.hashCode;
+  }
 }
 
+String _$leadActivityLogsHash() => r'25c21b5002346c89fa0dff061b2d4e71c271b6bc';
+
 /// ===========================================================
 /// ACTIVITY LOG PROVIDER
 /// ===========================================================
-///
-/// Copied from [leadActivityLogs].
-class LeadActivityLogsProvider
-    extends AutoDisposeFutureProvider<LeadActivityResponse> {
-  /// ===========================================================
-  /// ACTIVITY LOG PROVIDER
-  /// ===========================================================
-  ///
-  /// Copied from [leadActivityLogs].
-  LeadActivityLogsProvider({required int leadId})
-    : this._internal(
-        (ref) => leadActivityLogs(ref as LeadActivityLogsRef, leadId: leadId),
-        from: leadActivityLogsProvider,
+
+final class LeadActivityLogsFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<LeadActivityResponse>, int> {
+  LeadActivityLogsFamily._()
+    : super(
+        retry: null,
         name: r'leadActivityLogsProvider',
-        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-            ? null
-            : _$leadActivityLogsHash,
-        dependencies: LeadActivityLogsFamily._dependencies,
-        allTransitiveDependencies:
-            LeadActivityLogsFamily._allTransitiveDependencies,
-        leadId: leadId,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
       );
 
-  LeadActivityLogsProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.leadId,
-  }) : super.internal();
+  /// ===========================================================
+  /// ACTIVITY LOG PROVIDER
+  /// ===========================================================
 
-  final int leadId;
+  LeadActivityLogsProvider call({required int leadId}) =>
+      LeadActivityLogsProvider._(argument: leadId, from: this);
 
   @override
-  Override overrideWith(
-    FutureOr<LeadActivityResponse> Function(LeadActivityLogsRef provider)
-    create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: LeadActivityLogsProvider._internal(
-        (ref) => create(ref as LeadActivityLogsRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        leadId: leadId,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeFutureProviderElement<LeadActivityResponse> createElement() {
-    return _LeadActivityLogsProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is LeadActivityLogsProvider && other.leadId == leadId;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, leadId.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
+  String toString() => r'leadActivityLogsProvider';
 }
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin LeadActivityLogsRef
-    on AutoDisposeFutureProviderRef<LeadActivityResponse> {
-  /// The parameter `leadId` of this provider.
-  int get leadId;
-}
-
-class _LeadActivityLogsProviderElement
-    extends AutoDisposeFutureProviderElement<LeadActivityResponse>
-    with LeadActivityLogsRef {
-  _LeadActivityLogsProviderElement(super.provider);
-
-  @override
-  int get leadId => (origin as LeadActivityLogsProvider).leadId;
-}
-
-String _$leadRemindersHash() => r'170cc53874182822ddc62411a51b586eca9a9446';
 
 /// ===========================================================
 /// REMINDER PROVIDER
 /// ===========================================================
-///
-/// Copied from [leadReminders].
+
 @ProviderFor(leadReminders)
-const leadRemindersProvider = LeadRemindersFamily();
+final leadRemindersProvider = LeadRemindersFamily._();
 
 /// ===========================================================
 /// REMINDER PROVIDER
 /// ===========================================================
-///
-/// Copied from [leadReminders].
-class LeadRemindersFamily extends Family<AsyncValue<LeadReminderResponse>> {
+
+final class LeadRemindersProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<LeadReminderResponse>,
+          LeadReminderResponse,
+          FutureOr<LeadReminderResponse>
+        >
+    with
+        $FutureModifier<LeadReminderResponse>,
+        $FutureProvider<LeadReminderResponse> {
   /// ===========================================================
   /// REMINDER PROVIDER
   /// ===========================================================
-  ///
-  /// Copied from [leadReminders].
-  const LeadRemindersFamily();
+  LeadRemindersProvider._({
+    required LeadRemindersFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'leadRemindersProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
-  /// ===========================================================
-  /// REMINDER PROVIDER
-  /// ===========================================================
-  ///
-  /// Copied from [leadReminders].
-  LeadRemindersProvider call({required int leadId}) {
-    return LeadRemindersProvider(leadId: leadId);
+  @override
+  String debugGetCreateSourceHash() => _$leadRemindersHash();
+
+  @override
+  String toString() {
+    return r'leadRemindersProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<LeadReminderResponse> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<LeadReminderResponse> create(Ref ref) {
+    final argument = this.argument as int;
+    return leadReminders(ref, leadId: argument);
   }
 
   @override
-  LeadRemindersProvider getProviderOverride(
-    covariant LeadRemindersProvider provider,
-  ) {
-    return call(leadId: provider.leadId);
+  bool operator ==(Object other) {
+    return other is LeadRemindersProvider && other.argument == argument;
   }
 
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
   @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'leadRemindersProvider';
+  int get hashCode {
+    return argument.hashCode;
+  }
 }
 
+String _$leadRemindersHash() => r'4349f05e3dd4c2ae4491d56445923ffc4ae91bcc';
+
 /// ===========================================================
 /// REMINDER PROVIDER
 /// ===========================================================
-///
-/// Copied from [leadReminders].
-class LeadRemindersProvider
-    extends AutoDisposeFutureProvider<LeadReminderResponse> {
-  /// ===========================================================
-  /// REMINDER PROVIDER
-  /// ===========================================================
-  ///
-  /// Copied from [leadReminders].
-  LeadRemindersProvider({required int leadId})
-    : this._internal(
-        (ref) => leadReminders(ref as LeadRemindersRef, leadId: leadId),
-        from: leadRemindersProvider,
+
+final class LeadRemindersFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<LeadReminderResponse>, int> {
+  LeadRemindersFamily._()
+    : super(
+        retry: null,
         name: r'leadRemindersProvider',
-        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-            ? null
-            : _$leadRemindersHash,
-        dependencies: LeadRemindersFamily._dependencies,
-        allTransitiveDependencies:
-            LeadRemindersFamily._allTransitiveDependencies,
-        leadId: leadId,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
       );
 
-  LeadRemindersProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.leadId,
-  }) : super.internal();
+  /// ===========================================================
+  /// REMINDER PROVIDER
+  /// ===========================================================
 
-  final int leadId;
+  LeadRemindersProvider call({required int leadId}) =>
+      LeadRemindersProvider._(argument: leadId, from: this);
 
   @override
-  Override overrideWith(
-    FutureOr<LeadReminderResponse> Function(LeadRemindersRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: LeadRemindersProvider._internal(
-        (ref) => create(ref as LeadRemindersRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        leadId: leadId,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeFutureProviderElement<LeadReminderResponse> createElement() {
-    return _LeadRemindersProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is LeadRemindersProvider && other.leadId == leadId;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, leadId.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
+  String toString() => r'leadRemindersProvider';
 }
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin LeadRemindersRef on AutoDisposeFutureProviderRef<LeadReminderResponse> {
-  /// The parameter `leadId` of this provider.
-  int get leadId;
-}
-
-class _LeadRemindersProviderElement
-    extends AutoDisposeFutureProviderElement<LeadReminderResponse>
-    with LeadRemindersRef {
-  _LeadRemindersProviderElement(super.provider);
-
-  @override
-  int get leadId => (origin as LeadRemindersProvider).leadId;
-}
-
-String _$leadParticipantsHash() => r'310e0141186c072e266f16f70553cec56d97d972';
 
 /// ===========================================================
 /// PARTICIPANTS PROVIDER
 /// ===========================================================
-///
-/// Copied from [leadParticipants].
+
 @ProviderFor(leadParticipants)
-const leadParticipantsProvider = LeadParticipantsFamily();
+final leadParticipantsProvider = LeadParticipantsFamily._();
 
 /// ===========================================================
 /// PARTICIPANTS PROVIDER
 /// ===========================================================
-///
-/// Copied from [leadParticipants].
-class LeadParticipantsFamily extends Family<AsyncValue<ParticipantsResponse>> {
+
+final class LeadParticipantsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<ParticipantsResponse>,
+          ParticipantsResponse,
+          FutureOr<ParticipantsResponse>
+        >
+    with
+        $FutureModifier<ParticipantsResponse>,
+        $FutureProvider<ParticipantsResponse> {
   /// ===========================================================
   /// PARTICIPANTS PROVIDER
   /// ===========================================================
-  ///
-  /// Copied from [leadParticipants].
-  const LeadParticipantsFamily();
+  LeadParticipantsProvider._({
+    required LeadParticipantsFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'leadParticipantsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
-  /// ===========================================================
-  /// PARTICIPANTS PROVIDER
-  /// ===========================================================
-  ///
-  /// Copied from [leadParticipants].
-  LeadParticipantsProvider call({required int leadId}) {
-    return LeadParticipantsProvider(leadId: leadId);
+  @override
+  String debugGetCreateSourceHash() => _$leadParticipantsHash();
+
+  @override
+  String toString() {
+    return r'leadParticipantsProvider'
+        ''
+        '($argument)';
   }
 
+  @$internal
   @override
-  LeadParticipantsProvider getProviderOverride(
-    covariant LeadParticipantsProvider provider,
-  ) {
-    return call(leadId: provider.leadId);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
+  $FutureProviderElement<ParticipantsResponse> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
 
   @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'leadParticipantsProvider';
-}
-
-/// ===========================================================
-/// PARTICIPANTS PROVIDER
-/// ===========================================================
-///
-/// Copied from [leadParticipants].
-class LeadParticipantsProvider
-    extends AutoDisposeFutureProvider<ParticipantsResponse> {
-  /// ===========================================================
-  /// PARTICIPANTS PROVIDER
-  /// ===========================================================
-  ///
-  /// Copied from [leadParticipants].
-  LeadParticipantsProvider({required int leadId})
-    : this._internal(
-        (ref) => leadParticipants(ref as LeadParticipantsRef, leadId: leadId),
-        from: leadParticipantsProvider,
-        name: r'leadParticipantsProvider',
-        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-            ? null
-            : _$leadParticipantsHash,
-        dependencies: LeadParticipantsFamily._dependencies,
-        allTransitiveDependencies:
-            LeadParticipantsFamily._allTransitiveDependencies,
-        leadId: leadId,
-      );
-
-  LeadParticipantsProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.leadId,
-  }) : super.internal();
-
-  final int leadId;
-
-  @override
-  Override overrideWith(
-    FutureOr<ParticipantsResponse> Function(LeadParticipantsRef provider)
-    create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: LeadParticipantsProvider._internal(
-        (ref) => create(ref as LeadParticipantsRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        leadId: leadId,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeFutureProviderElement<ParticipantsResponse> createElement() {
-    return _LeadParticipantsProviderElement(this);
+  FutureOr<ParticipantsResponse> create(Ref ref) {
+    final argument = this.argument as int;
+    return leadParticipants(ref, leadId: argument);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is LeadParticipantsProvider && other.leadId == leadId;
+    return other is LeadParticipantsProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, leadId.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin LeadParticipantsRef
-    on AutoDisposeFutureProviderRef<ParticipantsResponse> {
-  /// The parameter `leadId` of this provider.
-  int get leadId;
-}
+String _$leadParticipantsHash() => r'65c92430b9a29d5b886581fca5a8d032ea61afcc';
 
-class _LeadParticipantsProviderElement
-    extends AutoDisposeFutureProviderElement<ParticipantsResponse>
-    with LeadParticipantsRef {
-  _LeadParticipantsProviderElement(super.provider);
+/// ===========================================================
+/// PARTICIPANTS PROVIDER
+/// ===========================================================
+
+final class LeadParticipantsFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<ParticipantsResponse>, int> {
+  LeadParticipantsFamily._()
+    : super(
+        retry: null,
+        name: r'leadParticipantsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// ===========================================================
+  /// PARTICIPANTS PROVIDER
+  /// ===========================================================
+
+  LeadParticipantsProvider call({required int leadId}) =>
+      LeadParticipantsProvider._(argument: leadId, from: this);
 
   @override
-  int get leadId => (origin as LeadParticipantsProvider).leadId;
+  String toString() => r'leadParticipantsProvider';
+}
+
+@ProviderFor(editLeadFormConfig)
+final editLeadFormConfigProvider = EditLeadFormConfigFamily._();
+
+final class EditLeadFormConfigProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<LeadFormConfigResponse>,
+          LeadFormConfigResponse,
+          FutureOr<LeadFormConfigResponse>
+        >
+    with
+        $FutureModifier<LeadFormConfigResponse>,
+        $FutureProvider<LeadFormConfigResponse> {
+  EditLeadFormConfigProvider._({
+    required EditLeadFormConfigFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'editLeadFormConfigProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$editLeadFormConfigHash();
+
+  @override
+  String toString() {
+    return r'editLeadFormConfigProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<LeadFormConfigResponse> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<LeadFormConfigResponse> create(Ref ref) {
+    final argument = this.argument as int;
+    return editLeadFormConfig(ref, leadId: argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is EditLeadFormConfigProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
 }
 
 String _$editLeadFormConfigHash() =>
-    r'2608542c532268b0b89bf54127a606a330c05af7';
+    r'cdc783c4eace56fb0632d23e71f696ac8b2123e5';
 
-/// See also [editLeadFormConfig].
-@ProviderFor(editLeadFormConfig)
-const editLeadFormConfigProvider = EditLeadFormConfigFamily();
-
-/// See also [editLeadFormConfig].
-class EditLeadFormConfigFamily
-    extends Family<AsyncValue<LeadFormConfigResponse>> {
-  /// See also [editLeadFormConfig].
-  const EditLeadFormConfigFamily();
-
-  /// See also [editLeadFormConfig].
-  EditLeadFormConfigProvider call({required int leadId}) {
-    return EditLeadFormConfigProvider(leadId: leadId);
-  }
-
-  @override
-  EditLeadFormConfigProvider getProviderOverride(
-    covariant EditLeadFormConfigProvider provider,
-  ) {
-    return call(leadId: provider.leadId);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'editLeadFormConfigProvider';
-}
-
-/// See also [editLeadFormConfig].
-class EditLeadFormConfigProvider
-    extends AutoDisposeFutureProvider<LeadFormConfigResponse> {
-  /// See also [editLeadFormConfig].
-  EditLeadFormConfigProvider({required int leadId})
-    : this._internal(
-        (ref) =>
-            editLeadFormConfig(ref as EditLeadFormConfigRef, leadId: leadId),
-        from: editLeadFormConfigProvider,
+final class EditLeadFormConfigFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<LeadFormConfigResponse>, int> {
+  EditLeadFormConfigFamily._()
+    : super(
+        retry: null,
         name: r'editLeadFormConfigProvider',
-        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-            ? null
-            : _$editLeadFormConfigHash,
-        dependencies: EditLeadFormConfigFamily._dependencies,
-        allTransitiveDependencies:
-            EditLeadFormConfigFamily._allTransitiveDependencies,
-        leadId: leadId,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
       );
 
-  EditLeadFormConfigProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.leadId,
-  }) : super.internal();
-
-  final int leadId;
+  EditLeadFormConfigProvider call({required int leadId}) =>
+      EditLeadFormConfigProvider._(argument: leadId, from: this);
 
   @override
-  Override overrideWith(
-    FutureOr<LeadFormConfigResponse> Function(EditLeadFormConfigRef provider)
-    create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: EditLeadFormConfigProvider._internal(
-        (ref) => create(ref as EditLeadFormConfigRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        leadId: leadId,
-      ),
+  String toString() => r'editLeadFormConfigProvider';
+}
+
+@ProviderFor(searchLeads)
+final searchLeadsProvider = SearchLeadsFamily._();
+
+final class SearchLeadsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<LeadsResponse>,
+          LeadsResponse,
+          FutureOr<LeadsResponse>
+        >
+    with $FutureModifier<LeadsResponse>, $FutureProvider<LeadsResponse> {
+  SearchLeadsProvider._({
+    required SearchLeadsFamily super.from,
+    required ({String search, int perPage, int page}) super.argument,
+  }) : super(
+         retry: null,
+         name: r'searchLeadsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$searchLeadsHash();
+
+  @override
+  String toString() {
+    return r'searchLeadsProvider'
+        ''
+        '$argument';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<LeadsResponse> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<LeadsResponse> create(Ref ref) {
+    final argument = this.argument as ({String search, int perPage, int page});
+    return searchLeads(
+      ref,
+      search: argument.search,
+      perPage: argument.perPage,
+      page: argument.page,
     );
   }
 
   @override
-  AutoDisposeFutureProviderElement<LeadFormConfigResponse> createElement() {
-    return _EditLeadFormConfigProviderElement(this);
-  }
-
-  @override
   bool operator ==(Object other) {
-    return other is EditLeadFormConfigProvider && other.leadId == leadId;
+    return other is SearchLeadsProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, leadId.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin EditLeadFormConfigRef
-    on AutoDisposeFutureProviderRef<LeadFormConfigResponse> {
-  /// The parameter `leadId` of this provider.
-  int get leadId;
-}
+String _$searchLeadsHash() => r'f47bdf31fce3273008448ed490b6e166e4b512fe';
 
-class _EditLeadFormConfigProviderElement
-    extends AutoDisposeFutureProviderElement<LeadFormConfigResponse>
-    with EditLeadFormConfigRef {
-  _EditLeadFormConfigProviderElement(super.provider);
+final class SearchLeadsFamily extends $Family
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<LeadsResponse>,
+          ({String search, int perPage, int page})
+        > {
+  SearchLeadsFamily._()
+    : super(
+        retry: null,
+        name: r'searchLeadsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  SearchLeadsProvider call({
+    required String search,
+    int perPage = 20,
+    int page = 1,
+  }) => SearchLeadsProvider._(
+    argument: (search: search, perPage: perPage, page: page),
+    from: this,
+  );
 
   @override
-  int get leadId => (origin as EditLeadFormConfigProvider).leadId;
+  String toString() => r'searchLeadsProvider';
 }
-
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -57,7 +57,7 @@ class HomeRepository {
 }
 
 @riverpod
-HomeRepository homeRepository(HomeRepositoryRef ref) {
+HomeRepository homeRepository(Ref ref) {
   return HomeRepository(
     dio: ref.watch(dioProvider),
     ref: ref,
@@ -66,7 +66,7 @@ HomeRepository homeRepository(HomeRepositoryRef ref) {
 
 @riverpod
 Future<ReportSummaryResponse> fetchReportSummaryByOrganizationID(
-    FetchReportSummaryByOrganizationIDRef ref, {
+    Ref ref, {
       required int organizationID,
     }) async {
   final repository = ref.watch(homeRepositoryProvider);

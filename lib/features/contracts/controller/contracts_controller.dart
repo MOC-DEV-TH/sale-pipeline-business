@@ -1,5 +1,9 @@
+
+import 'dart:async';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sale_pipeline_business/features/contracts/data/contracts_repository.dart';
+
 import '../../../network/model/default_network_response.dart';
 
 part 'contracts_controller.g.dart';
@@ -16,14 +20,19 @@ class ContractsController extends _$ContractsController {
 
     final repo = ref.read(contractsRepositoryProvider);
 
-    final result = await AsyncValue.guard<DefaultNetworkResponse>(() {
-      return repo.updateContractedLead(payload: payload);
-    });
+    final result = await AsyncValue.guard<DefaultNetworkResponse>(
+          () => repo.updateContractedLead(payload: payload),
+    );
 
-    state = result.hasError
-        ? AsyncValue.error(result.error!, result.stackTrace!)
-        : const AsyncValue.data(null);
+    if (result.hasError) {
+      state = AsyncValue.error(
+        result.error!,
+        result.stackTrace!,
+      );
+    } else {
+      state = const AsyncValue.data(null);
+    }
 
-    return result.valueOrNull;
+    return result.value;
   }
 }

@@ -36,7 +36,7 @@ enum RoutePath {
 }
 
 @riverpod
-GoRouter goRouterDelegate(GoRouterDelegateRef ref) {
+GoRouter goRouterDelegate(Ref ref) {
   final rootNavigator = navigatorKey;
   final GlobalKey<NavigatorState> shellNavigator = GlobalKey(
     debugLabel: 'shell',

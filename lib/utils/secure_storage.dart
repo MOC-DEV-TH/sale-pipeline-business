@@ -116,43 +116,43 @@ class SecureStorage {
 }
 
 @Riverpod(keepAlive: true)
-SecureStorage secureStorage(SecureStorageRef ref) {
+SecureStorage secureStorage(Ref ref) {
   return SecureStorage();
 }
 
 @riverpod
-Future<String?> getAuthStatus(GetAuthStatusRef ref) {
+Future<String?> getAuthStatus(Ref ref) {
   final provider = ref.watch(secureStorageProvider);
   return provider.getAuthStatus();
 }
 
 @riverpod
-String? getUserName(GetUserNameRef ref) {
+String? getUserName(Ref ref) {
   final provider = ref.watch(secureStorageProvider);
   return provider.getUserName();
 }
 
 @riverpod
-String? getFcmToken(GetFcmTokenRef ref) {
+String? getFcmToken(Ref ref) {
   final store = ref.watch(secureStorageProvider);
   return store.getFCMToken();
 }
 
 @riverpod
-String? getUid(GetUidRef ref) {
+String? getUid(Ref ref) {
   final store = ref.watch(secureStorageProvider);
   return store.getUid();
 }
 
 @riverpod
-String? getAuthToken(GetAuthTokenRef ref) {
+String? getAuthToken(Ref ref) {
   final store = ref.watch(secureStorageProvider);
   return store.getAuthToken();
 }
 
 @riverpod
 String? getBaseApiUrl(
-    GetBaseApiUrlRef ref,
+    Ref ref,
     ) {
   final store =
   ref.watch(secureStorageProvider);

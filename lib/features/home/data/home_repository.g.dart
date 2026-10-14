@@ -6,180 +6,131 @@ part of 'home_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$homeRepositoryHash() => r'82228ecbf145da75f6eb34887a374f5f760b4355';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [homeRepository].
 @ProviderFor(homeRepository)
-final homeRepositoryProvider = AutoDisposeProvider<HomeRepository>.internal(
-  homeRepository,
-  name: r'homeRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$homeRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final homeRepositoryProvider = HomeRepositoryProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef HomeRepositoryRef = AutoDisposeProviderRef<HomeRepository>;
-String _$fetchReportSummaryByOrganizationIDHash() =>
-    r'8233419a3cd5195254ce912b68261e9e31afced4';
-
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-/// See also [fetchReportSummaryByOrganizationID].
-@ProviderFor(fetchReportSummaryByOrganizationID)
-const fetchReportSummaryByOrganizationIDProvider =
-    FetchReportSummaryByOrganizationIDFamily();
-
-/// See also [fetchReportSummaryByOrganizationID].
-class FetchReportSummaryByOrganizationIDFamily
-    extends Family<AsyncValue<ReportSummaryResponse>> {
-  /// See also [fetchReportSummaryByOrganizationID].
-  const FetchReportSummaryByOrganizationIDFamily();
-
-  /// See also [fetchReportSummaryByOrganizationID].
-  FetchReportSummaryByOrganizationIDProvider call({
-    required int organizationID,
-  }) {
-    return FetchReportSummaryByOrganizationIDProvider(
-      organizationID: organizationID,
-    );
-  }
-
-  @override
-  FetchReportSummaryByOrganizationIDProvider getProviderOverride(
-    covariant FetchReportSummaryByOrganizationIDProvider provider,
-  ) {
-    return call(organizationID: provider.organizationID);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'fetchReportSummaryByOrganizationIDProvider';
-}
-
-/// See also [fetchReportSummaryByOrganizationID].
-class FetchReportSummaryByOrganizationIDProvider
-    extends AutoDisposeFutureProvider<ReportSummaryResponse> {
-  /// See also [fetchReportSummaryByOrganizationID].
-  FetchReportSummaryByOrganizationIDProvider({required int organizationID})
-    : this._internal(
-        (ref) => fetchReportSummaryByOrganizationID(
-          ref as FetchReportSummaryByOrganizationIDRef,
-          organizationID: organizationID,
-        ),
-        from: fetchReportSummaryByOrganizationIDProvider,
-        name: r'fetchReportSummaryByOrganizationIDProvider',
-        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-            ? null
-            : _$fetchReportSummaryByOrganizationIDHash,
-        dependencies: FetchReportSummaryByOrganizationIDFamily._dependencies,
-        allTransitiveDependencies:
-            FetchReportSummaryByOrganizationIDFamily._allTransitiveDependencies,
-        organizationID: organizationID,
+final class HomeRepositoryProvider
+    extends $FunctionalProvider<HomeRepository, HomeRepository, HomeRepository>
+    with $Provider<HomeRepository> {
+  HomeRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'homeRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
       );
 
-  FetchReportSummaryByOrganizationIDProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.organizationID,
-  }) : super.internal();
+  @override
+  String debugGetCreateSourceHash() => _$homeRepositoryHash();
 
-  final int organizationID;
+  @$internal
+  @override
+  $ProviderElement<HomeRepository> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
 
   @override
-  Override overrideWith(
-    FutureOr<ReportSummaryResponse> Function(
-      FetchReportSummaryByOrganizationIDRef provider,
-    )
-    create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: FetchReportSummaryByOrganizationIDProvider._internal(
-        (ref) => create(ref as FetchReportSummaryByOrganizationIDRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        organizationID: organizationID,
-      ),
-    );
+  HomeRepository create(Ref ref) {
+    return homeRepository(ref);
   }
 
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(HomeRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<HomeRepository>(value),
+    );
+  }
+}
+
+String _$homeRepositoryHash() => r'f8ece09654d1d23a79c203f3fb4dcf7b04e7ca85';
+
+@ProviderFor(fetchReportSummaryByOrganizationID)
+final fetchReportSummaryByOrganizationIDProvider =
+    FetchReportSummaryByOrganizationIDFamily._();
+
+final class FetchReportSummaryByOrganizationIDProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<ReportSummaryResponse>,
+          ReportSummaryResponse,
+          FutureOr<ReportSummaryResponse>
+        >
+    with
+        $FutureModifier<ReportSummaryResponse>,
+        $FutureProvider<ReportSummaryResponse> {
+  FetchReportSummaryByOrganizationIDProvider._({
+    required FetchReportSummaryByOrganizationIDFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'fetchReportSummaryByOrganizationIDProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
   @override
-  AutoDisposeFutureProviderElement<ReportSummaryResponse> createElement() {
-    return _FetchReportSummaryByOrganizationIDProviderElement(this);
+  String debugGetCreateSourceHash() =>
+      _$fetchReportSummaryByOrganizationIDHash();
+
+  @override
+  String toString() {
+    return r'fetchReportSummaryByOrganizationIDProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<ReportSummaryResponse> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<ReportSummaryResponse> create(Ref ref) {
+    final argument = this.argument as int;
+    return fetchReportSummaryByOrganizationID(ref, organizationID: argument);
   }
 
   @override
   bool operator ==(Object other) {
     return other is FetchReportSummaryByOrganizationIDProvider &&
-        other.organizationID == organizationID;
+        other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, organizationID.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin FetchReportSummaryByOrganizationIDRef
-    on AutoDisposeFutureProviderRef<ReportSummaryResponse> {
-  /// The parameter `organizationID` of this provider.
-  int get organizationID;
-}
+String _$fetchReportSummaryByOrganizationIDHash() =>
+    r'd79f7a124e87cb75e195a364cf2735082a72c53f';
 
-class _FetchReportSummaryByOrganizationIDProviderElement
-    extends AutoDisposeFutureProviderElement<ReportSummaryResponse>
-    with FetchReportSummaryByOrganizationIDRef {
-  _FetchReportSummaryByOrganizationIDProviderElement(super.provider);
+final class FetchReportSummaryByOrganizationIDFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<ReportSummaryResponse>, int> {
+  FetchReportSummaryByOrganizationIDFamily._()
+    : super(
+        retry: null,
+        name: r'fetchReportSummaryByOrganizationIDProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  FetchReportSummaryByOrganizationIDProvider call({
+    required int organizationID,
+  }) => FetchReportSummaryByOrganizationIDProvider._(
+    argument: organizationID,
+    from: this,
+  );
 
   @override
-  int get organizationID =>
-      (origin as FetchReportSummaryByOrganizationIDProvider).organizationID;
+  String toString() => r'fetchReportSummaryByOrganizationIDProvider';
 }
-
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -83,13 +83,13 @@ class NewLeadRepository {
 }
 
 @riverpod
-NewLeadRepository newLeadRepository(NewLeadRepositoryRef ref) {
+NewLeadRepository newLeadRepository(Ref ref) {
   return NewLeadRepository(dio: ref.watch(dioProvider), ref: ref);
 }
 
 @riverpod
 Future<SaleDropdownDataResponse> fetchSaleDropdownData(
-  FetchSaleDropdownDataRef ref,
+  Ref ref,
 ) async {
   final repository = ref.watch(newLeadRepositoryProvider);
   return repository.fetchSaleDropdownData();
@@ -98,7 +98,7 @@ Future<SaleDropdownDataResponse> fetchSaleDropdownData(
 @riverpod
 Future<LeadFormConfigResponse>
 fetchLeadFormConfig(
-    FetchLeadFormConfigRef ref, {
+    Ref ref, {
       required int organizationID,
     }) async {
   final dio = ref.watch(

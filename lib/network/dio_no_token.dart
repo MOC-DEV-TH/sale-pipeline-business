@@ -6,7 +6,7 @@ import 'api_constants.dart';
 part 'dio_no_token.g.dart';
 
 @riverpod
-Dio dioNoToken(DioNoTokenRef ref) {
+Dio dioNoToken(Ref ref) {
   return Dio(
     BaseOptions(
       baseUrl: kLoginBaseUrl,

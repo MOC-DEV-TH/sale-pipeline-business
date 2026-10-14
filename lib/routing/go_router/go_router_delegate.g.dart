@@ -6,22 +6,46 @@ part of 'go_router_delegate.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$goRouterDelegateHash() => r'cd585172f26f3e614b21feaf96c6859557167dec';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [goRouterDelegate].
 @ProviderFor(goRouterDelegate)
-final goRouterDelegateProvider = AutoDisposeProvider<GoRouter>.internal(
-  goRouterDelegate,
-  name: r'goRouterDelegateProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$goRouterDelegateHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final goRouterDelegateProvider = GoRouterDelegateProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef GoRouterDelegateRef = AutoDisposeProviderRef<GoRouter>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class GoRouterDelegateProvider
+    extends $FunctionalProvider<GoRouter, GoRouter, GoRouter>
+    with $Provider<GoRouter> {
+  GoRouterDelegateProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'goRouterDelegateProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$goRouterDelegateHash();
+
+  @$internal
+  @override
+  $ProviderElement<GoRouter> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  GoRouter create(Ref ref) {
+    return goRouterDelegate(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GoRouter value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GoRouter>(value),
+    );
+  }
+}
+
+String _$goRouterDelegateHash() => r'a9f73b735aafbea4bebe1dc71eede0022022034a';

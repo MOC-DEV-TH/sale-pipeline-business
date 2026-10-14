@@ -6,124 +6,284 @@ part of 'secure_storage.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$secureStorageHash() => r'fdcf97f384e865e3e2cf8e4544c72da0d2bda7df';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [secureStorage].
 @ProviderFor(secureStorage)
-final secureStorageProvider = Provider<SecureStorage>.internal(
-  secureStorage,
-  name: r'secureStorageProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$secureStorageHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final secureStorageProvider = SecureStorageProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef SecureStorageRef = ProviderRef<SecureStorage>;
-String _$getAuthStatusHash() => r'001f2ab518999019f3cf8a0b8b072cf32c9134a8';
+final class SecureStorageProvider
+    extends $FunctionalProvider<SecureStorage, SecureStorage, SecureStorage>
+    with $Provider<SecureStorage> {
+  SecureStorageProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'secureStorageProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-/// See also [getAuthStatus].
+  @override
+  String debugGetCreateSourceHash() => _$secureStorageHash();
+
+  @$internal
+  @override
+  $ProviderElement<SecureStorage> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  SecureStorage create(Ref ref) {
+    return secureStorage(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(SecureStorage value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<SecureStorage>(value),
+    );
+  }
+}
+
+String _$secureStorageHash() => r'5c9908c0046ad0e39469ee7acbb5540397b36693';
+
 @ProviderFor(getAuthStatus)
-final getAuthStatusProvider = AutoDisposeFutureProvider<String?>.internal(
-  getAuthStatus,
-  name: r'getAuthStatusProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$getAuthStatusHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final getAuthStatusProvider = GetAuthStatusProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef GetAuthStatusRef = AutoDisposeFutureProviderRef<String?>;
-String _$getUserNameHash() => r'6b44544114b9f9d26d5a8425e919b5bc7b509f30';
+final class GetAuthStatusProvider
+    extends $FunctionalProvider<AsyncValue<String?>, String?, FutureOr<String?>>
+    with $FutureModifier<String?>, $FutureProvider<String?> {
+  GetAuthStatusProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getAuthStatusProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-/// See also [getUserName].
+  @override
+  String debugGetCreateSourceHash() => _$getAuthStatusHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<String?> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<String?> create(Ref ref) {
+    return getAuthStatus(ref);
+  }
+}
+
+String _$getAuthStatusHash() => r'8f82aac554741b73e8086b2b66e8eea45238f6e5';
+
 @ProviderFor(getUserName)
-final getUserNameProvider = AutoDisposeProvider<String?>.internal(
-  getUserName,
-  name: r'getUserNameProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$getUserNameHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final getUserNameProvider = GetUserNameProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef GetUserNameRef = AutoDisposeProviderRef<String?>;
-String _$getFcmTokenHash() => r'323e3e224af517426a59b40be18e8e8ef366bcfe';
+final class GetUserNameProvider
+    extends $FunctionalProvider<String?, String?, String?>
+    with $Provider<String?> {
+  GetUserNameProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getUserNameProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-/// See also [getFcmToken].
+  @override
+  String debugGetCreateSourceHash() => _$getUserNameHash();
+
+  @$internal
+  @override
+  $ProviderElement<String?> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  String? create(Ref ref) {
+    return getUserName(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(String? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<String?>(value),
+    );
+  }
+}
+
+String _$getUserNameHash() => r'cef0b97547d7d183e7436146e98cf211e5a5f33d';
+
 @ProviderFor(getFcmToken)
-final getFcmTokenProvider = AutoDisposeProvider<String?>.internal(
-  getFcmToken,
-  name: r'getFcmTokenProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$getFcmTokenHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final getFcmTokenProvider = GetFcmTokenProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef GetFcmTokenRef = AutoDisposeProviderRef<String?>;
-String _$getUidHash() => r'426e7a4efe6bc93e0e76eef1622e2c48855227cc';
+final class GetFcmTokenProvider
+    extends $FunctionalProvider<String?, String?, String?>
+    with $Provider<String?> {
+  GetFcmTokenProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getFcmTokenProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-/// See also [getUid].
+  @override
+  String debugGetCreateSourceHash() => _$getFcmTokenHash();
+
+  @$internal
+  @override
+  $ProviderElement<String?> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  String? create(Ref ref) {
+    return getFcmToken(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(String? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<String?>(value),
+    );
+  }
+}
+
+String _$getFcmTokenHash() => r'2dd4acf4b7454f583fb997ac9f6a6ed4b632f2c5';
+
 @ProviderFor(getUid)
-final getUidProvider = AutoDisposeProvider<String?>.internal(
-  getUid,
-  name: r'getUidProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$getUidHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final getUidProvider = GetUidProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef GetUidRef = AutoDisposeProviderRef<String?>;
-String _$getAuthTokenHash() => r'4f90120964e4b1a73d96a1b0e983a6d69e421fb5';
+final class GetUidProvider
+    extends $FunctionalProvider<String?, String?, String?>
+    with $Provider<String?> {
+  GetUidProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getUidProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-/// See also [getAuthToken].
+  @override
+  String debugGetCreateSourceHash() => _$getUidHash();
+
+  @$internal
+  @override
+  $ProviderElement<String?> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  String? create(Ref ref) {
+    return getUid(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(String? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<String?>(value),
+    );
+  }
+}
+
+String _$getUidHash() => r'7cdbf53f4c51bb867fdc16e06f8cbf92fc3f6bfc';
+
 @ProviderFor(getAuthToken)
-final getAuthTokenProvider = AutoDisposeProvider<String?>.internal(
-  getAuthToken,
-  name: r'getAuthTokenProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$getAuthTokenHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final getAuthTokenProvider = GetAuthTokenProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef GetAuthTokenRef = AutoDisposeProviderRef<String?>;
-String _$getBaseApiUrlHash() => r'1e6ce9ee72f763c022df179f8df9d98c2892b787';
+final class GetAuthTokenProvider
+    extends $FunctionalProvider<String?, String?, String?>
+    with $Provider<String?> {
+  GetAuthTokenProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getAuthTokenProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-/// See also [getBaseApiUrl].
+  @override
+  String debugGetCreateSourceHash() => _$getAuthTokenHash();
+
+  @$internal
+  @override
+  $ProviderElement<String?> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  String? create(Ref ref) {
+    return getAuthToken(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(String? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<String?>(value),
+    );
+  }
+}
+
+String _$getAuthTokenHash() => r'3943a969ee107f5fecbbbb5eb5ab448701353b3e';
+
 @ProviderFor(getBaseApiUrl)
-final getBaseApiUrlProvider = AutoDisposeProvider<String?>.internal(
-  getBaseApiUrl,
-  name: r'getBaseApiUrlProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$getBaseApiUrlHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final getBaseApiUrlProvider = GetBaseApiUrlProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef GetBaseApiUrlRef = AutoDisposeProviderRef<String?>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class GetBaseApiUrlProvider
+    extends $FunctionalProvider<String?, String?, String?>
+    with $Provider<String?> {
+  GetBaseApiUrlProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getBaseApiUrlProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$getBaseApiUrlHash();
+
+  @$internal
+  @override
+  $ProviderElement<String?> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  String? create(Ref ref) {
+    return getBaseApiUrl(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(String? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<String?>(value),
+    );
+  }
+}
+
+String _$getBaseApiUrlHash() => r'5cf577111298ce4149af920796a84da74d5a7d1c';

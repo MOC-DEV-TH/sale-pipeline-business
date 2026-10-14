@@ -85,7 +85,7 @@ class ContractsRepository {
 }
 
 @riverpod
-ContractsRepository contractsRepository(ContractsRepositoryRef ref) {
+ContractsRepository contractsRepository(Ref ref) {
   return ContractsRepository(
     dio: ref.watch(dioProvider),
     ref: ref,
@@ -95,7 +95,7 @@ ContractsRepository contractsRepository(ContractsRepositoryRef ref) {
 
 @riverpod
 Future<ContractsResponse> fetchContractList(
-    FetchContractListRef ref, {
+    Ref ref, {
       required String uid,
       String? filterParamName,
     }) async {
@@ -109,7 +109,7 @@ Future<ContractsResponse> fetchContractList(
 
 @riverpod
 Future<ContractedDetailResponse> fetchContractedLeadDetail(
-    FetchContractedLeadDetailRef ref, {
+    Ref ref, {
       required String uid,
       required String profileId,
     }) async {

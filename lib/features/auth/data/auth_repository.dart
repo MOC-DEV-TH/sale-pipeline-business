@@ -137,6 +137,6 @@ class AuthRepository {
 }
 
 @riverpod
-AuthRepository authRepositoryNoToken(AuthRepositoryNoTokenRef ref) {
+AuthRepository authRepositoryNoToken(Ref ref) {
   return AuthRepository(dio: ref.watch(dioNoTokenProvider), ref: ref);
 }
